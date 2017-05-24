@@ -40,9 +40,9 @@ void myTestBoostXMLLoad::load ( const std::string& filename ) {
 	 // its children. If the path cannot be resolved, get_child throws.
 	 // A C++11 for-range loop would also work.
 	 */
-	print( m_tree );
+	//print( m_tree );
 }
-
+/*
 void myTestBoostXMLLoad::print ( boost::property_tree::ptree const& pt ) {
 
 	boost::property_tree::ptree::const_iterator end = pt.end();
@@ -50,7 +50,7 @@ void myTestBoostXMLLoad::print ( boost::property_tree::ptree const& pt ) {
 		std::cout << it->first << " " << it->second.get_value<std::string>() << std::endl;
 		print( it->second );
 	}
-}
+}*/
 /*
  BOOST_FOREACH(boost::property_tree::ptree::value_type &v, m_tree)
  {
