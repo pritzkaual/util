@@ -62,8 +62,20 @@ model {
                 cpp {
                     source {
                         srcDirs "src" 
+                        srcDirs "src/persistence" 
+                        srcDirs "src/persistence/type" 
 						include	"main_myTestBoostXMLLoad.cpp"
 						include	"myTestBoostXMLLoad.cpp"
+						include	"Persistence.cpp"
+						include	"Load.cpp"
+						include	"Save.cpp"
+						include	"JSONLoad.cpp"
+						include	"JSONSave.cpp"
+						include	"XMLLoad.cpp"
+						include	"XMLSave.cpp"
+						include	"Handler.cpp"
+						include	"ExtendedMetaData.cpp"
+						include	"Option.cpp"
                     }
 					exportedHeaders {
                         srcDirs ".", System.getenv('MDE4CPP_HOME')+"/application/include"
