@@ -47,8 +47,8 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 
 	// Create new subpackage and insert into package 'pck_UniModel'
 	std::shared_ptr<ecore::EPackage> pck_enum; // ptr anlegen bzw. initialisieren
+	pck_enum.reset( factory->createEPackage() ); // inhalt resetten bzw. ersetzten durch methoden aufruf
 	{
-		pck_enum.reset( factory->createEPackage() ); // inhalt resetten bzw. ersetzten durch methoden aufruf
 		std::shared_ptr<ecore::EPackageImpl> pck_enum_Impl = std::dynamic_pointer_cast<ecore::EPackageImpl>( pck_enum ); // shared_ptr casten
 		{
 			// set name and prefix of subpackage
@@ -224,7 +224,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 	// Init List of ENUMs
 	std::shared_ptr<std::vector<std::shared_ptr<ecore::EClassifier>>>list_pck_enum = pck_enum->getEClassifiers();
 
-	// Insert ENUMs into list
+	// Insert ENUMs into list (package EnumPackage)
 	list_pck_enum->push_back( enum_Geschlecht );
 	list_pck_enum->push_back( enum_Verein );
 	list_pck_enum->push_back( enum_Position );
@@ -441,7 +441,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 	// Init List of ENUMs
 	std::shared_ptr<std::vector<std::shared_ptr<ecore::EClassifier>>>list_pck_class = pck_class->getEClassifiers();
 
-	// Insert ENUMs into list
+	// Insert Classes into list
 	list_pck_class->push_back( cls_UniModel );
 	list_pck_class->push_back( cls_Universitaet );
 	list_pck_class->push_back( cls_Mensch );
@@ -453,33 +453,130 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 
 	// Create Compositions and Associations
 	{
-		std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_association = cls_UniModel->getEReferences();
-		std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+		std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_reference = cls_UniModel->getEReferences();
+		{
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
 
-		reference->setName("universitaet");
-		// TODO hier muss eine Art setEreferencetype sein, damit ich der Association die zugehoerige class zuweisen kann
-		//reference->set
+			reference->setName("universitaet");
+			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
+			reference->setEType(cls_Universitaet);
+			//reference->getEReferenceType();
+			reference->setContainment(true);// set reference as composition
+			reference->setLowerBound(0);
+			reference->setUpperBound(-1);
 
-		list_association->push_back(reference);
+			// Add reference to association list
+			list_reference->push_back(reference);
+		}
+	}
+	{
+		std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_reference = cls_Universitaet->getEReferences();
+		{
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+
+			reference->setName( "person" );
+			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
+			reference->setEType( cls_Person );
+			//reference->getEReferenceType();
+			reference->setContainment( true );// set reference as composition
+			reference->setLowerBound( 0 );
+			reference->setUpperBound( -1 );
+
+			// Add reference to association list
+			list_reference->push_back( reference );
+		}
+		{
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+
+			reference->setName( "veranstaltung" );
+			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
+			reference->setEType( cls_Veranstaltung );
+			//reference->getEReferenceType();
+			reference->setContainment( true );// set reference as composition
+			reference->setLowerBound( 0 );
+			reference->setUpperBound( -1 );
+
+			// Add reference to association list
+			list_reference->push_back( reference );
+		}
+	}
+	{
+		std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_reference = cls_Person->getEReferences();
+		{
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+
+			reference->setName( "veranstaltung" );
+			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
+			reference->setEType( cls_Veranstaltung );
+			//reference->getEReferenceType();
+			reference->setContainment( false );// set reference as association
+			reference->setLowerBound( 0 );
+			reference->setUpperBound( -1 );
+
+			// Add reference to association list
+			list_reference->push_back( reference );
+		}
+	}
+	{
+		std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_reference = cls_Veranstaltung->getEReferences();
+		{
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+
+			reference->setName( "dozent" );
+			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
+			reference->setEType( cls_Person );
+			//reference->getEReferenceType();
+			reference->setContainment( false );// set reference as association
+			reference->setLowerBound( 0 );
+			reference->setUpperBound( 1 );
+
+			// Add reference to association list
+			list_reference->push_back( reference );
+		}
+		{
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+
+			reference->setName( "student" );
+			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
+			reference->setEType( cls_Person );
+			//reference->getEReferenceType();
+			reference->setContainment( false );// set reference as association
+			reference->setLowerBound( 0 );
+			reference->setUpperBound( -1 );
+
+			// Add reference to association list
+			list_reference->push_back( reference );
+		}
+	}
+	{
+		std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_reference = cls_Student->getEReferences();
+		{
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+
+			reference->setName( "verein" );
+			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
+			reference->setEType( cls_Verein);
+			//reference->getEReferenceType();
+			reference->setContainment( false );// set reference as association
+			reference->setLowerBound( 0 );
+			reference->setUpperBound( -1 );
+
+			// Add reference to association list
+			list_reference->push_back( reference );
+		}
 	}
 
 
 
-
-
-
-
-
-
-
+/*
 	for ( std::shared_ptr<ecore::EPackage> subpackage : *subpackages ) {
-		std::cout << subpackage->getName() << std::endl;
+		std::cout << "Sub-Package: " << subpackage->getName() << std::endl;
+		auto wasd = subpackage->eClass();
+		std::cout << wasd->getName() << std::endl;
 	}
-
+*/
 	return std::dynamic_pointer_cast<ecore::EObject>( pck_UniModel );
 }
-
-
 
 void print () {
 
@@ -487,16 +584,29 @@ void print () {
 
 int main () {
 	try {
-		testBoostXMLLoad::myTestBoostXMLLoad myObject;
+		testBoostXMLLoad::myTestBoostXMLLoad myTestBoostObject;
 		//myObject.load("_tmp/debug_settings.xml");
 		//myObject.save("_tmp/debug_settings_out.xml");
 
-		auto myEcoreTestMetaModel = createEcoreTestMetaModel();
 
-		myObject.load( "_tmp/uml.ecore" );
-		myObject.save( "_tmp/uml_out.ecore" );
 
-		std::cout << "Success\n";
+		//myTestBoostObject.load( "_tmp/uml.ecore" );
+		//myTestBoostObject.save( "_tmp/uml_out.ecore" );
+
+		std::cout << "Successful load() and save() of '_tmp/uml.ecore' \n";
+
+		std::cout << "START: save() of 'myEcoreTestMetaModel' \n";
+
+		std::shared_ptr<ecore::EObject> myEcoreTestMetaModel = createEcoreTestMetaModel();
+
+		// Set Options
+		std::set<std::string> options = persistence::Option::get_DefaultOptions();
+		persistence::Persistence myPersistence;
+
+		myPersistence.save("_tmp/UniModel.ecore", myEcoreTestMetaModel, options);
+
+		std::cout << "Successful save() of 'myEcoreTestMetaModel' \n";
+
 	}
 	catch ( std::exception &e ) {
 		std::cout << "Error: " << e.what() << "\n";
