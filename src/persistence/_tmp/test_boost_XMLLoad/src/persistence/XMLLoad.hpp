@@ -8,9 +8,11 @@
 #ifndef XMLLOAD_HPP_
 #define XMLLOAD_HPP_
 
+#include "Load.hpp"
+
 namespace persistence {
 
-class XMLLoad {
+class XMLLoad : Load {
 public:
 	XMLLoad ();
 	virtual ~XMLLoad ();
