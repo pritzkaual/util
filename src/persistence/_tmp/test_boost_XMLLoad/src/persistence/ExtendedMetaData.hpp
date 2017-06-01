@@ -9,6 +9,7 @@
 #define EXTENDEDMETADATA_HPP_
 
 #include <string>
+
 namespace persistence {
 
 class ExtendedMetaData {
