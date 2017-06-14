@@ -49,6 +49,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 	std::shared_ptr<ecore::EPackage> pck_enum; // ptr anlegen bzw. initialisieren
 	pck_enum.reset( factory->createEPackage() ); // inhalt resetten bzw. ersetzten durch methoden aufruf
 	{
+
 		std::shared_ptr<ecore::EPackageImpl> pck_enum_Impl = std::dynamic_pointer_cast<ecore::EPackageImpl>( pck_enum ); // shared_ptr casten
 		{
 			// set name and prefix of subpackage
@@ -57,6 +58,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 		}
 		// add packages to subpackage list
 		subpackages->push_back( pck_enum );
+		//pck_enum->setContainer(pck_UniModel);
 	}
 
 	// Create new subpackage and insert into package 'pck_UniModel' (alternative variant)
@@ -70,12 +72,17 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 		}
 		// add packages to subpackage list
 		subpackages->push_back( pck_class );
+
+		//pck_class->setContainer(pck_UniModel);
+		//std::shared_ptr<ecore::EPackage>superpackage = pck_class->getESuperPackage();
+		//superpackage = pck_UniModel; // TODO hier funkt das mit dem SuperPackage nicht
 	}
 
 	// Create ENUMs that are used in classes
 	std::shared_ptr<ecore::EEnum> enum_Geschlecht( factory->createEEnum() );
 	{
 		enum_Geschlecht->setName( "EnumGeschlecht" );
+		enum_Geschlecht->setEPackage(pck_enum);
 
 		// Create const attributes (literals)
 		std::shared_ptr<std::vector<std::shared_ptr<ecore::EEnumLiteral>>>list_ELiteral = enum_Geschlecht->getELiterals();
@@ -100,6 +107,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 	std::shared_ptr<ecore::EEnum> enum_Verein( factory->createEEnum() );
 	{
 		enum_Verein->setName( "EnumVerein" );
+		enum_Verein->setEPackage(pck_enum);
 
 		// Create const attributes (literals)
 		std::shared_ptr<std::vector<std::shared_ptr<ecore::EEnumLiteral>>>list_ELiteral = enum_Verein->getELiterals();
@@ -132,6 +140,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 	std::shared_ptr<ecore::EEnum> enum_Position( factory->createEEnum() );
 	{
 		enum_Position->setName( "EnumPosition" );
+		enum_Position->setEPackage(pck_enum);
 
 		// Create const attributes (literals)
 		std::shared_ptr<std::vector<std::shared_ptr<ecore::EEnumLiteral>>>list_ELiteral = enum_Position->getELiterals();
@@ -165,6 +174,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 	std::shared_ptr<ecore::EEnum> enum_StudentStatus( factory->createEEnum() );
 	{
 		enum_StudentStatus->setName( "EnumStudentStatus" );
+		enum_StudentStatus->setEPackage(pck_enum);
 
 		// Create const attributes (literals)
 		std::shared_ptr<std::vector<std::shared_ptr<ecore::EEnumLiteral>>>list_ELiteral = enum_StudentStatus->getELiterals();
@@ -191,6 +201,7 @@ std::shared_ptr<ecore::EObject> createEcoreTestMetaModel () {
 
 	{
 		enum_Veranstaltung->setName( "EnumVeranstaltung" );
+		enum_Veranstaltung->setEPackage(pck_enum);
 
 		// Create const attributes (literals)
 		std::shared_ptr<std::vector<std::shared_ptr<ecore::EEnumLiteral>>>list_ELiteral = enum_Veranstaltung->getELiterals();
