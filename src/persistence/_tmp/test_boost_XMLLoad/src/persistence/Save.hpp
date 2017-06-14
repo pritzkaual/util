@@ -15,14 +15,23 @@
 #include "boost/foreach.hpp"
 
 #include "EObject.hpp"
+#include "EPackage.hpp"
 #include "EClass.hpp"
 #include "EAttribute.hpp"
 #include "EAnnotation.hpp"
+#include "EStructuralFeature.hpp"
 #include "EOperation.hpp"
 #include "EReference.hpp"
 
+#include "EFactory.hpp"
+
+#include "EcorePackage.hpp"
+
+
 #include "ExtendedMetaData.hpp"
 #include "Handler.hpp"
+
+//#include "types/TypesPackage.hpp"
 
 namespace persistence {
 
@@ -39,13 +48,13 @@ protected:
 	const std::string m_filename;
 	std::shared_ptr<ecore::EObject> m_model;
 	std::set<std::string> m_options;
-	boost::property_tree::ptree m_tree;
+	std::shared_ptr<boost::property_tree::ptree> m_tree;
 
 
 private:
 	virtual bool write (const std::string &filename) = 0;
 
-	boost::property_tree::ptree traverse(std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree tree);
+	void traverse(std::shared_ptr<ecore::EObject> object, std::shared_ptr<boost::property_tree::ptree> tree, std::string prefix);
 
 
 };

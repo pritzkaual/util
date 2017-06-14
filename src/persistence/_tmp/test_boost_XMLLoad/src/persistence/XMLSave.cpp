@@ -27,7 +27,7 @@ bool XMLSave::save ( const std::string& filename, std::shared_ptr<ecore::EObject
 */
 bool XMLSave::write (const std::string &filename ) {
 
-	boost::property_tree::write_xml( filename, m_tree, std::locale(), boost::property_tree::xml_writer_make_settings<std::string>( ' ', 2 ) );
+	boost::property_tree::write_xml( filename, *(m_tree.get()), std::locale(), boost::property_tree::xml_writer_make_settings<std::string>( ' ', 2 ) );
 
 	return true;
 }
