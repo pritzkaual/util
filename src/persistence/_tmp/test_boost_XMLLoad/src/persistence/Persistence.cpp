@@ -45,7 +45,7 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 
 
 
-	return true;
+		return true;
 }
 
 bool Persistence::isValidFile ( const std::string& filename ) {

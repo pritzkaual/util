@@ -17,6 +17,7 @@
 #include "Option.hpp"
 
 #include "EObject.hpp"
+#include "EcorePackage.hpp"
 
 //#include "boost/filesystem.hpp"   // includes all needed Boost.Filesystem declarations
 #include <string>
