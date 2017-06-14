@@ -7,13 +7,13 @@ File appendDebugSuffix(File binaryFile) {
   return new File(binaryFile.path.substring(0, extensionSeparatorIndex) + "d" + binaryFile.path.substring(extensionSeparatorIndex))
 }
 
-task deliverApplication(dependsOn: ['deliverApplicationDebugExecutable', 'deliverApplicationReleaseExecutable']) {
+task deliverApplication(dependsOn: ['deliverApplicationDebugExecutable']) {
 	description 'deliver debug and release executable to application folder (%MDE4CPP_HOME%/application/bin)'
 }
 
 task deliverApplicationDebugExecutable(type: Copy) {
 	description 'deliver types debug libary to %MDE4CPP_HOME%/application/bin'
-	from "build/exe/test_boost_XMLLoad/debug"
+	from "build/exe/test_boost_XMLLoad"
 	into System.getenv('MDE4CPP_HOME')+"/application/bin"
 	include "test_boost_XMLLoadd.exe"
 }
@@ -35,7 +35,6 @@ model {
 	
     buildTypes {
         debug 
-        release
     }
 	repositories {
         libs(PrebuiltLibraries) {
