@@ -12,7 +12,7 @@ namespace persistence {
 Save::Save () {
 	// TODO Auto-generated constructor stub
 	m_handler = std::make_shared<persistence::Handler>();
-	m_package = ecore::EcorePackage::eInstance();
+	//m_package = ecore::EcorePackage::eInstance();
 	//m_tree = nullptr;
 }
 
@@ -23,38 +23,39 @@ bool Save::save ( const std::string &filename, std::shared_ptr<ecore::EObject> m
 	m_model = model;
 	m_options = options;
 
-	traverse( model, m_tree , "");
+	boost::property_tree::ptree wasd = boost::property_tree::ptree();
+	//m_tree = traverse( model, m_tree , "ecore:EPackage");
+	traverse( model, m_tree , "ecore:EPackage");
 
 	return write( filename );
 }
 
-void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<boost::property_tree::ptree> tree, std::string prefix )  {
+boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, const std::string prefix )  {
 
 	std::shared_ptr<ecore::EClass> metaClass = object->eClass();
 	std::shared_ptr<ecore::EClass> metaMetaClass = metaClass->eClass();
 
 	//std::cout << metaClass->getName() << std::endl;
 	//std::cout << metaMetaClass->getName() << std::endl;
-	if (tree == nullptr){
-		//std::shared_ptr<boost::property_tree::ptree> tree;
-	}
+
 	//boost::property_tree::ptree ctree;
 
 	const int cls_id = metaClass->getClassifierID();
 
 	switch(cls_id){
 	case (ecore::EcorePackage::EPACKAGE):
-	{
-		std::cout << "EPackage" << std::endl;
-
+		{
 		std::shared_ptr<ecore::EPackage> tmp_object = std::dynamic_pointer_cast<ecore::EPackage>(object);
 
-		std::string tag = prefix;
+		std::cout << "EPackage: " << tmp_object->getName() << std::endl;
+		boost::property_tree::ptree &ctree = tree.add_child("ecore:EPackage", boost::property_tree::ptree());
 
-		auto name = tmp_object->getName();
+		//std::string tag = prefix;
 
-		auto superpackage = tmp_object->getESuperPackage();
-
+		//auto name = tmp_object->getName();
+		//std::cout << "Object-Name: " << name << std::endl;
+		//auto superpackage = tmp_object->getESuperPackage();
+		/*
 		if(superpackage == nullptr){
 			std::cout << "no Superpackage" << std::endl;
 			tag += ".ecore:EPackage"; // TODO Correct version: tag = "ecore:EPackage";
@@ -63,74 +64,132 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<bo
 			tag += ".eSubpackages";
 
 		}
-
-		tree->add(tag, ""); // add tag
+		 */
+		std::cout << "Prefix: " << prefix.c_str() << std::endl;
+		//ctree.add(prefix, ""); // add tag
 
 
 		// Add Attributes
 		std::stringstream attr_stream;
 
-		attr_stream << tag << ".<xmlattr>." << "name";
-		//std::cout << attr_stream.str() << std::endl;
-		tree->add(attr_stream.str(), tmp_object->getName());
-		attr_stream.str("");
 
-		attr_stream << tag << ".<xmlattr>." << "nsPrefix";
+		//attr_stream << prefix << ".<xmlattr>." << "name";
+		attr_stream << ".<xmlattr>." << "name";
 		//std::cout << attr_stream.str() << std::endl;
-		tree->add(attr_stream.str(), tmp_object->getNsPrefix());
-		attr_stream.str("");
+		ctree.add((std::string)attr_stream.str(), tmp_object->getName());
+		//ctree.add((std::string)attr_stream.str(), tmp_object->getName());
+		attr_stream.str(""); // Reset attr_stream
 
-		attr_stream << tag << ".<xmlattr>." << "nsURI";
+		//attr_stream << prefix << ".<xmlattr>." << "nsPrefix";
+		attr_stream << ".<xmlattr>." << "nsPrefix";
 		//std::cout << attr_stream.str() << std::endl;
-		tree->add(attr_stream.str(), tmp_object->getNsURI());
-		attr_stream.str("");
+		ctree.add((std::string)attr_stream.str(), tmp_object->getNsPrefix());
+		//ctree.add((std::string)attr_stream.str(), tmp_object->getNsPrefix());
+		attr_stream.str(""); // Reset attr_stream
+
+		//attr_stream << prefix << ".<xmlattr>." << "nsURI";
+		attr_stream << ".<xmlattr>." << "nsURI";
+		//std::cout << attr_stream.str() << std::endl;
+		ctree.add((std::string)attr_stream.str(), tmp_object->getNsURI());
+		//ctree.add((std::string)attr_stream.str(), tmp_object->getNsURI());
+		attr_stream.str(""); // Reset attr_stream
+
+		//std::cout << "prefix_stream: "<< prefix_stream.str()<< std::endl;
+		ctree.add("wasd", "wad");
+		ctree.add("wasd", "wad");
 		/*
 		std::shared_ptr<std::vector<std::shared_ptr<ecore::EStructuralFeature>>>list_attrib = metaClass->getEAllStructuralFeatures();
 
 		for ( std::shared_ptr<ecore::EStructuralFeature> eStructFeat : *list_attrib ) {
 
 		}
-		*/
-		std::shared_ptr<std::vector<std::shared_ptr<ecore::EAnnotation>>>list_annotations = tmp_object->getEAnnotations();
-		for ( std::shared_ptr<ecore::EAnnotation> eAnnotation : *list_annotations ) {
-			traverse(eAnnotation, tree, tag);
-		}
+		 */
 /*
-		std::shared_ptr<std::vector<std::shared_ptr<ecore::EClassifier>>>list_classifiers = tmp_object->getEClassifiers();
-		for ( std::shared_ptr<ecore::EClassifier> eClassifier : *list_classifiers ) {
-			traverse(eClassifier, ctree, tag);
+		std::shared_ptr<std::vector<std::shared_ptr<ecore::EAnnotation>>>list_annotations = tmp_object->getEAnnotations();
+		if(list_annotations->size()){
+			boost::property_tree::ptree annotations;
+
+			for ( std::shared_ptr<ecore::EAnnotation> eAnnotation : *list_annotations ) {
+				annotations.push_back(std::make_pair("" , traverse(eAnnotation, tree, prefix + "eAnnotations")));
+			}
+			ctree.add_child(prefix + ".eAnnotations", annotations);
 		}
 */
+		/*
+		std::shared_ptr<std::vector<std::shared_ptr<ecore::EClassifier>>>list_classifiers = tmp_object->getEClassifiers();
+		for ( std::shared_ptr<ecore::EClassifier> eClassifier : *list_classifiers ) {
+			traverse(eClassifier, ctree, prefix + ".eClassifiers");
+		}
+		 */
+
+		return tree;
+
 		std::shared_ptr<std::vector<std::shared_ptr<ecore::EPackage>>>list_subpackages = tmp_object->getESubpackages();
-		for ( std::shared_ptr<ecore::EPackage> eSubpackage : *list_subpackages ) {
-			traverse(eSubpackage, tree, tag);
+		if(list_subpackages->size()){
+			boost::property_tree::ptree subpackages;
+			boost::property_tree::ptree subpackage;
+
+			attr_stream << ".<xmlattr>." << " name";
+
+			/*ctree.add_child()
+			ctree.add(prefix + ".eSubpackages" + (std::string)attr_stream.str(), tmp_object->getNsURI());
+			ctree.add(prefix + ".eSubpackages" + ".eSubpackages", "Test");
+			ctree.add(prefix + ".eSubpackages" + ".eSubpackages", "Test2");
+			ctree.add(prefix + ".eSubpackages" + ".eSubpackages" + (std::string)attr_stream.str(), tmp_object->getNsURI());
+			ctree.add(prefix + ".eSubpackages" + ".eSubpackages" + ".Test2" + (std::string)attr_stream.str(), tmp_object->getNsURI());
+*/
+			subpackage = tree.add_child("eSubpackages", boost::property_tree::ptree());
+
+			for ( std::shared_ptr<ecore::EPackage> eSubpackage : *list_subpackages ) {
+				//subpackages.add_child("eSubpackages", traverse(eSubpackage, tree, "eSubpackages"));
+				//subpackages.push_back(std::make_pair(".eSubpackages " , traverse(eSubpackage, tree, "eSubpackages")));
+				//subpackages.push_back(traverse(eSubpackage, tree, "eSubpackages"));
+				//std::string wasd = ctree.get<std::string>(prefix);
+				//std::cout << "Element: "<< wasd<< std::endl;
+				//ctree.add_child(prefix, traverse(eSubpackage, tree, ".eSubpackages"));
+				//ctree.put_child(prefix, traverse(eSubpackage, tree, "eSubpackages"));
+				//ctree.add(prefix + ".eSubpackages", "test");// traverse(eSubpackage, tree, "eSubpackages"));
+				//ctree.add("." + prefix, "test");// traverse(eSubpackage, tree, "eSubpackages"));
+				//ctree.add(prefix + ".eSubpackages" + (std::string)attr_stream.str(), tmp_object->getNsURI());
+				//ctree.add(prefix + ".eSubpackages" + ".eSubpackages", "Test");
+				//ctree.add(prefix + ".wasd", "");
+				traverse(eSubpackage, subpackage, "eSubpackages");
+
+
+				//ctree.add_child(prefix2, subpackage);
+				//ctree.push_back( std::make_pair(prefix, subpackage ) );
+				//ctree.add_child( prefix2, subpackage );
+				//ctree.add_child(prefix, traverse(eSubpackage, tree, "eSubpackages"));
+			}
+			//ctree.add_child(prefix.c_str(), subpackages);
+			//ctree.add_child()
 		}
 
-	}
+		}
 	break;
 	case (ecore::EcorePackage::ECLASSIFIER):
-	{
+		{
 		std::cout << "EClassifier" << std::endl;
 
-	}
+		}
 	break;
 	case (ecore::EcorePackage::ECLASS):
-	{
+		{
 		std::cout << "EClass" << std::endl;
 
-	}
+		}
 	break;
 	case (ecore::EcorePackage::EENUM):
-	{
+		{
 		std::cout << "EEnum" << std::endl;
 
-	}
+		}
 	break;
 	case (ecore::EcorePackage::EDATATYPE):
-	{
+		{
 		std::cout << "EDataType" << std::endl;
 
-	}
+		}
 	break;
 	case ecore::EcorePackage::ESTRUCTURALFEATURE:
 	{
@@ -178,6 +237,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<bo
 
 	}
 
+	//return ctree;
 
 #if 0
 	//std::shared_ptr<std::vector<std::shared_ptr<ecore::EStructuralFeature>>>list_attrib = metaClass->getEStructuralFeatures();
@@ -250,8 +310,8 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<bo
 					}
 					catch(const boost::bad_any_cast & e)
 					{
-						 std::cout << e.what() << std::endl;
-						 //throw();
+						std::cout << e.what() << std::endl;
+						//throw();
 					}
 
 				}
@@ -270,7 +330,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<bo
 	std::shared_ptr<std::vector<std::shared_ptr<ecore::EOperation>>>list_operations = metaClass->getEAllOperations();
 
 	for ( std::shared_ptr<ecore::EOperation> operation : *list_operations ) { // TODO hier wird passiert bereits beim 1. Element ein Absturz des Programms
-	//for ( std::shared_ptr<ecore::EOperation> operation : *metaClass->getEOperations() ) { // TODO hier wird nur die API getClassifier() zurueckgegeben
+		//for ( std::shared_ptr<ecore::EOperation> operation : *metaClass->getEOperations() ) { // TODO hier wird nur die API getClassifier() zurueckgegeben
 		try {
 			if(operation.get() == nullptr){
 				std::cout << "Operation is nullptr" << std::endl;
@@ -286,7 +346,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<bo
 			std::cout << "Error: " << e.what() << std::endl;
 		}
 	}
-/*
+	/*
 	std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_ref = metaClass->getEAllReferences();
 
 	for ( std::shared_ptr<ecore::EReference> reference : *list_ref ) {
@@ -323,10 +383,11 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<bo
 			std::cout << "Error: " << e.what() << std::endl;
 		}
 	}
-	*/
-
+	 */
 #endif
-	//return tree;
+	//return ctree;
+	return tree;
+
 }
 
 } /* namespace persistence */

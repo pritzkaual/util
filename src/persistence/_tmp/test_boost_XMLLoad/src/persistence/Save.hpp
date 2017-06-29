@@ -48,13 +48,13 @@ protected:
 	const std::string m_filename;
 	std::shared_ptr<ecore::EObject> m_model;
 	std::set<std::string> m_options;
-	std::shared_ptr<boost::property_tree::ptree> m_tree;
+	boost::property_tree::ptree m_tree;
 
 
 private:
 	virtual bool write (const std::string &filename) = 0;
 
-	void traverse(std::shared_ptr<ecore::EObject> object, std::shared_ptr<boost::property_tree::ptree> tree, std::string prefix);
+	boost::property_tree::ptree traverse(std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, std::string prefix);
 
 
 };
