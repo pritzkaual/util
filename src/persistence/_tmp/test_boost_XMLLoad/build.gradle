@@ -52,6 +52,23 @@ model {
 				}	
 			}         
 		}
+	}	
+  repositories {
+        libs(PrebuiltLibraries) {
+			[ "libxerces-c"].each {
+				delegate."$it" {
+					def libraryName = "${name}"
+					headers.srcDir "C:/Tools/MinGW/xerces-c-3.1.4/src"
+					binaries.withType(SharedLibraryBinary) {
+						if(buildType == buildTypes.debug) {
+							sharedLibraryFile = file(System.getenv('MDE4CPP_HOME')+"/application/bin/${libraryName}.a")
+						} else {
+							sharedLibraryFile = file(System.getenv('MDE4CPP_HOME')+"/application/bin/${libraryName}.a")						
+						}
+					}
+				}	
+			}         
+		}
 	}
 
     components {
@@ -63,8 +80,19 @@ model {
                         srcDirs "src" 
                         srcDirs "src/persistence" 
                         srcDirs "src/persistence/type" 
+                        srcDirs "src/myTestXerces" 
+                        srcDirs "src/myTestBoost" 
 						include	"main_myTestBoostXMLLoad.cpp"
+            
 						include	"myTestBoostXMLLoad.cpp"
+						include	"myTestXerces.cpp"
+						include	"XStr.cpp"
+						include	"DOMTreeErrorReporter.cpp"
+						include	"DOMPrintFilter.cpp"
+						include	"DOMPrintErrorHandler.cpp"
+            
+						include	"TestModel.cpp"
+            
 						include	"Persistence.cpp"
 						include	"Load.cpp"
 						include	"Save.cpp"
@@ -79,9 +107,12 @@ model {
 					exportedHeaders {
                         srcDirs ".", System.getenv('MDE4CPP_HOME')+"/application/include"
                         include "**/*.hpp"
+                        include "**/*.h"
+                        
                     }
 					lib library: "ecore"
 					lib library: "types"
+					lib library: "libxerces-c"
                 }
             }
         }
