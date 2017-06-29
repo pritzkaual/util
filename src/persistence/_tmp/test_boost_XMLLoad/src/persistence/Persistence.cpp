@@ -36,7 +36,7 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 		std::shared_ptr<persistence::JSONSave> tmp_save = std::make_shared<persistence::JSONSave>();
 		tmp_save->save(filename, model, options); // TODO use inheritance method in JSONSave
 	}
-	else {
+	else if ( options.find( persistence::Option::OPTION_SAVE_XML ) != options.end() ){
 		std::cout << "| INFO     | " << "Save as XML-File" << "\n";
 
 		std::shared_ptr<persistence::XMLSave> tmp_save = std::make_shared<persistence::XMLSave>();
