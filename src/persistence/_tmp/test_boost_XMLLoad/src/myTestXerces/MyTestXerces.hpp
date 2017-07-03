@@ -21,12 +21,11 @@
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 
-#include "DOMTreeErrorReporter.hpp"
-#include "DOMPrintFilter.hpp"
-#include "DOMPrintErrorHandler.hpp"
+#include "../persistence/xerces/DOMTreeErrorReporter.hpp"
+#include "../persistence/xerces/DOMPrintFilter.hpp"
+#include "../persistence/xerces/DOMPrintErrorHandler.hpp"
 
-
-#include "XStr.h"
+#include "../persistence/xerces/XStr.hpp"
 
 
 
@@ -40,10 +39,11 @@
 
 namespace testXerces {
 
-#define X(str) testXerces::XStr(str).unicodeForm()
+//#define X(str) XStr(str).unicodeForm()
+//#define W(str) X(str.c_str())
 
 
-class myTestXerces {
+class MyTestXerces {
 private:
 	// ---------------------------------------------------------------------------
 	//  Local data
@@ -113,8 +113,8 @@ private:
 
 public:
 
-	myTestXerces ();
-	~myTestXerces ();
+	MyTestXerces ();
+	~MyTestXerces ();
 
 	bool load ( const std::string &filename );
 	void save ( const std::string &filename );
@@ -126,6 +126,6 @@ public:
 	bool getSawErrors ();
 };
 
-} /* namespace xerces */
+} /* namespace */
 
 #endif /* MYTESTXERCES_HPP_ */

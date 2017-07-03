@@ -5,15 +5,15 @@
  *      Author: Alexander
  */
 
-#include "myTestXerces.hpp"
+#include "MyTestXerces.hpp"
 
 namespace testXerces {
 
-myTestXerces::myTestXerces () {
+MyTestXerces::MyTestXerces () {
 
 	m_XmlFile = 0;
 	//m_DoNamespaces = false;
-	m_DoNamespaces = true;
+	m_DoNamespaces = false;
 	m_DoSchema = false;
 	m_SchemaFullChecking = false;
 	m_DoCreate = false;
@@ -63,13 +63,16 @@ myTestXerces::myTestXerces () {
 
 }
 
-myTestXerces::~myTestXerces () {
+MyTestXerces::~MyTestXerces () {
 
+	if ( m_doc ) {
+		m_doc->release();
+	}
 	XMLPlatformUtils::Terminate();
 
 }
 
-bool myTestXerces::load ( const std::string& filename ) {
+bool MyTestXerces::load ( const std::string& filename ) {
 
 	//XERCES_CPP_NAMESPACE_USE
 	using namespace xercesc_3_1;
@@ -115,7 +118,7 @@ bool myTestXerces::load ( const std::string& filename ) {
 	return errorsOccured;
 }
 
-void myTestXerces::save ( const std::string& filename ) {
+void MyTestXerces::save ( const std::string& filename ) {
 
 	m_outputfile = (char*) filename.c_str();
 
@@ -212,9 +215,9 @@ void myTestXerces::save ( const std::string& filename ) {
 			}
 			XMLString::release( &xpathStr );
 		}
-		else
+		else{
 			theSerializer->write( m_doc, theOutputDesc );
-
+		}
 		theOutputDesc->release();
 		theSerializer->release();
 
@@ -240,29 +243,49 @@ void myTestXerces::save ( const std::string& filename ) {
 
 }
 
-bool myTestXerces::getSawErrors () {
+bool MyTestXerces::getSawErrors () {
 	return m_errReporter->getSawErrors();
 }
 
-void myTestXerces::createTestDOMDocument () {
+void MyTestXerces::createTestDOMDocument () {
 
 	DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation( X( "Core" ) );
 
 	if ( impl != NULL ) {
 		try {
+			std::string const& ns_uri = "http://www.eclipse.org/emf/2002/Ecore";
+
 			//DOMDocument* doc = impl->createDocument(
 			m_doc = impl->createDocument(
-					0,                    // root element namespace URI.
-					X( "ecore" ),         // root element name
-					0 );                   // document type object (DTD).
-			try{
-				//m_doc->setPrefix( X( "wasd" ) );
-			}
-			catch ( const DOMException& e ) {
-				std::cout << "DOMException code is:  " << e.code << StrX(e.getMessage()) << std::endl;
-				//std::cerr << "DOMException code is:  " << e.code << StrX(e.getMessage()) << std::endl;
-			}
+			//(ns_uri.empty()) ? X( "NULL" ) : W( ns_uri ), // root element namespace URI.
+			//0 , // root element namespace URI.
+			X( "http://www.eclipse.org/emf/2002/Ecore" ) , // root element namespace URI.
+			X( "ecore:EPackage" ),         // root element name
+			0 );                   // document type object (DTD).
+
+
+
+
 			DOMElement* rootElem = m_doc->getDocumentElement();
+
+			// common attributes
+			// xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+			//rootElem->setAttribute( X( "xmlns:ecore" ), X( "http://www.eclipse.org/emf/2002/Ecore" ) );
+			// xmlns:xmi="http://www.omg.org/XMI"
+			rootElem->setAttribute( X( "xmlns:xmi" ), X( "http://www.omg.org/XMI" ) );
+			// xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			rootElem->setAttribute( X( "xmlns:xsi" ), X( "http://www.w3.org/2001/XMLSchema-instance" ) );
+			// xmi:version="2.0"
+			rootElem->setAttribute( X( "xmi:version" ), X( "2.0" ) );
+
+
+			std::cout << m_doc->getPrefix() << std::endl;
+
+			std::cout << m_doc->getNamespaceURI() << std::endl;
+			std::cout << m_doc->lookupNamespaceURI(X("ecore")) << std::endl;
+			std::cout << m_doc->lookupNamespaceURI(X("xml")) << std::endl;
+
+			//m_doc->setPrefix( X( "xml" ) );
 
 			DOMElement* prodElem1 = m_doc->createElement( X( "eClassifiers" ) );
 			{
@@ -325,11 +348,11 @@ void myTestXerces::createTestDOMDocument () {
 			//doc->release();
 		}
 		catch ( const OutOfMemoryException& ) {
-			std::cout << "OutOfMemoryException" << std::endl;
+			std::cerr << "OutOfMemoryException" << std::endl;
 			//errorCode = 5;
 		}
 		catch ( const DOMException& e ) {
-			std::cout << "DOMException code is:  " << e.code << std::endl;
+			std::cout << "DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
 			//errorCode = 2;
 		}
 		catch ( ... ) {
@@ -345,5 +368,5 @@ void myTestXerces::createTestDOMDocument () {
 }
 
 }
-/* namespace mytestxerces */
+/* namespace */
 
