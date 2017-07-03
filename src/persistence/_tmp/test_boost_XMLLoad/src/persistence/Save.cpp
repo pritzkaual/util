@@ -19,15 +19,27 @@ Save::Save () {
 Save::~Save () {
 	// TODO Auto-generated destructor stub
 }
-bool Save::save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options ) {
+
+void Save::setFilename ( const std::string& filename ) {
+	m_filename = filename;
+}
+
+void Save::setModel ( std::shared_ptr<ecore::EObject> model ) {
 	m_model = model;
+}
+
+void Save::setOptions ( std::set<std::string> options ) {
 	m_options = options;
+}
+
+bool Save::save ( ) {
+
 
 	boost::property_tree::ptree wasd = boost::property_tree::ptree();
 	//m_tree = traverse( model, m_tree , "ecore:EPackage");
-	traverse( model, m_tree , "ecore:EPackage");
+	traverse( m_model, m_tree , "ecore:EPackage");
 
-	return write( filename );
+	return write( m_filename );
 }
 
 boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, const std::string prefix )  {
@@ -98,14 +110,14 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 		ctree.add("wasd", "wad");
 		ctree.add("wasd", "wad");
 		/*
-		std::shared_ptr<std::vector<std::shared_ptr<ecore::EStructuralFeature>>>list_attrib = metaClass->getEAllStructuralFeatures();
+		std::shared_ptr<Bag<ecore::EStructuralFeature>>>list_attrib = metaClass->getEAllStructuralFeatures();
 
 		for ( std::shared_ptr<ecore::EStructuralFeature> eStructFeat : *list_attrib ) {
 
 		}
 		 */
 /*
-		std::shared_ptr<std::vector<std::shared_ptr<ecore::EAnnotation>>>list_annotations = tmp_object->getEAnnotations();
+		std::shared_ptr<Bag<ecore::EAnnotation>>>list_annotations = tmp_object->getEAnnotations();
 		if(list_annotations->size()){
 			boost::property_tree::ptree annotations;
 
@@ -116,7 +128,7 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 		}
 */
 		/*
-		std::shared_ptr<std::vector<std::shared_ptr<ecore::EClassifier>>>list_classifiers = tmp_object->getEClassifiers();
+		std::shared_ptr<Bag<ecore::EClassifier>>>list_classifiers = tmp_object->getEClassifiers();
 		for ( std::shared_ptr<ecore::EClassifier> eClassifier : *list_classifiers ) {
 			traverse(eClassifier, ctree, prefix + ".eClassifiers");
 		}
@@ -124,7 +136,7 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 
 		return tree;
 
-		std::shared_ptr<std::vector<std::shared_ptr<ecore::EPackage>>>list_subpackages = tmp_object->getESubpackages();
+		std::shared_ptr<Bag<ecore::EPackage>>list_subpackages = tmp_object->getESubpackages();
 		if(list_subpackages->size()){
 			boost::property_tree::ptree subpackages;
 			boost::property_tree::ptree subpackage;
@@ -240,8 +252,8 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 	//return ctree;
 
 #if 0
-	//std::shared_ptr<std::vector<std::shared_ptr<ecore::EStructuralFeature>>>list_attrib = metaClass->getEStructuralFeatures();
-	std::shared_ptr<std::vector<std::shared_ptr<ecore::EStructuralFeature>>>list_attrib = metaClass->getEAllStructuralFeatures();
+	//std::shared_ptr<Bag<ecore::EStructuralFeature>>>list_attrib = metaClass->getEStructuralFeatures();
+	std::shared_ptr<Bag<ecore::EStructuralFeature>>>list_attrib = metaClass->getEAllStructuralFeatures();
 
 	for ( std::shared_ptr<ecore::EStructuralFeature> eStructFeat : *list_attrib ) {
 		try {
@@ -304,7 +316,7 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 					std::cout << "ecore::EObject" << std::endl;
 					try
 					{
-						auto list = boost::any_cast<std::shared_ptr<std::vector<std::shared_ptr<ecore::EAttribute>>>>(eStructFeat_any);
+						auto list = boost::any_cast<std::shared_ptr<Bag<ecore::EAttribute>>>>(eStructFeat_any);
 
 						//auto attr = boost::any_cast<std::shared_ptr<ecore::EFactory>>(eStructFeat_any);
 					}
@@ -327,7 +339,7 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 	}
 
 
-	std::shared_ptr<std::vector<std::shared_ptr<ecore::EOperation>>>list_operations = metaClass->getEAllOperations();
+	std::shared_ptr<Bag<ecore::EOperation>>>list_operations = metaClass->getEAllOperations();
 
 	for ( std::shared_ptr<ecore::EOperation> operation : *list_operations ) { // TODO hier wird passiert bereits beim 1. Element ein Absturz des Programms
 		//for ( std::shared_ptr<ecore::EOperation> operation : *metaClass->getEOperations() ) { // TODO hier wird nur die API getClassifier() zurueckgegeben
@@ -347,7 +359,7 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 		}
 	}
 	/*
-	std::shared_ptr<std::vector<std::shared_ptr<ecore::EReference>>>list_ref = metaClass->getEAllReferences();
+	std::shared_ptr<Bag<ecore::EReference>>>list_ref = metaClass->getEAllReferences();
 
 	for ( std::shared_ptr<ecore::EReference> reference : *list_ref ) {
 		try {

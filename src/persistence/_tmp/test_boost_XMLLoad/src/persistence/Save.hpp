@@ -11,8 +11,8 @@
 #include <set>
 #include <iostream>
 
-#include "boost/property_tree/ptree.hpp"
-#include "boost/foreach.hpp"
+//#include "boost/property_tree/ptree.hpp"
+//#include "boost/foreach.hpp"
 
 #include "EObject.hpp"
 #include "EPackage.hpp"
@@ -40,12 +40,16 @@ public:
 	Save ();
 	virtual ~Save ();
 
-	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options );
+	void setFilename ( const std::string &filename );
+	void setModel ( std::shared_ptr<ecore::EObject> model );
+	void setOptions ( std::set<std::string> options );
+
+	bool save ();
 
 protected:
 	std::shared_ptr<persistence::Handler> m_handler;
 
-	const std::string m_filename;
+	std::string m_filename;
 	std::shared_ptr<ecore::EObject> m_model;
 	std::set<std::string> m_options;
 	boost::property_tree::ptree m_tree;
