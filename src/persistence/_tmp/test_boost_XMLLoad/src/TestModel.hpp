@@ -12,6 +12,7 @@
 #include "EcorePackage.hpp"
 #include "impl/EcoreFactoryImpl.hpp"
 
+#include "abstractDataTypes/SubsetUnion.hpp"
 
 namespace testmodel {
 
