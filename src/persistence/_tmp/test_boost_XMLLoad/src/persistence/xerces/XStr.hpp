@@ -5,18 +5,19 @@
  *      Author: Alexander
  */
 
-#ifndef XSTR_H_
-#define XSTR_H_
+#ifndef XSTR_HPP_
+#define XSTR_HPP_
 
-
+#include <xercesc/util/XercesDefs.hpp>
 #include <xercesc/util/XMLString.hpp>
+#include <string>
 
 
-namespace testXerces {
 
 
-using namespace xercesc_3_1;
+XERCES_CPP_NAMESPACE_USE
 
+#define X(str) XStr(str).unicodeForm()
 
 
 // ---------------------------------------------------------------------------
@@ -30,6 +31,7 @@ public :
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
     XStr(const char* const toTranscode);
+    XStr(const std::string& str);
 
     ~XStr();
 
@@ -38,6 +40,7 @@ public :
     //  Getter methods
     // -----------------------------------------------------------------------
     const XMLCh* unicodeForm() const;
+
 
 private :
     // -----------------------------------------------------------------------
@@ -50,9 +53,5 @@ private :
 };
 
 
-} /* namespace testXerces */
 
-//#define X(str) XStr(str).unicodeForm()
-
-
-#endif /* XSTR_H_ */
+#endif /* XSTR_HPP_ */

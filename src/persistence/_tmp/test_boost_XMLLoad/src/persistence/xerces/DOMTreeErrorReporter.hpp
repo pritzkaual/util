@@ -18,6 +18,8 @@
 /*
  * $Id: DOMTreeErrorReporter.hpp 471735 2006-11-06 13:53:58Z amassari $
  */
+#ifndef DOM_TREE_ERROR_REPORTER_HPP_
+#define DOM_TREE_ERROR_REPORTER_HPP_
 
 #include <xercesc/util/XercesDefs.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
@@ -122,3 +124,4 @@ inline std::ostream& operator<<(std::ostream& target, const StrX& toDump)
     return target;
 }
 
+#endif /* DOM_TREE_ERROR_REPORTER_HPP_ */

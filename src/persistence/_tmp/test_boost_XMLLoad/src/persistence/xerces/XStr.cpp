@@ -5,15 +5,16 @@
  *      Author: Alexander
  */
 
-#include "XStr.h"
+#include "XStr.hpp"
 
-namespace testXerces {
+
 
 XStr::XStr(const char* const toTranscode)
 {
     // Call the private transcoding method
     fUnicodeForm = XMLString::transcode(toTranscode);
 }
+
 
 XStr::~XStr ()
 {
@@ -26,4 +27,3 @@ const XMLCh* XStr::unicodeForm() const
 	return fUnicodeForm;
 }
 
-} /* namespace testXerces */

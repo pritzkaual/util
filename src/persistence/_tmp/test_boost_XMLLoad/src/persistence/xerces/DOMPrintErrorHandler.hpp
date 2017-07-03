@@ -45,4 +45,4 @@ private :
 
 };
 
-#endif
+#endif /* DOM_PRINT_ERROR_HANDLER_HPP */
