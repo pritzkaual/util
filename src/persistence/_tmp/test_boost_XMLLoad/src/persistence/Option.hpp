@@ -11,9 +11,6 @@
 #include <string>
 #include <set>
 
-#include "boost/property_tree/xml_parser.hpp"
-#include "boost/lexical_cast.hpp"
-
 namespace persistence {
 
 class Option {
@@ -30,11 +27,19 @@ public:
 	/**
 	 *
 	 */
-	static const std::string OPTION_USE_ID;
+	static const std::string OPTION_USE_ID__HASH;
 	/**
 	 *
 	 */
-	static const std::string OPTION_LOAD_TRIM_WHITESPACE;
+	static const std::string OPTION_USE_ID__HASHTAG;
+	/**
+	 *
+	 */
+	static const std::string OPTION_USE_ID__AT;
+	/**
+	 *
+	 */
+
 	/**
 	 *
 	 */

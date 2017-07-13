@@ -13,9 +13,12 @@ const std::string Option::OPTION_SAVE_JSON = "OPTION_SAVE_JSON";
 
 const std::string Option::OPTION_SAVE_XML = "OPTION_SAVE_XML";
 
-const std::string Option::OPTION_USE_ID = "OPTION_USE_ID";
+const std::string Option::OPTION_USE_ID__HASH = "OPTION_USE_ID__HASH";
 
-const std::string Option::OPTION_LOAD_TRIM_WHITESPACE = boost::lexical_cast<std::string>(boost::property_tree::xml_parser::trim_whitespace);
+const std::string Option::OPTION_USE_ID__HASHTAG = "OPTION_USE_ID__HASHTAG";
+
+const std::string Option::OPTION_USE_ID__AT = "OPTION_USE_ID__AT";
+
 
 
 std::set<std::string> Option::get_DefaultOptions () {
@@ -23,8 +26,8 @@ std::set<std::string> Option::get_DefaultOptions () {
 
 	default_options.insert( Option::OPTION_SAVE_XML );
 	//default_options.insert( Option::OPTION_SAVE_JSON );
-	default_options.insert( Option::OPTION_USE_ID );
-	default_options.insert( Option::OPTION_LOAD_TRIM_WHITESPACE );
+	default_options.insert( Option::OPTION_USE_ID__HASH );
+	//default_options.insert( Option::OPTION_USE_ID__HASHTAG );
 
 	return default_options;
 }
