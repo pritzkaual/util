@@ -61,7 +61,7 @@ private:
 	//      can be set via the -v= command.
 	//
 	// ---------------------------------------------------------------------------
-	//char* m_XmlFile;
+	char* m_XmlFile;
 	bool m_DoNamespaces;
 	bool m_DoSchema;
 	bool m_SchemaFullChecking;
@@ -86,11 +86,14 @@ private:
 	XercesDOMParser *m_parser;
 	DOMTreeErrorReporter *m_errReporter;
 
+	// get the DOM representation
+	DOMDocument *m_doc;
 
 public:
 	XMLLoad ();
 	virtual ~XMLLoad ();
 
+	bool read ( const std::string &filename );
 	bool getSawErrors ();
 
 };
