@@ -97,8 +97,6 @@ model {
 						include	"Persistence.cpp"
 						include	"Load.cpp"
 						include	"Save.cpp"
-						include	"JSONLoad.cpp"
-						include	"JSONSave.cpp"
 						include	"XMLLoad.cpp"
 						include	"XMLSave.cpp"
 						include	"Handler.cpp"
