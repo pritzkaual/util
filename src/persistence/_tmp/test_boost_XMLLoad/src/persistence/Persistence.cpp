@@ -24,7 +24,7 @@ bool Persistence::load ( const std::string& filename, std::shared_ptr<ecore::EOb
 	return true;
 }
 
-bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options ) {
+bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage, std::set<std::string> options ) {
 	if ( !isValidFile( filename ) ) {
 		std::cout << "| ERROR    | " << "Given filename: '" << filename << "' is not valid!" << std::endl;
 	}
@@ -43,6 +43,7 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 		tmp_save->setOptions( options );
 		tmp_save->setFilename( filename );
 		tmp_save->setModel( model );
+		tmp_save->setMetaMetaPackage( metaMetaPackage );
 		tmp_save->save(); // TODO use inheritance method in XMLSave
 	}
 

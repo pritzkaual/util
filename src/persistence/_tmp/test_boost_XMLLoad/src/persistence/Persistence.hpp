@@ -33,7 +33,7 @@ public:
 	virtual ~Persistence ();
 
 	bool load(const std::string &filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options);
-	bool save(const std::string &filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options);
+	bool save(const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage, std::set<std::string> options);
 
 private:
 	bool isValidFile(const std::string &filename);
