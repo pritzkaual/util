@@ -21,6 +21,7 @@ public:
 	TestModel ();
 	virtual ~TestModel ();
 
+	static std::shared_ptr<ecore::EPackage> getMetaMetaPackage();
 	static std::shared_ptr<ecore::EObject> createEcoreTestMetaModel ();
 };
 

@@ -43,12 +43,15 @@ int main () {
 		std::cout << "START: save() of 'myEcoreTestMetaModel' \n";
 
 		std::shared_ptr<ecore::EObject> myEcoreTestMetaModel = testmodel::TestModel::createEcoreTestMetaModel();
+		std::shared_ptr<ecore::EPackage> myEcoreMetaMetaPackage = testmodel::TestModel::getMetaMetaPackage();
 
 		// Set Options
 		std::set<std::string> options = persistence::Option::get_DefaultOptions();
 		persistence::Persistence myPersistence;
 
-		myPersistence.save( "_tmp/UniModel.ecore", myEcoreTestMetaModel, options );
+		std::string filename = "_tmp/UniModel.ecore";
+
+		myPersistence.save( filename, myEcoreTestMetaModel, myEcoreMetaMetaPackage, options );
 
 		std::cout << "Successful save() of 'myEcoreTestMetaModel' \n";
 
