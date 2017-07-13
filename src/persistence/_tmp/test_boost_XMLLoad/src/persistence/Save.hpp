@@ -10,23 +10,25 @@
 
 #include <set>
 #include <iostream>
-
-//#include "boost/property_tree/ptree.hpp"
-//#include "boost/foreach.hpp"
+#include <string>
 
 #include "EObject.hpp"
 #include "EPackage.hpp"
 #include "EClass.hpp"
+#include "EEnum.hpp"
+#include "EEnumLiteral.hpp"
+#include "EDataType.hpp"
 #include "EAttribute.hpp"
 #include "EAnnotation.hpp"
 #include "EStructuralFeature.hpp"
 #include "EOperation.hpp"
+#include "EParameter.hpp"
 #include "EReference.hpp"
+#include "EStringToStringMapEntry.hpp"
 
 #include "EFactory.hpp"
 
 #include "EcorePackage.hpp"
-
 
 #include "ExtendedMetaData.hpp"
 #include "Handler.hpp"
@@ -42,6 +44,7 @@ public:
 
 	void setFilename ( const std::string &filename );
 	void setModel ( std::shared_ptr<ecore::EObject> model );
+	void setMetaMetaPackage ( std::shared_ptr<ecore::EPackage> metaMetaPackage );
 	void setOptions ( std::set<std::string> options );
 
 	bool save ();
@@ -51,15 +54,15 @@ protected:
 
 	std::string m_filename;
 	std::shared_ptr<ecore::EObject> m_model;
+	std::shared_ptr<ecore::EPackage> m_metaMetaPackage;
 	std::set<std::string> m_options;
-	boost::property_tree::ptree m_tree;
-
+	//boost::property_tree::ptree m_tree;
 
 private:
-	virtual bool write (const std::string &filename) = 0;
+	virtual bool write ( const std::string &filename ) = 0;
 
-	boost::property_tree::ptree traverse(std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, std::string prefix);
-
+	//boost::property_tree::ptree traverse(std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, std::string prefix);
+	void traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<persistence::Handler> handler );
 
 };
 
