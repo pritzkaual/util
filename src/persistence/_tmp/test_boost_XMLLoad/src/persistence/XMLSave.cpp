@@ -59,17 +59,14 @@ XMLSave::XMLSave () {
 	m_errReporter = new DOMTreeErrorReporter();
 	m_parser->setErrorHandler( m_errReporter );
 */
-	m_doc = nullptr;
+	//m_doc = nullptr;
 }
 
 XMLSave::~XMLSave () {
 
-	if ( m_doc ) {
-		m_doc->release();
-	}
 	XMLPlatformUtils::Terminate();
-
 }
+
 /*
  bool XMLSave::save ( const std::string& filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options ) {
 
@@ -79,6 +76,8 @@ XMLSave::~XMLSave () {
 bool XMLSave::write ( const std::string &filename ) {
 
 	m_outputfile = (char*) filename.c_str();
+
+	DOMDocument *doc = m_handler->getDOMDocument();
 
 	DOMPrintFilter *myFilter = 0;
 
@@ -148,10 +147,10 @@ bool XMLSave::write ( const std::string &filename ) {
 		//
 		if ( m_XPathExpression != NULL ) {
 			XMLCh* xpathStr = XMLString::transcode( m_XPathExpression );
-			DOMElement* root = m_doc->getDocumentElement();
+			DOMElement* root = doc->getDocumentElement();
 			try {
-				DOMXPathNSResolver* resolver = m_doc->createNSResolver( root );
-				DOMXPathResult* result = m_doc->evaluate( xpathStr, root, resolver, DOMXPathResult::ORDERED_NODE_SNAPSHOT_TYPE,
+				DOMXPathNSResolver* resolver = doc->createNSResolver( root );
+				DOMXPathResult* result = doc->evaluate( xpathStr, root, resolver, DOMXPathResult::ORDERED_NODE_SNAPSHOT_TYPE,
 				NULL );
 
 				XMLSize_t nLength = result->getSnapshotLength();
@@ -174,7 +173,8 @@ bool XMLSave::write ( const std::string &filename ) {
 			XMLString::release( &xpathStr );
 		}
 		else {
-			theSerializer->write( m_doc, theOutputDesc );
+			// Default write
+			theSerializer->write( doc, theOutputDesc );
 		}
 		theOutputDesc->release();
 		theSerializer->release();

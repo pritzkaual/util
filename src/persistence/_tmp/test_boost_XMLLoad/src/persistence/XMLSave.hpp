@@ -105,7 +105,7 @@ private:
 	//DOMTreeErrorReporter *m_errReporter;
 
 	// get the DOM representation
-	DOMDocument *m_doc;
+	//DOMDocument *m_doc;
 
 
 	bool write (const std::string &filename);
