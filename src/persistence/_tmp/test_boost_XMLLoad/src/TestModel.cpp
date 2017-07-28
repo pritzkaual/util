@@ -234,6 +234,13 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	list_pck_enum->push_back( enum_StudentStatus );
 	list_pck_enum->push_back( enum_Veranstaltung );
 
+
+	enum_Geschlecht->setContainer(pck_enum);
+	enum_Verein->setContainer(pck_enum);
+	enum_Position->setContainer(pck_enum);
+	enum_StudentStatus->setContainer(pck_enum);
+	enum_Veranstaltung->setContainer(pck_enum);
+
 	// Create some classes with attributes, operations, compositions and association to each other
 	std::shared_ptr<ecore::EClass> cls_UniModel( factory->createEClass() );
 	{
@@ -261,6 +268,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "name" );
 			attrib->setEType( package->getEString() );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -280,6 +299,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "lastname" );
 			attrib->setEType( package->getEString() );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -289,6 +320,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "firstname" );
 			attrib->setEType( package->getEString() );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -297,6 +340,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 			attrib->setName( "sex" );
 			attrib->setEType( enum_Geschlecht );
+
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
 
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
@@ -323,6 +378,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "id" );
 			attrib->setEType( package->getEBigInteger() );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -333,7 +400,12 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			std::shared_ptr<ecore::EOperation> operation( factory->createEOperation() );
 
 			operation->setName( "addVeranstaltung" ); // Type: void
-			//operation->setEType(void)
+			operation->setEType(package->getEBoolean());
+
+			operation->setOrdered( true ); // default: ordered=true
+			operation->setUnique( true ); // default: unique=true
+			operation->setLowerBound( 0 );
+			operation->setUpperBound( 1 ); // default: upperBound=1
 
 			// Add operation to list
 			list_EOperation->push_back( operation );
@@ -360,6 +432,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "position" );
 			attrib->setEType( enum_Position );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -369,6 +453,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "gehalt" );
 			attrib->setEType( package->getEFloat() );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -377,6 +473,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 			attrib->setName( "office" );
 			attrib->setEType( package->getEString() );
+
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
 
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
@@ -403,6 +511,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "status" );
 			attrib->setEType( enum_StudentStatus );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -423,6 +543,19 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "name" );
 			attrib->setEType( enum_Veranstaltung );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -431,6 +564,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 			attrib->setName( "maxTeilnehmer" );
 			attrib->setEType( package->getEInt() );
+
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
 
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
@@ -451,12 +596,24 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setName( "name" );
 			attrib->setEType( enum_Verein );
 
+			attrib->setID( false );
+			attrib->setOrdered( true ); // default: ordered=true
+			attrib->setUnique( true ); // default: unique=true
+			attrib->setLowerBound( 0 );
+			attrib->setUpperBound( 1 ); // default: upperBound=1
+			attrib->setChangeable( true );
+			attrib->setVolatile( true );
+			attrib->setTransient( false );
+			attrib->setDefaultValueLiteral( "" );
+			attrib->setUnsettable( false );
+			attrib->setDerived( false );
+
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
 	}
 
-	// Init List of ENUMs
+	// Init List of Classes
 	std::shared_ptr<Bag<ecore::EClassifier>> list_pck_class = pck_class->getEClassifiers();
 
 	// Insert Classes into list
@@ -469,6 +626,15 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	list_pck_class->push_back( cls_Veranstaltung );
 	list_pck_class->push_back( cls_Verein );
 
+	cls_UniModel->setContainer(pck_class);
+	cls_Universitaet->setContainer(pck_class);
+	cls_Mensch->setContainer(pck_class);
+	cls_Person->setContainer(pck_class);
+	cls_Mitarbeiter->setContainer(pck_class);
+	cls_Student->setContainer(pck_class);
+	cls_Veranstaltung->setContainer(pck_class);
+	cls_Verein->setContainer(pck_class);
+
 	// Create Compositions and Associations
 	{
 		std::shared_ptr<Bag<ecore::EReference>> list_reference = cls_UniModel->getEReferences();
@@ -479,9 +645,20 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Universitaet );
 			//reference->getEReferenceType();
-			reference->setContainment( true );			// set reference as composition
+			reference->setContainment( true ); // set reference as composition
+			reference->setContainer( cls_UniModel ); // TODO
+			reference->setResolveProxies( true ); // default: resolveProxies=true
+
+			reference->setOrdered( true ); // default: ordered=true
+			reference->setUnique( true ); // default: unique=true
 			reference->setLowerBound( 0 );
-			reference->setUpperBound( -1 );
+			reference->setUpperBound( -1 ); // default: upperBound=1
+			reference->setChangeable( true );
+			reference->setVolatile( true );
+			reference->setTransient( false );
+			reference->setDefaultValueLiteral( "" );
+			reference->setUnsettable( false );
+			reference->setDerived( false );
 
 			// Add reference to association list
 			list_reference->push_back( reference );
@@ -497,8 +674,19 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( true );			// set reference as composition
+			reference->setContainer( cls_Universitaet ); // TODO
+			reference->setResolveProxies( true ); // default: resolveProxies=true
+
+			reference->setOrdered( true ); // default: ordered=true
+			reference->setUnique( true ); // default: unique=true
 			reference->setLowerBound( 0 );
-			reference->setUpperBound( -1 );
+			reference->setUpperBound( -1 ); // default: upperBound=1
+			reference->setChangeable( true );
+			reference->setVolatile( true );
+			reference->setTransient( false );
+			reference->setDefaultValueLiteral( "" );
+			reference->setUnsettable( false );
+			reference->setDerived( false );
 
 			// Add reference to association list
 			list_reference->push_back( reference );
@@ -511,8 +699,19 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Veranstaltung );
 			//reference->getEReferenceType();
 			reference->setContainment( true );			// set reference as composition
+			reference->setContainer( cls_Universitaet ); // TODO
+			reference->setResolveProxies( true ); // default: resolveProxies=true
+
+			reference->setOrdered( true ); // default: ordered=true
+			reference->setUnique( true ); // default: unique=true
 			reference->setLowerBound( 0 );
-			reference->setUpperBound( -1 );
+			reference->setUpperBound( -1 ); // default: upperBound=1
+			reference->setChangeable( true );
+			reference->setVolatile( true );
+			reference->setTransient( false );
+			reference->setDefaultValueLiteral( "" );
+			reference->setUnsettable( false );
+			reference->setDerived( false );
 
 			// Add reference to association list
 			list_reference->push_back( reference );
@@ -528,8 +727,19 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Veranstaltung );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
+			reference->setContainer( cls_Person ); // TODO
+			reference->setResolveProxies( true ); // default: resolveProxies=true
+
+			reference->setOrdered( true ); // default: ordered=true
+			reference->setUnique( true ); // default: unique=true
 			reference->setLowerBound( 0 );
-			reference->setUpperBound( -1 );
+			reference->setUpperBound( -1 ); // default: upperBound=1
+			reference->setChangeable( true );
+			reference->setVolatile( true );
+			reference->setTransient( false );
+			reference->setDefaultValueLiteral( "" );
+			reference->setUnsettable( false );
+			reference->setDerived( false );
 
 			// Add reference to association list
 			list_reference->push_back( reference );
@@ -545,8 +755,19 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
+			reference->setContainer( cls_Veranstaltung ); // TODO
+			reference->setResolveProxies( true ); // default: resolveProxies=true
+
+			reference->setOrdered( true ); // default: ordered=true
+			reference->setUnique( true ); // default: unique=true
 			reference->setLowerBound( 0 );
-			reference->setUpperBound( 1 );
+			reference->setUpperBound( -1 ); // default: upperBound=1
+			reference->setChangeable( true );
+			reference->setVolatile( true );
+			reference->setTransient( false );
+			reference->setDefaultValueLiteral( "" );
+			reference->setUnsettable( false );
+			reference->setDerived( false );
 
 			// Add reference to association list
 			list_reference->push_back( reference );
@@ -559,8 +780,19 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
+			reference->setContainer( cls_Veranstaltung ); // TODO
+			reference->setResolveProxies( true ); // default: resolveProxies=true
+
+			reference->setOrdered( true ); // default: ordered=true
+			reference->setUnique( true ); // default: unique=true
 			reference->setLowerBound( 0 );
-			reference->setUpperBound( -1 );
+			reference->setUpperBound( -1 ); // default: upperBound=1
+			reference->setChangeable( true );
+			reference->setVolatile( true );
+			reference->setTransient( false );
+			reference->setDefaultValueLiteral( "" );
+			reference->setUnsettable( false );
+			reference->setDerived( false );
 
 			// Add reference to association list
 			list_reference->push_back( reference );
@@ -576,8 +808,19 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Verein );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
+			reference->setContainer( cls_Veranstaltung ); // TODO
+			reference->setResolveProxies( true ); // default: resolveProxies=true
+
+			reference->setOrdered( true ); // default: ordered=true
+			reference->setUnique( true ); // default: unique=true
 			reference->setLowerBound( 0 );
-			reference->setUpperBound( -1 );
+			reference->setUpperBound( -1 ); // default: upperBound=1
+			reference->setChangeable( true );
+			reference->setVolatile( true );
+			reference->setTransient( false );
+			reference->setDefaultValueLiteral( "" );
+			reference->setUnsettable( false );
+			reference->setDerived( false );
 
 			// Add reference to association list
 			list_reference->push_back( reference );
