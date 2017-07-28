@@ -14,7 +14,7 @@ namespace persistence {
 Handler::Handler () {
 	// TODO Auto-generated constructor stub
 	m_doc = nullptr;
-	//m_root_elem = nullptr;
+	m_root_obj = nullptr;
 	m_current_elem = nullptr;
 
 }
@@ -26,7 +26,7 @@ Handler::~Handler () {
 }
 
 void Handler::handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options ) {
-
+	std::cout << "ERROR: Called Handler::handle() while is not implemented yet." << std::endl;
 }
 
 std::map<std::string, std::shared_ptr<ecore::EObject> > Handler::get_IdToObject_Map () {
@@ -95,6 +95,9 @@ std::string Handler::getPrefix () {
 	return m_rootPrefix;
 }
 
+void Handler::addRootObj ( std::shared_ptr<ecore::EObject> object ) {
+	m_root_obj = object;
+}
 bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri ) {
 	return this->createRootNode( name, ns_uri, nullptr );
 }
@@ -186,15 +189,117 @@ void Handler::addAttribute_xsi_type ( const std::string& value ) {
 	addAttribute( "xsi:type", value );
 }
 
-
 void Handler::addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object ) {
+
+	addAttribute( name, getReference( object ) );
+
+}
+
+void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject> > objects ) {
 
 	std::cout << "ERROR: Called Handler::addReference() while is not implemented yet." << std::endl;
 }
 
-void addReference ( const std::string &name, std::shared_ptr< Bag<ecore::EObject> > objects ){
+/*
+ * This API is adapted to API in Project emf4cpp.
+ *
+ * LINK to source: https://github.com/catedrasaes-umu/emf4cpp/tree/master/emf4cpp/ecorecpp/serializer/serializer-xerces.cpp
+ * ::ecorecpp::mapping::type_traits::string_t serializer::get_type(EObject_ptr obj) const
+ *
+ */
+std::string Handler::getType ( std::shared_ptr<ecore::EObject> obj ) const {
 
-	std::cout << "ERROR: Called Handler::addReference() while is not implemented yet." << std::endl;
+	std::stringstream ss;
+	std::shared_ptr<ecore::EClass> metaClass = obj->eClass();
+	std::shared_ptr<ecore::EPackage> pkg = metaClass->getEPackage();
+
+	ss << pkg->getName() << ":" << metaClass->getName();
+
+	return ss.str();
+}
+
+/*
+ * This API is adapted to API in Project emf4cpp.
+ *
+ * LINK to source: https://github.com/catedrasaes-umu/emf4cpp/tree/master/emf4cpp/ecorecpp/serializer/serializer-xerces.cpp
+ * ::ecorecpp::mapping::type_traits::string_t serializer::get_reference(EObject_ptr from, EObject_ptr to) const
+ *
+ */
+std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const {
+
+	std::stringstream value;
+
+	std::list<std::shared_ptr<ecore::EObject> > to_antecessors;
+
+	std::shared_ptr<ecore::EObject> antecessor = to; //pre-init antecessor
+
+	while ( antecessor ) {
+		to_antecessors.push_back( antecessor );
+		antecessor = to_antecessors.back()->eContainer();
+	}
+
+	std::shared_ptr<ecore::EPackage> pkg = std::dynamic_pointer_cast<ecore::EPackage>( to_antecessors.back() );
+
+	if ( pkg ) {
+		// This case is used for ecore-models
+		if ( m_root_obj != pkg ) {
+			value << getType( to ) << " " << pkg->getNsURI();
+		}
+
+		value << "#/";
+		to_antecessors.pop_back();
+
+		while ( to_antecessors.size() ) {
+			std::shared_ptr<ecore::ENamedElement> to_antecessors_back = std::dynamic_pointer_cast<ecore::ENamedElement>( to_antecessors.back() );
+			value << "/" << to_antecessors_back->getName();
+			to_antecessors.pop_back();
+		}
+	}
+
+	else if ( to_antecessors.back() == m_root_obj ) {
+
+		// TODO this case is used for non ecore-models
+
+		std::cout << "ERROR: Called Handler::getReference() while else-if-case is not implemented yet." << std::endl;
+
+
+		value << "/";
+		std::shared_ptr<ecore::EObject> prev = to_antecessors.back();
+		to_antecessors.pop_back();
+
+		while ( to_antecessors.size() ) {
+			std::shared_ptr<ecore::EStructuralFeature> esf = to_antecessors.back()->eContainingFeature();
+
+			if ( esf->getUpperBound() == 1 )
+				value << "/" << esf->getName();
+
+			else {
+				boost::any _any = prev->eGet( esf );
+
+
+
+				std::shared_ptr<Bag<ecore::EObject>> ef = boost::any_cast<std::shared_ptr<Bag<ecore::EObject>>>( _any );
+
+				// calculate the index of back at father's collection
+				size_t index_of = 0;
+				for ( ; index_of < ef->size() && (*ef)[index_of] != to_antecessors.back(); index_of++ )
+					;
+
+				value << "/@" << esf->getName() << "." << index_of;
+			}
+
+			prev = to_antecessors.back();
+			to_antecessors.pop_back();
+		}
+
+	}
+	else {
+		// TODO
+		std::cout << "ERROR: Called Handler::getReference() while else-case is not implemented yet." << std::endl;
+	}
+
+	std::cout << value.str() << std::endl;
+	return value.str();
 }
 
 void Handler::release () {

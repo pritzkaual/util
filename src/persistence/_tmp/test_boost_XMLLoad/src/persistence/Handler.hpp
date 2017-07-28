@@ -8,7 +8,10 @@
 #ifndef HANDLER_HPP_
 #define HANDLER_HPP_
 
+#include "XHandler.hpp"
+
 #include <map>
+#include <list>
 #include <string>
 #include <set>
 
@@ -23,14 +26,19 @@
 
 #include <exception>
 #include "boost/exception/to_string.hpp"
-#include "EObject.hpp"
-#include "ENamedElement.hpp"
 
-#include "Option.hpp"
+#include "EClass.hpp"
+#include "EDataType.hpp"
+#include "ENamedElement.hpp"
+#include "EObject.hpp"
+#include "EPackage.hpp"
+#include "EStructuralFeature.hpp"
+
+//#include "Option.hpp"
 
 namespace persistence {
 
-class Handler {
+class Handler : public XHandler {
 public:
 	Handler ();
 	virtual ~Handler ();
@@ -47,9 +55,12 @@ public:
 	DOMDocument *getDOMDocument ();
 
 	std::string getPrefix ();
+	std::string getType ( std::shared_ptr<ecore::EObject> obj ) const;
 
 	void addToMap ( std::shared_ptr<ecore::EObject> object );
 	void addToMap ( std::shared_ptr<ecore::EObject> object, std::string id );
+
+	void addRootObj ( std::shared_ptr<ecore::EObject> object );
 
 	bool createRootNode ( const std::string& name, const std::string& ns_uri );
 	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri );
@@ -96,6 +107,7 @@ private:
 	DOMDocument *m_doc;
 
 	DOMElement *m_current_elem;
+	std::shared_ptr<ecore::EObject> m_root_obj;
 
 	std::set<std::string> m_options;
 
@@ -106,6 +118,7 @@ private:
 
 	void addChild ( DOMElement *parent_elem, DOMElement *child_elem );
 
+	std::string getReference ( std::shared_ptr<ecore::EObject> to ) const;
 	std::string create_Hash ( std::shared_ptr<ecore::EObject> object );
 }
 ;
