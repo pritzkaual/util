@@ -34,7 +34,7 @@
 #include "EPackage.hpp"
 #include "EStructuralFeature.hpp"
 
-//#include "Option.hpp"
+#include "Option.hpp"
 
 namespace persistence {
 
