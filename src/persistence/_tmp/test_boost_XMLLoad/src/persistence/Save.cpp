@@ -46,7 +46,8 @@ bool Save::save () {
 
 	m_handler->createRootNode( m_metaMetaPackage->getNsPrefix(), metaClass->getName(), m_metaMetaPackage->getNsURI() );
 	m_handler->addRootObj( m_model );
-	traverse( m_model, m_handler );
+	m_model->save( m_handler );
+	//traverse( m_model, m_handler );
 	m_handler->release();
 
 	return write( m_filename );
@@ -420,7 +421,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 
 		std::shared_ptr<ecore::EPackage> tmp_object = std::dynamic_pointer_cast<ecore::EPackage>( object );
 
-		std::cout << "EPackage '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EPackage '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
@@ -463,13 +464,13 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case (ecore::EcorePackage::ECLASS): {
 		std::shared_ptr<ecore::EClass> tmp_object = std::dynamic_pointer_cast<ecore::EClass>( object );
 
-		std::cout << "EClass '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EClass '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
-		handler->addAttribute( "xsi:type",  handler->getType(tmp_object) );
+		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
 
 		std::shared_ptr<ecore::EStructuralFeature> wasd = metaClass->getEStructuralFeature( ecore::EcorePackage::ENAMEDELEMENT_NAME );
 		//if ( tmp_object->eIsSet( wasd ) ) {
@@ -520,12 +521,12 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case (ecore::EcorePackage::EENUM): {
 		std::shared_ptr<ecore::EEnum> tmp_object = std::dynamic_pointer_cast<ecore::EEnum>( object );
 
-		std::cout << "EEnum '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EEnum '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
 
-		handler->addAttribute( "xsi:type", handler->getType(tmp_object) );
+		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
 		handler->addAttribute( "name", tmp_object->getName() );
 		//handler->addAttribute_xsi_type(tmp_object->getInstanceTypeName() ); // TODO
 
@@ -544,7 +545,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case (ecore::EcorePackage::EDATATYPE): {
 		std::shared_ptr<ecore::EDataType> tmp_object = std::dynamic_pointer_cast<ecore::EDataType>( object );
 
-		std::cout << "EDataType '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EDataType '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
@@ -564,13 +565,13 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case ecore::EcorePackage::EREFERENCE: {
 		std::shared_ptr<ecore::EReference> tmp_object = std::dynamic_pointer_cast<ecore::EReference>( object );
 
-		std::cout << "EReference '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EReference '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
-		handler->addAttribute( "xsi:type", handler->getType(tmp_object) );
+		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 
@@ -616,13 +617,13 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case ecore::EcorePackage::EATTRIBUTE: {
 		std::shared_ptr<ecore::EAttribute> tmp_object = std::dynamic_pointer_cast<ecore::EAttribute>( object );
 
-		std::cout << "EAttribute '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EAttribute '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
-		handler->addAttribute( "xsi:type", handler->getType(tmp_object) );
+		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 
@@ -661,7 +662,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case ecore::EcorePackage::EENUMLITERAL: {
 		std::shared_ptr<ecore::EEnumLiteral> tmp_object = std::dynamic_pointer_cast<ecore::EEnumLiteral>( object );
 
-		std::cout << "EEnumLiteral '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EEnumLiteral '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
@@ -673,7 +674,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case ecore::EcorePackage::EOPERATION: {
 		std::shared_ptr<ecore::EOperation> tmp_object = std::dynamic_pointer_cast<ecore::EOperation>( object );
 
-		std::cout << "EOperation '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EOperation '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
@@ -713,7 +714,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 	case ecore::EcorePackage::EPARAMETER: {
 		std::shared_ptr<ecore::EParameter> tmp_object = std::dynamic_pointer_cast<ecore::EParameter>( object );
 
-		std::cout << "EParameter '" << tmp_object->getName() << "'" <<  std::endl;
+		std::cout << "EParameter '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		handler->addToMap( tmp_object );
