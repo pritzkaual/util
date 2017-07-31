@@ -13,6 +13,10 @@
 #include <string>
 #include <set>
 
+#include <memory>
+
+#include "SubsetUnion.hpp"
+
 //#include <xercesc/dom/DOM.hpp>
 //#include <xercesc/dom/DOMException.hpp>
 //#include <xercesc/util/OutOfMemoryException.hpp>
@@ -29,11 +33,14 @@
 //#include "EDataType.hpp"
 //#include "ENamedElement.hpp"
 namespace ecore {
-class EObject;
+	class EObject;
 }
 
 //#include "EPackage.hpp"
 //#include "EStructuralFeature.hpp"
+
+
+
 
 //#include "Option.hpp"
 
@@ -41,7 +48,8 @@ namespace persistence {
 
 class XHandler {
 public:
-	virtual ~XHandler ();
+	//destructor
+	virtual ~XHandler () {}
 
 	virtual void handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options ) = 0;
 
@@ -81,7 +89,8 @@ public:
 	 void addAttribute ( const std::string& name, unsigned long long int value );
 	 */
 	template<typename T>
-	void addAttribute ( const std::string& name, T value ) {
+	void addAttribute ( const std::string& name, T value )
+	{
 		addAttribute( name, boost::to_string( value ) );
 	}
 	virtual void addAttribute ( const std::string &name, bool value ) = 0;
@@ -91,7 +100,8 @@ public:
 	virtual void addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object ) = 0;
 
 	template<typename T>
-	void addReference ( const std::string &name, std::shared_ptr<Bag<T> > objects ) {
+	void addReference ( const std::string &name, std::shared_ptr<Bag<T> > objects )
+	{
 		if ( objects->size() ) {
 			for ( std::shared_ptr<T> object : *objects ) {
 				addReference( name, object );
