@@ -234,12 +234,11 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	list_pck_enum->push_back( enum_StudentStatus );
 	list_pck_enum->push_back( enum_Veranstaltung );
 
-
-	enum_Geschlecht->setContainer(pck_enum);
-	enum_Verein->setContainer(pck_enum);
-	enum_Position->setContainer(pck_enum);
-	enum_StudentStatus->setContainer(pck_enum);
-	enum_Veranstaltung->setContainer(pck_enum);
+	enum_Geschlecht->setContainer( pck_enum );
+	enum_Verein->setContainer( pck_enum );
+	enum_Position->setContainer( pck_enum );
+	enum_StudentStatus->setContainer( pck_enum );
+	enum_Veranstaltung->setContainer( pck_enum );
 
 	// Create some classes with attributes, operations, compositions and association to each other
 	std::shared_ptr<ecore::EClass> cls_UniModel( factory->createEClass() );
@@ -400,7 +399,57 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			std::shared_ptr<ecore::EOperation> operation( factory->createEOperation() );
 
 			operation->setName( "addVeranstaltung" ); // Type: void
-			operation->setEType(package->getEBoolean());
+			operation->setEType( package->getEBoolean() );
+
+			operation->setOrdered( true ); // default: ordered=true
+			operation->setUnique( true ); // default: unique=true
+			operation->setLowerBound( 0 );
+			operation->setUpperBound( 1 ); // default: upperBound=1
+
+			std::shared_ptr<Bag<ecore::EAnnotation>> list_EAnnotation = operation->getEAnnotations();
+			{
+				std::shared_ptr<ecore::EAnnotation> annotation( factory->createEAnnotation() );
+
+				annotation->setSource( "http://sse.tu-ilmenau.de/codegen" );
+
+				std::shared_ptr<Bag<ecore::EStringToStringMapEntry>> list_EStringToStringMapEntry = annotation->getDetails();
+				{
+					std::shared_ptr<ecore::EStringToStringMapEntry> stringToStringMapEntry( factory->createEStringToStringMapEntry() );
+
+					stringToStringMapEntry->setKey( "body" );
+					stringToStringMapEntry->setValue("    if (someOperation->getEContainingClass()->isSuperTypeOf(getEContainingClass()) &amp;&amp; (someOperation->getName()==getName()))&#xD;&#xA;    {&#xD;&#xA;        std::shared_ptr&lt; Bag&lt;ecore::EParameter> > parameters = getEParameters();&#xD;&#xA;        std::shared_ptr&lt; Bag&lt;ecore::EParameter> > otherParameters = someOperation->getEParameters();&#xD;&#xA;        if (parameters->size() == otherParameters->size())&#xD;&#xA;        {&#xD;&#xA;            for (Bag&lt;EParameter> ::iterator i = parameters->begin(), j = otherParameters->begin(); i != parameters->end(); ++i,++j )&#xD;&#xA;        &#x9;{&#xD;&#xA;            &#x9;std::shared_ptr&lt;EParameter> parameter = *i;&#xD;&#xA;            &#x9;std::shared_ptr&lt;EParameter> otherParameter = *j;&#xD;&#xA;                if (!(parameter->getEType().get() == otherParameter->getEType().get()))&#xD;&#xA;          &#x9;&#x9;{&#xD;&#xA;                    return false;&#xD;&#xA;        &#x9;&#x9;}&#xD;&#xA;        &#x9;}&#xD;&#xA;&#x9;&#x9;}&#xD;&#xA;&#x9;&#x9;return true;&#xD;&#xA;&#x9;}" );
+
+					list_EStringToStringMapEntry->push_back(stringToStringMapEntry);
+				}
+
+				list_EAnnotation->push_back( annotation );
+			}
+			{
+				std::shared_ptr<ecore::EAnnotation> annotation( factory->createEAnnotation() );
+
+				annotation->setSource( "http://sse.tu-ilmenau.de/HansPeter" );
+
+				std::shared_ptr<Bag<ecore::EStringToStringMapEntry>> list_EStringToStringMapEntry = annotation->getDetails();
+				{
+					std::shared_ptr<ecore::EStringToStringMapEntry> stringToStringMapEntry( factory->createEStringToStringMapEntry() );
+
+					stringToStringMapEntry->setKey( "body" );
+					stringToStringMapEntry->setValue( "any source \n here is newline \t here is a tabulator" );
+
+					list_EStringToStringMapEntry->push_back(stringToStringMapEntry);
+				}
+
+				list_EAnnotation->push_back( annotation );
+			}
+
+			// Add operation to list
+			list_EOperation->push_back( operation );
+		}
+		{
+			std::shared_ptr<ecore::EOperation> operation( factory->createEOperation() );
+
+			operation->setName( "removeVeranstaltung" ); // Type: void
+			operation->setEType( package->getEChar() );
 
 			operation->setOrdered( true ); // default: ordered=true
 			operation->setUnique( true ); // default: unique=true
@@ -555,7 +604,6 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			attrib->setUnsettable( false );
 			attrib->setDerived( false );
 
-
 			// Add attributes to list
 			list_EAttribute->push_back( attrib );
 		}
@@ -626,14 +674,14 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	list_pck_class->push_back( cls_Veranstaltung );
 	list_pck_class->push_back( cls_Verein );
 
-	cls_UniModel->setContainer(pck_class);
-	cls_Universitaet->setContainer(pck_class);
-	cls_Mensch->setContainer(pck_class);
-	cls_Person->setContainer(pck_class);
-	cls_Mitarbeiter->setContainer(pck_class);
-	cls_Student->setContainer(pck_class);
-	cls_Veranstaltung->setContainer(pck_class);
-	cls_Verein->setContainer(pck_class);
+	cls_UniModel->setContainer( pck_class );
+	cls_Universitaet->setContainer( pck_class );
+	cls_Mensch->setContainer( pck_class );
+	cls_Person->setContainer( pck_class );
+	cls_Mitarbeiter->setContainer( pck_class );
+	cls_Student->setContainer( pck_class );
+	cls_Veranstaltung->setContainer( pck_class );
+	cls_Verein->setContainer( pck_class );
 
 	// Create Compositions and Associations
 	{
