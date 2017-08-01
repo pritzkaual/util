@@ -201,6 +201,12 @@ void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject>
 }
 
 /*
+ std::string Handler::getType ( ecore::EObject *obj ) const{
+ return getType(std::make_shared<ecore::EObject>(obj));
+ }
+ */
+
+/*
  * This API is adapted to API in Project emf4cpp.
  *
  * LINK to source: https://github.com/catedrasaes-umu/emf4cpp/tree/master/emf4cpp/ecorecpp/serializer/serializer-xerces.cpp
@@ -262,7 +268,6 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const {
 
 		std::cout << "ERROR: Called Handler::getReference() while else-if-case is not implemented yet." << std::endl;
 
-
 		value << "/";
 		std::shared_ptr<ecore::EObject> prev = to_antecessors.back();
 		to_antecessors.pop_back();
@@ -275,8 +280,6 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const {
 
 			else {
 				boost::any _any = prev->eGet( esf );
-
-
 
 				std::shared_ptr<Bag<ecore::EObject>> ef = boost::any_cast<std::shared_ptr<Bag<ecore::EObject>>>( _any );
 
@@ -295,7 +298,15 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const {
 	}
 	else {
 		// TODO
-		std::cout << "ERROR: Called Handler::getReference() while else-case is not implemented yet." << std::endl;
+		std::shared_ptr<ecore::EDataType> dataType = std::dynamic_pointer_cast<ecore::EDataType>( to );
+
+		if ( dataType ) {
+			value << "#/";
+			value << "/" << dataType->getName();
+		}
+		else {
+			std::cout << "ERROR: Called Handler::getReference() while else-case is not implemented yet." << std::endl;
+		}
 	}
 
 	std::cout << value.str() << std::endl;
