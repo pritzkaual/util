@@ -10,7 +10,6 @@
 
 #include "Load.hpp"
 
-
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
 
@@ -18,10 +17,11 @@
 #include "xerces/DOMPrintFilter.hpp"
 #include "xerces/DOMPrintErrorHandler.hpp"
 
+namespace persistence
+{
 
-namespace persistence {
-
-class XMLLoad : Load {
+class XMLLoad : public Load
+{
 private:
 
 	// ---------------------------------------------------------------------------
@@ -61,7 +61,6 @@ private:
 	//      can be set via the -v= command.
 	//
 	// ---------------------------------------------------------------------------
-	char* m_XmlFile;
 	bool m_DoNamespaces;
 	bool m_DoSchema;
 	bool m_SchemaFullChecking;
@@ -87,15 +86,15 @@ private:
 	DOMTreeErrorReporter *m_errReporter;
 
 	// get the DOM representation
-	DOMDocument *m_doc;
+	//DOMDocument *m_doc;
 
 public:
 	XMLLoad ();
 	virtual ~XMLLoad ();
 
-	bool read ( const std::string &filename );
-	bool getSawErrors ();
-
+private:
+	bool read ( const std::string &filename, std::shared_ptr<persistence::Handler> handler );
+	void perform ( std::shared_ptr<persistence::Handler> handler );
 };
 
 } /* namespace persistence */

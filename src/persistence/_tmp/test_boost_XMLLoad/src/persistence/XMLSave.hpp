@@ -40,6 +40,12 @@ namespace persistence {
 
 
 class XMLSave : public Save {
+public:
+	XMLSave ();
+	~XMLSave ();
+
+	//bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options );
+
 private:
 	// ---------------------------------------------------------------------------
 	//  Local data
@@ -84,7 +90,6 @@ private:
 	//bool m_SchemaFullChecking;
 	//bool m_DoCreate;
 
-	char* m_outputfile;
 	char* m_XPathExpression;
 
 	// options for DOMLSSerializer's features
@@ -108,15 +113,7 @@ private:
 	//DOMDocument *m_doc;
 
 
-	bool write (const std::string &filename);
-
-public:
-	XMLSave ();
-	~XMLSave ();
-
-	//bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options );
-
-
+	bool write ( const std::string &filename, std::shared_ptr<persistence::Handler> handler );
 
 };
 

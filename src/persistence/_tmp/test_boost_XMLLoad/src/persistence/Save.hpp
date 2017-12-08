@@ -47,6 +47,8 @@ public:
 	void setMetaMetaPackage ( std::shared_ptr<ecore::EPackage> metaMetaPackage );
 	void setOptions ( std::set<std::string> options );
 
+	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
+			std::set<std::string> options );
 	bool save ();
 
 protected:
@@ -56,10 +58,9 @@ protected:
 	std::shared_ptr<ecore::EObject> m_model;
 	std::shared_ptr<ecore::EPackage> m_metaMetaPackage;
 	std::set<std::string> m_options;
-	//boost::property_tree::ptree m_tree;
 
 private:
-	virtual bool write ( const std::string &filename ) = 0;
+	virtual bool write ( const std::string &filename, std::shared_ptr<persistence::Handler> handler ) = 0;
 
 	//boost::property_tree::ptree traverse(std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, std::string prefix);
 	void traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<persistence::Handler> handler );

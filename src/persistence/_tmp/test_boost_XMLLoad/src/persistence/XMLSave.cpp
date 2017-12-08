@@ -18,7 +18,6 @@ XMLSave::XMLSave () {
 	//m_SchemaFullChecking = false;
 	//m_DoCreate = false;
 
-	m_outputfile = 0;
 	m_XPathExpression = 0;
 
 	// options for DOMLSSerializer's features
@@ -73,11 +72,11 @@ XMLSave::~XMLSave () {
  return write(filename, options);
  }
  */
-bool XMLSave::write ( const std::string &filename ) {
+bool XMLSave::write ( const std::string &filename, std::shared_ptr<persistence::Handler> handler ) {
 
-	m_outputfile = (char*) filename.c_str();
+	char* outputfile = (char*) filename.c_str();
 
-	DOMDocument *doc = m_handler->getDOMDocument();
+	DOMDocument *doc = handler->getDOMDocument();
 
 	DOMPrintFilter *myFilter = 0;
 
@@ -131,8 +130,8 @@ bool XMLSave::write ( const std::string &filename ) {
 		// to stdout once it receives any thing from the serializer.
 		//
 		XMLFormatTarget *myFormTarget;
-		if ( m_outputfile ) {
-			myFormTarget = new LocalFileFormatTarget( m_outputfile );
+		if ( outputfile ) {
+			myFormTarget = new LocalFileFormatTarget( outputfile );
 		}
 		else {
 			myFormTarget = new StdOutFormatTarget();

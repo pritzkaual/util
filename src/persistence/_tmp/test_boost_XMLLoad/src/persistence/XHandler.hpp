@@ -34,6 +34,7 @@
 //#include "ENamedElement.hpp"
 namespace ecore {
 	class EObject;
+	class EStructuralFeature;
 }
 
 //#include "EPackage.hpp"
@@ -51,12 +52,12 @@ public:
 	//destructor
 	virtual ~XHandler () {}
 
-	virtual void handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options ) = 0;
+	//virtual void handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options ) = 0;
 
-	virtual std::map<std::string, std::shared_ptr<ecore::EObject>> get_IdToObject_Map () = 0;
-	virtual std::map<std::shared_ptr<ecore::EObject>, std::string> get_ObjectToId_Map () = 0;
+	//virtual std::map<std::string, std::shared_ptr<ecore::EObject>> get_IdToObject_Map () = 0;
+	//virtual std::map<std::shared_ptr<ecore::EObject>, std::string> get_ObjectToId_Map () = 0;
 
-	virtual std::string get_Id ( std::shared_ptr<ecore::EObject> object ) = 0;
+	//virtual std::string get_Id ( std::shared_ptr<ecore::EObject> object ) = 0;
 	virtual std::shared_ptr<ecore::EObject> get_Object ( std::string id ) = 0;
 
 	//DOMDocument *getDOMDocument () = 0;
@@ -64,10 +65,12 @@ public:
 	virtual std::string getPrefix () = 0;
 	virtual std::string getType ( std::shared_ptr<ecore::EObject> obj ) const = 0;
 
+	//virtual void addToMap ( std::shared_ptr<ecore::EObject> object ) = 0;
 	virtual void addToMap ( std::shared_ptr<ecore::EObject> object ) = 0;
-	virtual void addToMap ( std::shared_ptr<ecore::EObject> object, std::string id ) = 0;
 
-	virtual void addRootObj ( std::shared_ptr<ecore::EObject> object ) = 0;
+	virtual void setRootObj ( std::shared_ptr<ecore::EObject> object ) = 0;
+	virtual void setCurrentObj ( std::shared_ptr<ecore::EObject> object ) = 0;
+	virtual std::shared_ptr<ecore::EObject> getCurrentObj ( ) = 0;
 
 	virtual bool createRootNode ( const std::string& name, const std::string& ns_uri ) = 0;
 	virtual bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri ) = 0;
@@ -95,7 +98,7 @@ public:
 	}
 	virtual void addAttribute ( const std::string &name, bool value ) = 0;
 	virtual void addAttribute ( const std::string &name, const std::string& value ) = 0;
-	virtual void addAttribute_xsi_type ( const std::string& value ) = 0;
+	//virtual void addAttribute_xsi_type ( const std::string& value ) = 0;
 
 	virtual void addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object ) = 0;
 
@@ -110,6 +113,15 @@ public:
 	}
 
 	virtual void release () = 0;
+	virtual void releaseObj () = 0;
+
+	virtual int getNumOfChildren() = 0;
+	virtual std::string getNextNodeName() = 0;
+	virtual std::map<std::string, std::string> getAttributeList () = 0;
+
+
+	virtual void addUnresolvedReference(const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf ) = 0;
+
 
 }
 ;

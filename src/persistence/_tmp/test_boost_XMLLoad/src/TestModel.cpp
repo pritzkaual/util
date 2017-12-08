@@ -67,7 +67,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 		//pck_class->setContainer(pck_UniModel);
 		//std::shared_ptr<ecore::EPackage>superpackage = pck_class->getESuperPackage();
-		//supAerpackage = pck_UniModel; // TODO hier funkt das mit dem SuperPackage nicht
+		//superpackage = pck_UniModel; // TODO hier funkt das mit dem SuperPackage nicht
 	}
 
 	// Create ENUMs that are used in classes
@@ -694,7 +694,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Universitaet );
 			//reference->getEReferenceType();
 			reference->setContainment( true ); // set reference as composition
-			reference->setContainer( cls_UniModel ); // TODO
+			reference->setContainer( cls_UniModel ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -722,7 +722,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( true );			// set reference as composition
-			reference->setContainer( cls_Universitaet ); // TODO
+			reference->setContainer( cls_Universitaet ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -747,7 +747,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Veranstaltung );
 			//reference->getEReferenceType();
 			reference->setContainment( true );			// set reference as composition
-			reference->setContainer( cls_Universitaet ); // TODO
+			reference->setContainer( cls_Universitaet ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -775,7 +775,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Veranstaltung );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Person ); // TODO
+			reference->setContainer( cls_Person ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -803,7 +803,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Veranstaltung ); // TODO
+			reference->setContainer( cls_Veranstaltung ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -828,7 +828,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Veranstaltung ); // TODO
+			reference->setContainer( cls_Veranstaltung ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -856,7 +856,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			reference->setEType( cls_Verein );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Veranstaltung ); // TODO
+			reference->setContainer( cls_Veranstaltung ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true

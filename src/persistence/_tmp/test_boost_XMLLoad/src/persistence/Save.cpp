@@ -10,7 +10,6 @@
 namespace persistence {
 
 Save::Save () {
-	// TODO Auto-generated constructor stub
 	m_handler = std::make_shared<persistence::Handler>();
 	//m_package = ecore::EcorePackage::eInstance();
 	//m_tree = nullptr;
@@ -36,21 +35,32 @@ void Save::setOptions ( std::set<std::string> options ) {
 	m_options = options;
 }
 
+bool Save::save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
+		std::set<std::string> options ) {
+
+	setFilename( filename );
+	setModel( model );
+	setMetaMetaPackage( metaMetaPackage );
+	setOptions( options );
+
+	return save();
+}
+
 bool Save::save () {
 
 	std::shared_ptr<ecore::EClass> metaClass = m_model->eClass();
 
-	std::cout << "metaClass: " << metaClass->getName() << std::endl;
-	std::cout << "metaMetaPck-NS: " << m_metaMetaPackage->getNsPrefix() << std::endl;
-	std::cout << "metaMetaPck-Uri: " << m_metaMetaPackage->getNsURI() << std::endl;
+	std::cout << "| DEBUG    | " << "metaClass: " << metaClass->getName() << std::endl;
+	std::cout << "| DEBUG    | " << "metaMetaPck-NS: " << m_metaMetaPackage->getNsPrefix() << std::endl;
+	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << m_metaMetaPackage->getNsURI() << std::endl;
 
 	m_handler->createRootNode( m_metaMetaPackage->getNsPrefix(), metaClass->getName(), m_metaMetaPackage->getNsURI() );
-	m_handler->addRootObj( m_model );
+	m_handler->setRootObj( m_model );
 	m_model->save( m_handler );
 	//traverse( m_model, m_handler );
 	m_handler->release();
 
-	return write( m_filename );
+	return write( m_filename, m_handler );
 }
 #if 0
 boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, const std::string prefix ) {
@@ -424,7 +434,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EPackage '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 		handler->addAttribute( "nsPrefix", tmp_object->getNsPrefix() );
@@ -467,7 +477,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EClass '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
 		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
@@ -495,7 +505,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		if ( list_eAttributes->size() ) {
 			for ( std::shared_ptr<ecore::EAttribute> eAttributes : *list_eAttributes ) {
 				//if ( !eAttributes->isTransient() && tmp_object->eIsSet(eAttributes) )
-				if ( !eAttributes->isTransient() ) // TODO
+				if ( !eAttributes->isTransient() ) // TODO need impl of eIsSet()
 				{
 					handler->createAndAddElement( "eStructuralFeatures" );
 					traverse( eAttributes, handler );
@@ -507,7 +517,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		if ( list_eReferences->size() ) {
 			for ( std::shared_ptr<ecore::EReference> eReferences : *list_eReferences ) {
 				//if ( !eReferences->isTransient() && tmp_object->eIsSet(eReferences) )
-				if ( !eReferences->isTransient() ) // TODO
+				if ( !eReferences->isTransient() ) // TODO need impl of eIsSet()
 				{
 					handler->createAndAddElement( "eStructuralFeatures" );
 					traverse( eReferences, handler );
@@ -524,11 +534,11 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EEnum '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
 		handler->addAttribute( "name", tmp_object->getName() );
-		//handler->addAttribute_xsi_type(tmp_object->getInstanceTypeName() ); // TODO
+		//handler->addAttribute_xsi_type(tmp_object->getInstanceTypeName() ); // TODO remove this
 
 		// traverse on EEnumLiteral
 		std::shared_ptr<Bag<ecore::EEnumLiteral>> list_eLiteral = tmp_object->getELiterals();
@@ -548,7 +558,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EDataType '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 		handler->addAttribute( "instanceClassName", tmp_object->getInstanceClassName() );
@@ -568,7 +578,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EReference '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
 		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
@@ -620,7 +630,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EAttribute '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
 		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
@@ -665,7 +675,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EEnumLiteral '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 		handler->addAttribute( "value", tmp_object->getValue() );
@@ -677,7 +687,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EOperation '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 
@@ -717,7 +727,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		std::cout << "EParameter '" << tmp_object->getName() << "'" << std::endl;
 
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
-		handler->addToMap( tmp_object );
+		//handler->addToMap( tmp_object );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 

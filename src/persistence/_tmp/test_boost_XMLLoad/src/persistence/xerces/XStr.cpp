@@ -8,7 +8,6 @@
 #include "XStr.hpp"
 
 
-
 XStr::XStr(const char* const toTranscode)
 {
     // Call the private transcoding method

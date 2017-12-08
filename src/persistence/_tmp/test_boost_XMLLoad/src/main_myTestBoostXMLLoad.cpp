@@ -5,11 +5,11 @@
  *      Author: Alexander P.
  */
 /*
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/util/OutOfMemoryException.hpp>
-*/
+ #include <xercesc/util/PlatformUtils.hpp>
+ #include <xercesc/util/XMLString.hpp>
+ #include <xercesc/dom/DOM.hpp>
+ #include <xercesc/util/OutOfMemoryException.hpp>
+ */
 #include "TestModel.hpp"
 
 #include "myTestBoost/myTestBoostXMLLoad.hpp"
@@ -19,7 +19,6 @@
 
 #include <stdlib.h>
 
-
 int main () {
 	try {
 		//testBoostXMLLoad::myTestBoostXMLLoad myTestBoostObject;
@@ -27,37 +26,84 @@ int main () {
 		//myTestBoostObject.load( "_tmp/uml.ecore" );
 		//myTestBoostObject.save( "_tmp/uml_out.ecore" );
 
+		testXerces::MyTestXerces myXMLObject;
+		/*
+		 if ( !myXMLObject.load( "_tmp/uml.ecore" ) && !(myXMLObject.getSawErrors()) ) {
 
- 		testXerces::MyTestXerces myXMLObject;
-/*
-		if ( !myXMLObject.load( "_tmp/uml.ecore" ) && !(myXMLObject.getSawErrors()) ) {
+		 myXMLObject.save( "_tmp/uml_out.ecore" );
+		 std::cout << "Successful load() and save() of '_tmp/uml.ecore' \n";
+		 }
 
-			myXMLObject.save( "_tmp/uml_out.ecore" );
-			std::cout << "Successful load() and save() of '_tmp/uml.ecore' \n";
+		 myXMLObject.createTestDOMDocument();
+		 myXMLObject.save( "_tmp/test_out.ecore" );
+		 */
+
+		// Create Models
+		std::cout << "| INFO     | " << "Create 'myEcoreTestSaveMetaModel'" << std::endl;
+		std::shared_ptr<ecore::EObject> myEcoreTestSaveMetaModel = testmodel::TestModel::createEcoreTestMetaModel();
+
+		if ( myEcoreTestSaveMetaModel == 0 ) {
+			std::cout << "| ERROR    | " << "'myEcoreTestSaveMetaModel' is empty" << std::endl;
+			return 0;
 		}
-*/
 
-		myXMLObject.createTestDOMDocument();
-		//myXMLObject.save( "_tmp/test_out.ecore" );
+		std::cout << "| INFO     | " << "Create 'myEcoreTestLoadMetaModel'" << std::endl;
+		std::shared_ptr<ecore::EObject> myEcoreTestLoadMetaModel;
 
-		std::cout << "START: save() of 'myEcoreTestMetaModel' \n";
-
-		std::shared_ptr<ecore::EObject> myEcoreTestMetaModel = testmodel::TestModel::createEcoreTestMetaModel();
+		// Get MetaPackage
+		std::cout << "| INFO     | " << "Get 'myEcoreMetaMetaPackage'" << std::endl;
 		std::shared_ptr<ecore::EPackage> myEcoreMetaMetaPackage = testmodel::TestModel::getMetaMetaPackage();
 
+		if ( myEcoreMetaMetaPackage == 0 ) {
+			std::cout << "| ERROR    | " << "'myEcoreMetaMetaPackage' is empty" << std::endl;
+			return 0;
+		}
+
 		// Set Options
+		std::cout << "| INFO     | " << "Get 'options'" << std::endl;
 		std::set<std::string> options = persistence::Option::get_DefaultOptions();
+
+		// Crete persistence object
 		persistence::Persistence myPersistence;
 
+		// Set filename with path
 		std::string filename = "_tmp/UniModel.ecore";
+		std::string filename2 = "_tmp/UniModel2.ecore";
 
-		myPersistence.save( filename, myEcoreTestMetaModel, myEcoreMetaMetaPackage, options );
+		// Perform save()
+		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestSaveMetaModel'" << std::endl;
 
-		std::cout << "Successful save() of 'myEcoreTestMetaModel' \n";
+		if ( myPersistence.save( filename, myEcoreTestSaveMetaModel, myEcoreMetaMetaPackage, options ) ) {
 
+			std::cout << "| INFO     | " << "Successful save() of 'myEcoreTestSaveMetaModel'" << std::endl;
+		}
+		else {
+			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestSaveMetaModel'" << std::endl;
+		}
+
+		// Perform load()
+		std::cout << "| INFO     | " << "Start load() of 'myEcoreTestSaveMetaModel'" << std::endl;
+		myEcoreTestLoadMetaModel = myPersistence.load( filename, options );
+		if ( myEcoreTestLoadMetaModel != nullptr ) {
+			std::cout << "| INFO     | " << "Successful load() of 'myEcoreTestLoadMetaModel'" << std::endl;
+		}
+		else {
+			std::cout << "| ERROR    | " << "During load() of 'myEcoreTestLoadMetaModel'" << std::endl;
+		}
+
+		// Perform save() again
+		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestLoadMetaModel'" << std::endl;
+
+		if ( myPersistence.save( filename2, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage, options ) ) {
+
+			std::cout << "| INFO     | " << "Successful save() of 'myEcoreTestLoadMetaModel'" << std::endl;
+		}
+		else {
+			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestLoadMetaModel'" << std::endl;
+		}
 	}
 	catch ( std::exception &e ) {
-		std::cout << "Error: " << e.what() << "\n";
+		std::cout << "| ERROR    | " << e.what() << std::endl;
 	}
 	return 0;
 }

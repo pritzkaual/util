@@ -9,142 +9,185 @@
 
 #include <sstream> // used for get_Hash()
 
-namespace persistence {
+namespace persistence
+{
 
-Handler::Handler () {
-	// TODO Auto-generated constructor stub
+Handler::Handler ()
+{
 	m_doc = nullptr;
 	m_root_obj = nullptr;
+	m_current_obj = nullptr;
 	m_current_elem = nullptr;
-
 }
 
-Handler::~Handler () {
-	if ( m_doc ) {
+Handler::~Handler ()
+{
+	if ( m_doc )
+	{
 		m_doc->release();
 	}
 }
 
-void Handler::handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options ) {
-	std::cout << "ERROR: Called Handler::handle() while is not implemented yet." << std::endl;
-}
+/*void Handler::handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options ) {
+ std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while is not implemented yet." << std::endl;
+ }
 
-std::map<std::string, std::shared_ptr<ecore::EObject> > Handler::get_IdToObject_Map () {
-	return m_Id_to_Object;
-}
+ std::map<std::string, std::shared_ptr<ecore::EObject> > Handler::get_IdToObject_Map () {
+ return m_Id_to_Object;
+ }
 
-std::map<std::shared_ptr<ecore::EObject>, std::string> Handler::get_ObjectToId_Map () {
-	return m_Object_to_Id;
-}
+ std::map<std::shared_ptr<ecore::EObject>, std::string> Handler::get_ObjectToId_Map () {
+ return m_Object_to_Id;
+ }
 
-std::string Handler::get_Id ( std::shared_ptr<ecore::EObject> object ) {
+ std::string Handler::get_Id ( std::shared_ptr<ecore::EObject> object ) {
 
-	std::string id;
+ std::string id;
 
-	if ( m_Object_to_Id.find( object ) != m_Object_to_Id.end() ) {
-		// found
-		id = m_Object_to_Id.at( object );
-	}
+ if ( m_Object_to_Id.find( object ) != m_Object_to_Id.end() ) {
+ // found
+ id = m_Object_to_Id.at( object );
+ }
 
-	return id;
-}
-
-std::shared_ptr<ecore::EObject> Handler::get_Object ( std::string id ) {
+ return id;
+ }
+ */
+std::shared_ptr<ecore::EObject> Handler::get_Object ( std::string id )
+{
 	std::shared_ptr<ecore::EObject> tmp;
 
-	if ( m_Id_to_Object.find( id ) != m_Id_to_Object.end() ) {
+	if ( m_Id_to_Object.find( id ) != m_Id_to_Object.end() )
+	{
 		// found
 		tmp = m_Id_to_Object.at( id );
+		return std::dynamic_pointer_cast<ecore::EObject>( tmp );
 	}
-	return std::dynamic_pointer_cast<ecore::EObject>( tmp );
+	else
+	{
+		std::cout << "| WARNING  | " << "Given Reference-Name: '" << id << "' is not in stored map." << std::endl;
+		return nullptr;
+	}
+
 }
+/*
+ void Handler::addToMap ( std::shared_ptr<ecore::EObject> object ) {
 
-void Handler::addToMap ( std::shared_ptr<ecore::EObject> object ) {
+ std::shared_ptr<ecore::ENamedElement> tmp_object = std::dynamic_pointer_cast<ecore::ENamedElement>( object );
 
-	std::shared_ptr<ecore::ENamedElement> tmp_object = std::dynamic_pointer_cast<ecore::ENamedElement>( object );
+ addToMap( object, tmp_object->getName() );
+ }
+ */
+void Handler::addToMap ( std::shared_ptr<ecore::EObject> object )
+{
+	std::string id = getReference( object );
 
-	addToMap( object, tmp_object->getName() );
-}
+	std::cout << "| DEBUG    | " << "Object-RefName: " << id << std::endl;
 
-void Handler::addToMap ( std::shared_ptr<ecore::EObject> object, std::string id ) {
-
-	std::string _id;
-	if ( m_options.find( persistence::Option::OPTION_USE_ID__HASHTAG ) != m_options.end() ) {
-		_id = "#//" + id;
-	}
-	else if ( m_options.find( persistence::Option::OPTION_USE_ID__AT ) != m_options.end() ) {
-		std::cout << "ERROR: Handler::addToMap() OPTION_USE_ID__AT is not implemented yet." << std::endl;
-	}
-	else {
-		// default-case: Using generated Hash-Value
-		_id = create_Hash( object );
-	}
-
-	if ( m_Id_to_Object.find( _id ) == m_Id_to_Object.end() ) {
+	if ( m_Id_to_Object.find( id ) == m_Id_to_Object.end() )
+	{
 		// not found
-		m_Id_to_Object.insert( std::pair<std::string, std::shared_ptr<ecore::EObject>>( _id, object ) );
-		m_Object_to_Id.insert( std::pair<std::shared_ptr<ecore::EObject>, std::string>( object, _id ) );
+		m_Id_to_Object.insert( std::pair<std::string, std::shared_ptr<ecore::EObject>>( id, object ) );
+		//m_Object_to_Id.insert( std::pair<std::shared_ptr<ecore::EObject>, std::string>( object, _id ) );
 	}
 }
+/**/
 
-DOMDocument *Handler::getDOMDocument () {
+DOMDocument *Handler::getDOMDocument ()
+{
 	return m_doc;
 }
 
-std::string Handler::getPrefix () {
+void Handler::setDOMDocument ( DOMDocument * doc )
+{
+	m_doc = doc;
+	m_root_obj = nullptr;
+	m_current_elem = m_doc->getDocumentElement(); // get root element
+
+	if ( m_current_elem->getNodeType() == DOMNode::ELEMENT_NODE )
+	{
+		m_element_list.push_back( m_current_elem );
+	}
+	else
+	{
+		std::cout << "| ERROR    | " << __FUNCTION__ << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." << std::endl;
+	}
+}
+
+std::string Handler::getPrefix ()
+{
 	return m_rootPrefix;
 }
 
-void Handler::addRootObj ( std::shared_ptr<ecore::EObject> object ) {
+void Handler::setRootObj ( std::shared_ptr<ecore::EObject> object )
+{
 	m_root_obj = object;
 }
-bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri ) {
+
+void Handler::setCurrentObj ( std::shared_ptr<ecore::EObject> object )
+{
+	m_current_obj = object;
+}
+
+std::shared_ptr<ecore::EObject> Handler::getCurrentObj ()
+{
+	return m_current_obj;
+}
+
+bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri )
+{
 	return this->createRootNode( name, ns_uri, nullptr );
 }
 
-bool Handler::createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri ) {
+bool Handler::createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri )
+{
 	return this->createRootNode( prefix, name, ns_uri, nullptr );
 }
 
-bool Handler::createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype ) {
+bool Handler::createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype )
+{
 	m_rootPrefix = prefix;
 	return this->createRootNode( prefix + ":" + name, ns_uri, nullptr );
 }
 
-bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype ) {
+bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype )
+{
 
 	DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation( X( "Core" ) );
 
-	if ( impl != NULL ) {
-		try {
+	if ( impl != NULL )
+	{
+		try
+		{
 
 			m_doc = impl->createDocument( (ns_uri.empty()) ? 0 : X( ns_uri ), // root element namespace URI.
 			X( name ),         					// root element name
 			doctype ); 	                		// document type object (DTD).
 
-			m_doc->getDocumentElement();
-
 			m_current_elem = m_doc->getDocumentElement(); // get root element
 
 		}
-		catch ( const OutOfMemoryException& ) {
-			std::cerr << "OutOfMemoryException" << std::endl;
+		catch ( const OutOfMemoryException& )
+		{
+			std::cerr << "| ERROR    | " << __PRETTY_FUNCTION__ << " OutOfMemoryException" << std::endl;
 			//errorCode = 5;
 			return false;
 		}
-		catch ( const DOMException& e ) {
-			std::cout << "DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
+		catch ( const DOMException& e )
+		{
+			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
 			//errorCode = 2;
 			return false;
 		}
-		catch ( ... ) {
-			std::cout << "An error occurred creating the document" << std::endl;
+		catch ( ... )
+		{
+			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " An error occurred creating the document" << std::endl;
 			//errorCode = 3;
 			return false;
 		}
 	}  // (impl != NULL)
-	else {
-		std::cout << "Requested implementation is not supported" << std::endl;
+	else
+	{
+		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Requested implementation is not supported" << std::endl;
 		//errorCode = 4;
 		return false;
 	}
@@ -152,59 +195,65 @@ bool Handler::createRootNode ( const std::string& name, const std::string& ns_ur
 	return true;
 }
 
-bool Handler::createAndAddElement ( const std::string& name ) {
-	if ( m_doc == nullptr ) {
-		std::cout << "ERROR: Called Handler::createElement() while their is no root-Element created before." << std::endl;
+bool Handler::createAndAddElement ( const std::string& name )
+{
+	if ( m_doc == nullptr )
+	{
+		std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while their is no root-Element created before." << std::endl;
 		return false;
 	}
-	else {
+	else
+	{
 		addChild( m_current_elem, m_doc->createElement( X( name ) ) );
 
 		return true;
 	}
 }
 
-void Handler::addChild ( DOMElement* parent_elem, DOMElement* child_elem ) {
+void Handler::addChild ( DOMElement* parent_elem, DOMElement* child_elem )
+{
 	// Add child to parent Element, and set child as current Element.
 	m_current_elem = (DOMElement *) parent_elem->appendChild( child_elem );
 }
 
-void Handler::addAttribute ( const std::string &name, bool value ) {
+void Handler::addAttribute ( const std::string &name, bool value )
+{
 	addAttribute( name, (value ? (std::string) "true" : (std::string) "false") );
 }
 
-void Handler::addAttribute ( const std::string& name, const std::string& value ) {
-	try {
+void Handler::addAttribute ( const std::string& name, const std::string& value )
+{
+	try
+	{
 		m_current_elem->setAttribute( X( name ), X( value ) );
 	}
-	catch ( const DOMException& e ) {
-		std::cout << "DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
+	catch ( const DOMException& e )
+	{
+		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
 	}
-	catch ( std::exception& e ) {
-		std::cout << "Exception code is:  " << e.what() << std::endl;
+	catch ( std::exception& e )
+	{
+		std::cout << "| ERROR    | " << "Exception code is:  " << e.what() << std::endl;
 	}
 }
 
-void Handler::addAttribute_xsi_type ( const std::string& value ) {
-	addAttribute( "xsi:type", value );
-}
+/*void Handler::addAttribute_xsi_type ( const std::string& value )
+ {
+ addAttribute( "xsi:type", value );
+ }*/
 
-void Handler::addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object ) {
+void Handler::addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object )
+{
 
 	addAttribute( name, getReference( object ) );
 
 }
 
-void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject> > objects ) {
-
-	std::cout << "ERROR: Called Handler::addReference() while is not implemented yet." << std::endl;
+void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject> > objects )
+{
+	// TODO need implementation
+	std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while is not implemented yet." << std::endl;
 }
-
-/*
- std::string Handler::getType ( ecore::EObject *obj ) const{
- return getType(std::make_shared<ecore::EObject>(obj));
- }
- */
 
 /*
  * This API is adapted to API in Project emf4cpp.
@@ -213,7 +262,8 @@ void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject>
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_type(EObject_ptr obj) const
  *
  */
-std::string Handler::getType ( std::shared_ptr<ecore::EObject> obj ) const {
+std::string Handler::getType ( std::shared_ptr<ecore::EObject> obj ) const
+{
 
 	std::stringstream ss;
 	std::shared_ptr<ecore::EClass> metaClass = obj->eClass();
@@ -231,7 +281,8 @@ std::string Handler::getType ( std::shared_ptr<ecore::EObject> obj ) const {
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_reference(EObject_ptr from, EObject_ptr to) const
  *
  */
-std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const {
+std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const
+{
 
 	std::stringstream value;
 
@@ -239,46 +290,59 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const {
 
 	std::shared_ptr<ecore::EObject> antecessor = to; //pre-init antecessor
 
-	while ( antecessor ) {
+	while ( antecessor )
+	{
 		to_antecessors.push_back( antecessor );
 		antecessor = to_antecessors.back()->eContainer();
 	}
 
 	std::shared_ptr<ecore::EPackage> pkg = std::dynamic_pointer_cast<ecore::EPackage>( to_antecessors.back() );
 
-	if ( pkg ) {
+	if ( pkg )
+	{
 		// This case is used for ecore-models
-		if ( m_root_obj != pkg ) {
+		//if ( (m_root_obj != pkg) || (m_root_obj == nullptr) )
+		if ( m_root_obj != pkg )
+		{
 			value << getType( to ) << " " << pkg->getNsURI();
 		}
 
 		value << "#/";
-		to_antecessors.pop_back();
+		//to_antecessors.pop_back();
 
-		while ( to_antecessors.size() ) {
+		while ( to_antecessors.size() > 0 )
+		{
 			std::shared_ptr<ecore::ENamedElement> to_antecessors_back = std::dynamic_pointer_cast<ecore::ENamedElement>( to_antecessors.back() );
-			value << "/" << to_antecessors_back->getName();
+			if ( to_antecessors_back != nullptr )
+			{
+				value << "/" << to_antecessors_back->getName();
+			}
 			to_antecessors.pop_back();
+
 		}
 	}
 
-	else if ( to_antecessors.back() == m_root_obj ) {
+	//else if ( (to_antecessors.back() == m_root_obj) || (m_root_obj == nullptr) )
+	else if ( to_antecessors.back() == m_root_obj )
+	{
 
 		// TODO this case is used for non ecore-models
 
-		std::cout << "ERROR: Called Handler::getReference() while else-if-case is not implemented yet." << std::endl;
+		std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while else-if-case is not implemented yet." << std::endl;
 
 		value << "/";
 		std::shared_ptr<ecore::EObject> prev = to_antecessors.back();
 		to_antecessors.pop_back();
 
-		while ( to_antecessors.size() ) {
+		while ( to_antecessors.size() )
+		{
 			std::shared_ptr<ecore::EStructuralFeature> esf = to_antecessors.back()->eContainingFeature();
 
 			if ( esf->getUpperBound() == 1 )
 				value << "/" << esf->getName();
 
-			else {
+			else
+			{
 				boost::any _any = prev->eGet( esf );
 
 				std::shared_ptr<Bag<ecore::EObject>> ef = boost::any_cast<std::shared_ptr<Bag<ecore::EObject>>>( _any );
@@ -296,41 +360,358 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const {
 		}
 
 	}
-	else {
-		// TODO
+	else
+	{
+		// TODO need comment
 		std::shared_ptr<ecore::EDataType> dataType = std::dynamic_pointer_cast<ecore::EDataType>( to );
 
-		if ( dataType ) {
+		if ( dataType )
+		{
+			std::shared_ptr<ecore::EPackage> dPck = dataType->getEPackage();
+
+			//if ( (m_root_obj != dPck) || (m_root_obj == nullptr) )
+			if ( m_root_obj != dPck )
+			{
+				value << getType( to ) << " " << dPck->getNsURI();
+			}
 			value << "#/";
 			value << "/" << dataType->getName();
 		}
-		else {
-			std::cout << "ERROR: Called Handler::getReference() while else-case is not implemented yet." << std::endl;
+		else
+		{
+			std::cout << "| ERROR    | " << "Called " << __FUNCTION__ << " while else-case is not implemented yet." << std::endl;
 		}
 	}
 
-	std::cout << value.str() << std::endl;
+	//std::cout << "| DEBUG    | " << value.str() << std::endl;
 	return value.str();
 }
 
-void Handler::release () {
-	if ( m_current_elem == nullptr ) {
-		std::cout << "ERROR: You can't call Handler::release() while current DOMElement m_current_elem is nullptr." << std::endl;
+void Handler::release ()
+{
+	if ( m_current_elem == nullptr )
+	{
+		std::cout << "| ERROR    | " << "You can't call " << __FUNCTION__ << " while current DOMElement m_current_elem is nullptr." << std::endl;
 	}
-	else {
-		// set current_elem's parent node as new current_elem (decrease depth)
+	else
+	{
+		// set m_current_elem's parent node as new m_current_elem (decrease depth)
 		m_current_elem = (DOMElement*) m_current_elem->getParentNode();
 	}
 }
 
-std::string Handler::create_Hash ( std::shared_ptr<ecore::EObject> object ) {
-
-	std::ostringstream address;
-	address << object.get();
-	std::string name = address.str();
-
-	return name;
+void Handler::releaseObj ()
+{
+	if ( m_current_obj == nullptr )
+	{
+		std::cout << "| ERROR    | " << "You can't call " << __FUNCTION__ << " while current Object m_current_obj is nullptr." << std::endl;
+	}
+	else
+	{
+		// set m_current_obj's container object as new m_current_obj (decrease depth)
+		m_current_obj = m_current_obj->eContainer();
+	}
 }
+/*
+ std::string Handler::create_Hash ( std::shared_ptr<ecore::EObject> object )
+ {
+
+ std::ostringstream address;
+ address << object.get();
+ std::string name = address.str();
+
+ return name;
+ }
+ */
+
+int Handler::getNumOfChildren ()
+{
+	DOMNode *child;
+	int count = 0;
+
+	for ( child = m_current_elem->getLastChild(); child != 0; child = child->getPreviousSibling() )
+	{
+		if ( child->getNodeType() == DOMNode::ELEMENT_NODE )
+		{
+			++count;
+		}
+	}
+	if ( count != m_current_elem->getChildElementCount() )
+	{
+		std::cout << "| ERROR    | " << " In " << __FUNCTION__ << " different Number of Children." << std::endl;
+	}
+	return count;
+}
+
+std::string Handler::getNextNodeName ()
+{
+	std::string nodeName;
+	DOMNode *child;
+
+	if ( m_element_list.size() == 0 )
+	{
+		nodeName = "";
+	}
+	else
+	{
+		m_current_elem = (DOMElement*) m_element_list.back();
+
+		nodeName = W( m_current_elem->getNodeName() );
+
+		m_element_list.pop_back();
+
+		for ( child = m_current_elem->getLastChild(); child != 0; child = child->getPreviousSibling() )
+		{
+			if ( child->getNodeType() == DOMNode::ELEMENT_NODE )
+			{
+				m_element_list.push_back( child );
+			}
+		}
+
+#if true
+		std::cout << "| DEBUG    | " << "Node-List: " << std::endl << "|          | ";
+		for ( auto current_elem : m_element_list )
+		{
+			std::cout << "<" << W( current_elem->getNodeName() ) << "> ";
+		}
+		std::cout << std::endl;
+#endif
+	}
+	std::cout << "| DEBUG    | " << "NodeName: " << nodeName << std::endl;
+
+	return nodeName;
+}
+
+std::map<std::string, std::string> Handler::getAttributeList ()
+{
+	std::map<std::string, std::string> attributeList;
+
+	DOMAttr *pAttributeNode;
+	std::string aName;
+	std::string aValue;
+
+	DOMNamedNodeMap *pAttributes = m_current_elem->getAttributes();
+	const XMLSize_t nSize = pAttributes->getLength();
+
+	//std::cout << "| DEBUG    | " << "\t" << "Attributes:" << std::endl;
+	//std::cout << "|            " << "\t" << "-----------" << std::endl;
+
+	for ( XMLSize_t i = 0; i < nSize; ++i )
+	{
+		pAttributeNode = (DOMAttr*) pAttributes->item( i );
+		// get attribute name
+		aName = W( pAttributeNode->getName() );
+
+		// get attribute type
+		aValue = W( pAttributeNode->getValue() );
+
+		// Print Attribute Name and Value
+		//std::cout << "| DEBUG    | " << "\t" << aName << "=" << aValue << std::endl;
+
+		attributeList.insert( std::pair<std::string, std::string>( aName, aValue ) );
+	}
+
+	return attributeList;
+}
+
+/*
+ * This API is adapted(copied) from XersecC-3.1.4-Samples in DOMCount.cpp.
+ *
+ * LINK to source: TODO need link to source
+ *
+ */
+int Handler::countChildElements ( DOMNode *n, bool printOutEncounteredEles )
+{
+	DOMNode *child;
+	int count = 0;
+	if ( n )
+	{
+		if ( n->getNodeType() == DOMNode::ELEMENT_NODE )
+		{
+			if ( printOutEncounteredEles )
+			{
+				//char *name = XMLString::transcode( n->getNodeName() );
+				std::string nodeName = W( n->getNodeName() );
+				std::cout << "----------------------------------------------------------" << std::endl;
+				std::cout << "Encountered Element : " << nodeName << std::endl;
+
+				//XMLString::release( &name );
+
+				if ( n->hasAttributes() )
+				{
+					// get all the attributes of the node
+					DOMNamedNodeMap *pAttributes = n->getAttributes();
+					const XMLSize_t nSize = pAttributes->getLength();
+					std::cout << "\tAttributes" << std::endl;
+					std::cout << "\t----------" << std::endl;
+					for ( XMLSize_t i = 0; i < nSize; ++i )
+					{
+						DOMAttr *pAttributeNode = (DOMAttr*) pAttributes->item( i );
+						// get attribute name
+						std::string aName = W( pAttributeNode->getName() );
+
+						std::cout << "\t" << aName << "=";
+						//XMLString::release (&name);
+
+						// get attribute type
+						std::string aValue = W( pAttributeNode->getValue() );
+						//name = XMLString::transcode( pAttributeNode->getValue() );
+						std::cout << aValue << std::endl;
+						//XMLString::release( &name );
+					}
+				}
+			}
+			++count;
+		}
+
+		for ( child = n->getFirstChild(); child != 0; child = child->getNextSibling() )
+		{
+			count += countChildElements( child, printOutEncounteredEles );
+		}
+	}
+	return count;
+}
+void Handler::addUnresolvedReference ( const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf )
+{
+	m_unresolvedReferences.push_back( persistence::UnresolvedReference( name, object, esf ) );
+}
+
+bool Handler::resolveReferences ()
+{
+	while ( !m_unresolvedReferences.empty() )
+	{
+		persistence::UnresolvedReference uref = m_unresolvedReferences.back();
+		m_unresolvedReferences.pop_back();
+		std::string name = uref.refName;
+		std::shared_ptr<ecore::EObject> object = uref.eObject;
+		std::shared_ptr<ecore::EStructuralFeature> esf = uref.eStructuralFeature;
+
+		boost::any _any = object->eGet( esf );
+
+		if ( esf->getUpperBound() == 1 )
+		{
+			// EStructuralfeature is a single object
+			std::shared_ptr<ecore::EClassifier> _elem = boost::any_cast<std::shared_ptr<ecore::EClassifier> >( _any );
+
+			std::shared_ptr<ecore::EObject> resolved_object = this->get_Object( name );
+		}
+		else
+		{
+			// EStructuralfeature is a list (Bag/Union/Subset)
+			std::shared_ptr<Bag<ecore::EClassifier>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EClassifier>> >( _any );
+
+		}
+	}
+	return false;
+}
+/*
+ std::cout << "| DEBUG    | " << "--- Resolving references" << std::endl;
+
+ static MetaModelRepository_ptr _mmr = MetaModelRepository::_instance();
+
+ while ( !m_unresolved_references.empty() ) {
+ unresolved_reference_t const& ref = m_unresolved_references.back();
+
+ ::ecorecpp::mapping::type_traits::string_t const& xpath = ref.xpath;
+ ::ecorecpp::mapping::type_traits::string_t const& name = ref.ref_name;
+ EObject_ptr const& eobj = ref.eobject;
+ EClass_ptr const& eclass = ref.eclass;
+
+ try {
+
+ DEBUG_MSG( cout, L"--- Resolving reference " << xpath << L" from " << eclass->getName() << L":" << name );
+
+ EStructuralFeature_ptr const esf = eclass->getEStructuralFeature( name );
+
+ DEBUG_MSG( cout, esf->getName() << " " << eclass->getName() );
+
+ // Parse reference
+ size_t size = xpath.size();
+ const ::ecorecpp::mapping::type_traits::char_t * s = xpath.c_str();
+
+ SemanticState ss;
+ reference::State < SemanticState > st( ss, s, size );
+ assert( reference::grammar::references::match( st ) );
+
+ references_t& _references = ss.get_references();
+
+ for ( size_t i = 0; i < _references.size(); i++ ) {
+ any _any;
+ EObject_ptr _current = m_objects.front();
+ processed_reference_t & _ref = _references[i];
+
+ EPackage_ptr pkg = instanceOf < EPackage > (_current);
+ if ( !_ref.get_uri().empty() && (!pkg || (pkg && _ref.get_uri() != pkg->getNsURI())) ) {
+ DEBUG_MSG( cout, _ref.get_uri() );
+ _current = _mmr->getByNSURI( _ref.get_uri() );
+ }
+
+ path_t& _path = _ref.get_path();
+ for ( size_t j = 0; j < _path.size(); j++ ) {
+ EClass_ptr cl = instanceOf < EClass > (_current);
+ EPackage_ptr pkg = instanceOf < EPackage > (_current);
+
+ ::ecorecpp::mapping::type_traits::string_t const& _current_id = _path[j].get_id();
+
+ if ( pkg ) {
+ // Is it a subpackage?
+ bool is_subpackage = false;
+ std::vector<EPackage_ptr> const& subpkgs = pkg->getESubpackages();
+
+ for ( size_t k = 0; k < subpkgs.size(); k++ )
+ if ( subpkgs[k]->getName() == _current_id ) {
+ _current = subpkgs[k];
+ is_subpackage = true;
+ }
+
+ if ( !is_subpackage ) {
+ _current = pkg->getEClassifier( _current_id );
+ }
+ }
+ else if ( cl ) {
+ _current = cl->getEStructuralFeature( _current_id );
+ }
+ else {
+ cl = _current->eClass();
+ EStructuralFeature_ptr sesf = cl->getEStructuralFeature( _current_id );
+
+ _any = _current->eGet( sesf );
+ #if 0
+ DEBUG_MSG(cout, _current_id << " " << cl->getName()
+ << " " << _path[j].get_index());
+ DEBUG_MSG(cout, _any.type().name());
+ #endif
+ if ( _path[j].is_collection() ) {
+ size_t _index = _path[j].get_index();
+
+ mapping::EEListBase_ptr _collection = any::any_cast < mapping::EEListBase_ptr > (_any);
+
+ assert( _collection->size() > _index );
+ DEBUG_MSG( cout, _collection->size() );
+
+ _current = (*_collection)[_index];
+ }
+ else
+ _current = any::any_cast < EObject_ptr > (_any);
+ }
+ }
+
+ // finally:
+ _any = _current;
+ eobj->eSet( esf, _any );
+ }
+ }
+ catch ( const char* e ) {
+ ERROR_MSG( "ERROR: " << e );
+ }
+ catch ( const any::bad_any_cast& e ) {
+ ERROR_MSG( "ERROR: " << e.what() );
+ }
+
+ m_unresolved_references.pop_back();
+ }
+
+ }*/
 
 } /* namespace persistence */
 
