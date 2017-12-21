@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile name="org_eclipse_emf_ecore_xmi_profile" xmi:id="e2ajqdqEaGDkgiHt_profile" xmi:version="2.1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.0.0/UML" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+	<packageImport xmi:id="e2ajqdqEaGDkgiHt_profile_UMLMetaModel">
+		<importedPackage href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0" xmi:type="uml:Model"/>
+	</packageImport>
+	<eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="e2ajqdqEaGDkgiHt_profile_definition">
+		<contents name="org_eclipse_emf_ecore_xmi_profile" nsPrefix="org_eclipse_emf_ecore_xmi_profile" nsURI="http:///schemas/org_eclipse_emf_ecore_xmi_profile/0" xmi:id="e2ajqdqEaGDkgiHt_content" xmi:type="ecore:EPackage">
+			<eClassifiers name="Property" xmi:id="qFrjqdqEaGDkgiQu_classifier" xmi:type="ecore:EClass">
+				<eAnnotations references="qFrjqdqEaGDkgiQu" source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="qFrjqdqEaGDkgiQu_annotation"/>
+				<eStructuralFeatures lowerBound="1" name="base_Attribute" ordered="false" xmi:id="qFrjqdqEaGDkgiQu_structuralFeature" xmi:type="ecore:EReference">
+					<eType href="http://www.eclipse.org/uml2/2.0.0/UML#//Property" xmi:type="ecore:EClass"/>
+				</eStructuralFeatures>
+			</eClassifiers>
+			<eClassifiers name="enumeration" xmi:id="gJHtLdqEaGDkwmDc_classifier" xmi:type="ecore:EClass">
+				<eAnnotations references="gJHtLdqEaGDkwmDc" source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="gJHtLdqEaGDkwmDc_annotation"/>
+				<eStructuralFeatures lowerBound="1" name="base_Class" ordered="false" xmi:id="gJHtLdqEaGDkwmDc_structuralFeature" xmi:type="ecore:EReference">
+					<eType href="http://www.eclipse.org/uml2/2.0.0/UML#//Class" xmi:type="ecore:EClass"/>
+				</eStructuralFeatures>
+			</eClassifiers>
+			<eClassifiers name="Property" xmi:id="qFrjqdqEaGDkgiQu_classifier" xmi:type="ecore:EClass">
+				<eAnnotations references="qFrjqdqEaGDkgiQu" source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="qFrjqdqEaGDkgiQu_annotation"/>
+				<eStructuralFeatures lowerBound="1" name="base_Property" ordered="false" xmi:id="qFrjqdqEaGDkgiQu_structuralFeature" xmi:type="ecore:EReference">
+					<eType href="http://www.eclipse.org/uml2/2.0.0/UML#//Property" xmi:type="ecore:EClass"/>
+				</eStructuralFeatures>
+			</eClassifiers>
+			<eClassifiers name="enumeration" xmi:id="gJHtLdqEaGDkwmDc_classifier" xmi:type="ecore:EClass">
+				<eAnnotations references="gJHtLdqEaGDkwmDc" source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="gJHtLdqEaGDkwmDc_annotation"/>
+				<eStructuralFeatures lowerBound="1" name="base_Enumeration" ordered="false" xmi:id="gJHtLdqEaGDkwmDc_structuralFeature" xmi:type="ecore:EReference">
+					<eType href="http://www.eclipse.org/uml2/2.0.0/UML#//Enumeration" xmi:type="ecore:EClass"/>
+				</eStructuralFeatures>
+			</eClassifiers>
+		</contents>
+	</eAnnotations>
+	<packagedElement name="Property" xmi:id="qFrjqdqEaGDkgiQu" xmi:type="uml:Stereotype">
+		<ownedAttribute association="qFrjqdqEaGDkgiQu_extension" name="base_Attribute" xmi:id="qFrjqdqEaGDkgiQu_to">
+			<type href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property" xmi:type="uml:Class"/>
+		</ownedAttribute>
+	</packagedElement>
+	<packagedElement memberEnd="qFrjqdqEaGDkgiQu_from qFrjqdqEaGDkgiQu_to" name="Attribute_Property" xmi:id="qFrjqdqEaGDkgiQu_extension" xmi:type="uml:Extension">
+		<ownedEnd aggregation="composite" association="qFrjqdqEaGDkgiQu_extension" type="qFrjqdqEaGDkgiQu" xmi:id="qFrjqdqEaGDkgiQu_from" xmi:type="uml:ExtensionEnd"/>
+	</packagedElement>
+	<packagedElement name="enumeration" xmi:id="gJHtLdqEaGDkwmDc" xmi:type="uml:Stereotype">
+		<ownedAttribute association="gJHtLdqEaGDkwmDc_extension" name="base_Class" xmi:id="gJHtLdqEaGDkwmDc_to">
+			<type href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class" xmi:type="uml:Class"/>
+		</ownedAttribute>
+	</packagedElement>
+	<packagedElement memberEnd="gJHtLdqEaGDkwmDc_from gJHtLdqEaGDkwmDc_to" name="Class_enumeration" xmi:id="gJHtLdqEaGDkwmDc_extension" xmi:type="uml:Extension">
+		<ownedEnd aggregation="composite" association="gJHtLdqEaGDkwmDc_extension" type="gJHtLdqEaGDkwmDc" xmi:id="gJHtLdqEaGDkwmDc_from" xmi:type="uml:ExtensionEnd"/>
+	</packagedElement>
+	<packagedElement name="Property" xmi:id="qFrjqdqEaGDkgiQu" xmi:type="uml:Stereotype">
+		<ownedAttribute association="qFrjqdqEaGDkgiQu_extension" name="base_Property" xmi:id="qFrjqdqEaGDkgiQu_to">
+			<type href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property" xmi:type="uml:Class"/>
+		</ownedAttribute>
+	</packagedElement>
+	<packagedElement memberEnd="qFrjqdqEaGDkgiQu_from qFrjqdqEaGDkgiQu_to" name="Attribute_Property" xmi:id="qFrjqdqEaGDkgiQu_extension" xmi:type="uml:Extension">
+		<ownedEnd aggregation="composite" association="qFrjqdqEaGDkgiQu_extension" type="qFrjqdqEaGDkgiQu" xmi:id="qFrjqdqEaGDkgiQu_from" xmi:type="uml:ExtensionEnd"/>
+	</packagedElement>
+	<packagedElement name="enumeration" xmi:id="gJHtLdqEaGDkwmDc" xmi:type="uml:Stereotype">
+		<ownedAttribute association="gJHtLdqEaGDkwmDc_extension" name="base_Enumeration" xmi:id="gJHtLdqEaGDkwmDc_to">
+			<type href="pathmap://UML_METAMODELS/UML.metamodel.uml#Enumeration" xmi:type="uml:Class"/>
+		</ownedAttribute>
+	</packagedElement>
+	<packagedElement memberEnd="gJHtLdqEaGDkwmDc_from gJHtLdqEaGDkwmDc_to" name="Class_enumeration" xmi:id="gJHtLdqEaGDkwmDc_extension" xmi:type="uml:Extension">
+		<ownedEnd aggregation="composite" association="gJHtLdqEaGDkwmDc_extension" type="gJHtLdqEaGDkwmDc" xmi:id="gJHtLdqEaGDkwmDc_from" xmi:type="uml:ExtensionEnd"/>
+	</packagedElement>
+</uml:Profile>

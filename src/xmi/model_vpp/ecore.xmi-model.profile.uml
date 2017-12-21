@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="Big5"?>
+<uml:Profile name="org_eclipse_emf_ecore_xmi_profile" xmi:id="KBqOhtqEaGDklQXg_profile" xmi:version="2.1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.0.0/UML" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+	<packageImport xmi:id="KBqOhtqEaGDklQXg_profile_UMLMetaModel">
+		<importedPackage href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0" xmi:type="uml:Model"/>
+	</packageImport>
+	<eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="KBqOhtqEaGDklQXg_profile_definition">
+		<contents name="org_eclipse_emf_ecore_xmi_profile" nsPrefix="org_eclipse_emf_ecore_xmi_profile" nsURI="http:///schemas/org_eclipse_emf_ecore_xmi_profile/0" xmi:id="KBqOhtqEaGDklQXg_content" xmi:type="ecore:EPackage">
+			<eClassifiers name="Property" xmi:id="oEHuhtqEaGDklQmc_classifier" xmi:type="ecore:EClass">
+				<eAnnotations references="oEHuhtqEaGDklQmc" source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="oEHuhtqEaGDklQmc_annotation"/>
+				<eStructuralFeatures lowerBound="1" name="base_Attribute" ordered="false" xmi:id="oEHuhtqEaGDklQmc_structuralFeature" xmi:type="ecore:EReference">
+					<eType href="http://www.eclipse.org/uml2/2.0.0/UML#//Property" xmi:type="ecore:EClass"/>
+				</eStructuralFeatures>
+			</eClassifiers>
+			<eClassifiers name="Interface" xmi:id="N73uhtqEaGDklRFN_classifier" xmi:type="ecore:EClass">
+				<eAnnotations references="N73uhtqEaGDklRFN" source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="N73uhtqEaGDklRFN_annotation"/>
+				<eStructuralFeatures lowerBound="1" name="base_Interface" ordered="false" xmi:id="N73uhtqEaGDklRFN_structuralFeature" xmi:type="ecore:EReference">
+					<eType href="http://www.eclipse.org/uml2/2.0.0/UML#//Interface" xmi:type="ecore:EClass"/>
+				</eStructuralFeatures>
+			</eClassifiers>
+			<eClassifiers name="Property" xmi:id="oEHuhtqEaGDklQmc_classifier" xmi:type="ecore:EClass">
+				<eAnnotations references="oEHuhtqEaGDklQmc" source="http://www.eclipse.org/uml2/2.0.0/UML" xmi:id="oEHuhtqEaGDklQmc_annotation"/>
+				<eStructuralFeatures lowerBound="1" name="base_Property" ordered="false" xmi:id="oEHuhtqEaGDklQmc_structuralFeature" xmi:type="ecore:EReference">
+					<eType href="http://www.eclipse.org/uml2/2.0.0/UML#//Property" xmi:type="ecore:EClass"/>
+				</eStructuralFeatures>
+			</eClassifiers>
+		</contents>
+	</eAnnotations>
+	<packagedElement name="Property" xmi:id="oEHuhtqEaGDklQmc" xmi:type="uml:Stereotype">
+		<ownedAttribute association="oEHuhtqEaGDklQmc_extension" name="base_Attribute" xmi:id="oEHuhtqEaGDklQmc_to">
+			<type href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property" xmi:type="uml:Class"/>
+		</ownedAttribute>
+	</packagedElement>
+	<packagedElement memberEnd="oEHuhtqEaGDklQmc_from oEHuhtqEaGDklQmc_to" name="Attribute_Property" xmi:id="oEHuhtqEaGDklQmc_extension" xmi:type="uml:Extension">
+		<ownedEnd aggregation="composite" association="oEHuhtqEaGDklQmc_extension" type="oEHuhtqEaGDklQmc" xmi:id="oEHuhtqEaGDklQmc_from" xmi:type="uml:ExtensionEnd"/>
+	</packagedElement>
+	<packagedElement name="Interface" xmi:id="N73uhtqEaGDklRFN" xmi:type="uml:Stereotype">
+		<ownedAttribute association="N73uhtqEaGDklRFN_extension" name="base_Interface" xmi:id="N73uhtqEaGDklRFN_to">
+			<type href="pathmap://UML_METAMODELS/UML.metamodel.uml#Interface" xmi:type="uml:Class"/>
+		</ownedAttribute>
+	</packagedElement>
+	<packagedElement memberEnd="N73uhtqEaGDklRFN_from N73uhtqEaGDklRFN_to" name="Class_Interface" xmi:id="N73uhtqEaGDklRFN_extension" xmi:type="uml:Extension">
+		<ownedEnd aggregation="composite" association="N73uhtqEaGDklRFN_extension" type="N73uhtqEaGDklRFN" xmi:id="N73uhtqEaGDklRFN_from" xmi:type="uml:ExtensionEnd"/>
+	</packagedElement>
+	<packagedElement name="Property" xmi:id="oEHuhtqEaGDklQmc" xmi:type="uml:Stereotype">
+		<ownedAttribute association="oEHuhtqEaGDklQmc_extension" name="base_Property" xmi:id="oEHuhtqEaGDklQmc_to">
+			<type href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property" xmi:type="uml:Class"/>
+		</ownedAttribute>
+	</packagedElement>
+	<packagedElement memberEnd="oEHuhtqEaGDklQmc_from oEHuhtqEaGDklQmc_to" name="Attribute_Property" xmi:id="oEHuhtqEaGDklQmc_extension" xmi:type="uml:Extension">
+		<ownedEnd aggregation="composite" association="oEHuhtqEaGDklQmc_extension" type="oEHuhtqEaGDklQmc" xmi:id="oEHuhtqEaGDklQmc_from" xmi:type="uml:ExtensionEnd"/>
+	</packagedElement>
+</uml:Profile>
