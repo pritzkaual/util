@@ -26,9 +26,9 @@ void StereotypeStorage::applyStereotype(uml::Element *_element, std::shared_ptr<
 	{
 		return;
 	}
-   
-	std::shared_ptr<std::vector<std::shared_ptr<uml::Property>>> propList = _stereotype->getOwnedAttribute();
-	
+
+	std::shared_ptr<Bag<uml::Property> > propList = _stereotype->getOwnedAttribute();
+
 	//set the base property of the stereotype to this
 	for(std::shared_ptr<uml::Property> prop : *propList)
 	{
@@ -65,9 +65,9 @@ std::shared_ptr<uml::Stereotype> StereotypeStorage::getAppliedStereotype(uml::El
     return nullptr;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<uml::Stereotype>>> StereotypeStorage::getAppliedStereotypes(uml::Element * _element)
+std::shared_ptr<Bag<uml::Stereotype> > StereotypeStorage::getAppliedStereotypes(uml::Element * _element)
 {
-    std::shared_ptr<std::vector<std::shared_ptr<uml::Stereotype>>> vector(new std::vector<std::shared_ptr<uml::Stereotype>>());
+    std::shared_ptr<Bag<uml::Stereotype> > vector(new Bag<uml::Stereotype>());
     std::map<uml::Element *, std::shared_ptr<uml::Stereotype>>::iterator it = m_stereotypeApplicationMap.find(_element);
     while (it != m_stereotypeApplicationMap.end())
     {
