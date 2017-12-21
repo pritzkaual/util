@@ -128,7 +128,8 @@ void Handler::setCurrentObj ( std::shared_ptr<ecore::EObject> object )
 	m_current_obj = object;
 }
 
-std::shared_ptr<ecore::EObject> Handler::getCurrentObj ()
+//std::shared_ptr<ecore::EObject> Handler::getCurrentObj ()
+std::shared_ptr<T> Handler::getCurrentObj ()
 {
 	return m_current_obj;
 }

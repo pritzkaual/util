@@ -84,7 +84,9 @@ public:
 
 	void setRootObj ( std::shared_ptr<ecore::EObject> object );
 	void setCurrentObj ( std::shared_ptr<ecore::EObject> object );
-	std::shared_ptr<ecore::EObject> getCurrentObj ();
+  
+  template<typename T>
+	virtual std::shared_ptr<T> getCurrentObj ( );
 
 	bool createRootNode ( const std::string& name, const std::string& ns_uri );
 	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri );
