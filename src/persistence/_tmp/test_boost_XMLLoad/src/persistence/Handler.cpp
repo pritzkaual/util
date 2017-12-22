@@ -129,6 +129,7 @@ void Handler::setCurrentObj ( std::shared_ptr<ecore::EObject> object )
 }
 
 //std::shared_ptr<ecore::EObject> Handler::getCurrentObj ()
+template<typename T>
 std::shared_ptr<T> Handler::getCurrentObj ()
 {
 	return m_current_obj;
