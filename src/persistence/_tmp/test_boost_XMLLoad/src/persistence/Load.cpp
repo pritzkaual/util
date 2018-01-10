@@ -75,8 +75,7 @@ std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename, std::s
 		m_handler->getNextNodeName(); // TODO need here
 
 		std::shared_ptr<ecore::EPackage> pck_root( factory->createEPackage() );
-		std::shared_ptr<ecore::EPackage> pck_root1;
-		pck_root1.reset( factory->createEPackage() );
+		std::shared_ptr<ecore::EPackage> pck_root1( factory->createEPackage() );
 		pck_root1->setName("MyPck");
 
 		std::shared_ptr<ecore::EObject> cls( factory->create( "EClass" ) );

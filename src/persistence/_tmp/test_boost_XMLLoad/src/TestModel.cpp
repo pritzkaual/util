@@ -27,7 +27,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	std::shared_ptr<ecore::EcoreFactory> factory = ecore::EcoreFactory::eInstance();
 
 	// Create package 'pck_UniModel' and set some default package information
-	std::shared_ptr<ecore::EPackage> pck_UniModel( factory->createEPackage() );
+	std::shared_ptr<ecore::EPackage> pck_UniModel = factory->createEPackage() ;
 	{
 		pck_UniModel->setName( "UniModelPackage" );
 		pck_UniModel->setNsPrefix( "Uni" );
@@ -37,9 +37,8 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	// get subpackage list from UniModel
 	std::shared_ptr<Bag<ecore::EPackage>> subpackages = pck_UniModel->getESubpackages();
 
-	// Create new subpackage and insert into package 'pck_UniModel'
-	std::shared_ptr<ecore::EPackage> pck_enum; // ptr anlegen bzw. initialisieren
-	pck_enum.reset( factory->createEPackage() ); // inhalt resetten bzw. ersetzten durch methoden aufruf
+	// Create new subpackage 'pck_enum' and insert into package 'pck_UniModel'
+	std::shared_ptr<ecore::EPackage> pck_enum( factory->createEPackage_in_ESuperPackage(pck_UniModel) );
 	{
 
 		//std::shared_ptr<ecore::EPackageImpl> pck_enum_Impl = std::dynamic_pointer_cast<ecore::EPackageImpl>( pck_enum ); // shared_ptr casten
@@ -54,7 +53,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	}
 
 	// Create new subpackage and insert into package 'pck_UniModel' (alternative variant)
-	std::shared_ptr<ecore::EPackage> pck_class( factory->createEPackage() );
+	std::shared_ptr<ecore::EPackage> pck_class( factory->createEPackage_in_ESuperPackage(pck_UniModel) );
 	{
 		//std::shared_ptr<ecore::EPackageImpl> pck_class_Impl = std::dynamic_pointer_cast<ecore::EPackageImpl>( pck_class ); // shared_ptr casten
 		{
@@ -71,7 +70,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	}
 
 	// Create ENUMs that are used in classes
-	std::shared_ptr<ecore::EEnum> enum_Geschlecht( factory->createEEnum() );
+	std::shared_ptr<ecore::EEnum> enum_Geschlecht( factory->createEEnum_in_EPackage(pck_enum) );
 	{
 		enum_Geschlecht->setName( "EnumGeschlecht" );
 		//enum_Geschlecht->setEPackage(pck_enum);
@@ -79,7 +78,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		// Create const attributes (literals)
 		std::shared_ptr<Bag<ecore::EEnumLiteral>> list_ELiteral = enum_Geschlecht->getELiterals();
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Geschlecht) );
 			literal->setName( "MAENNLICH" );
 			literal->setLiteral( "MAENNLICH" );
 			literal->setValue( 0 );
@@ -87,7 +86,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Geschlecht) );
 			literal->setName( "WEIBLICH" );
 			literal->setLiteral( "WEIBLICH" );
 			literal->setValue( 1 );
@@ -96,7 +95,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EEnum> enum_Verein( factory->createEEnum() );
+	std::shared_ptr<ecore::EEnum> enum_Verein( factory->createEEnum_in_EPackage(pck_enum) );
 	{
 		enum_Verein->setName( "EnumVerein" );
 		//enum_Verein->setEPackage(pck_enum);
@@ -104,7 +103,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		// Create const attributes (literals)
 		std::shared_ptr<Bag<ecore::EEnumLiteral>> list_ELiteral = enum_Verein->getELiterals();
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Verein) );
 			literal->setName( "BC" );
 			literal->setLiteral( "BC" );
 			literal->setValue( 0 );
@@ -112,7 +111,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Verein) );
 			literal->setName( "BD" );
 			literal->setLiteral( "BD" );
 			literal->setValue( 1 );
@@ -120,7 +119,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Verein) );
 			literal->setName( "BH" );
 			literal->setLiteral( "BH" );
 			literal->setValue( 2 );
@@ -129,7 +128,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EEnum> enum_Position( factory->createEEnum() );
+	std::shared_ptr<ecore::EEnum> enum_Position( factory->createEEnum_in_EPackage(pck_enum) );
 	{
 		enum_Position->setName( "EnumPosition" );
 		//enum_Position->setEPackage(pck_enum);
@@ -137,7 +136,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		// Create const attributes (literals)
 		std::shared_ptr<Bag<ecore::EEnumLiteral>> list_ELiteral = enum_Position->getELiterals();
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Position) );
 			literal->setName( "PROFESSOR" );
 			literal->setLiteral( "PROFESSOR" );
 			literal->setValue( 0 );
@@ -145,7 +144,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Position) );
 			literal->setName( "WMA" );
 			literal->setLiteral( "WMA" );
 			literal->setValue( 1 );
@@ -153,7 +152,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Position) );
 			literal->setName( "HIWI" );
 			literal->setLiteral( "HIWI" );
 			literal->setValue( 2 );
@@ -163,7 +162,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 	}
 
-	std::shared_ptr<ecore::EEnum> enum_StudentStatus( factory->createEEnum() );
+	std::shared_ptr<ecore::EEnum> enum_StudentStatus( factory->createEEnum_in_EPackage(pck_enum) );
 	{
 		enum_StudentStatus->setName( "EnumStudentStatus" );
 		//enum_StudentStatus->setEPackage(pck_enum);
@@ -171,7 +170,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		// Create const attributes (literals)
 		std::shared_ptr<Bag<ecore::EEnumLiteral>> list_ELiteral = enum_StudentStatus->getELiterals();
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_StudentStatus) );
 			literal->setName( "BACHELOR" );
 			literal->setLiteral( "BACHELOR" );
 			literal->setValue( 0 );
@@ -179,7 +178,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_StudentStatus) );
 			literal->setName( "MASTER" );
 			literal->setLiteral( "MASTER" );
 			literal->setValue( 1 );
@@ -189,8 +188,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 	}
 
-	std::shared_ptr<ecore::EEnum> enum_Veranstaltung( factory->createEEnum() );
-
+	std::shared_ptr<ecore::EEnum> enum_Veranstaltung( factory->createEEnum_in_EPackage(pck_enum) );
 	{
 		enum_Veranstaltung->setName( "EnumVeranstaltung" );
 		//enum_Veranstaltung->setEPackage(pck_enum);
@@ -198,7 +196,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		// Create const attributes (literals)
 		std::shared_ptr<Bag<ecore::EEnumLiteral>> list_ELiteral = enum_Veranstaltung->getELiterals();
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Veranstaltung) );
 			literal->setName( "VORLESUNG" );
 			literal->setLiteral( "VORLESUNG" );
 			literal->setValue( 0 );
@@ -206,7 +204,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Veranstaltung) );
 			literal->setName( "SEMINAR" );
 			literal->setLiteral( "SEMINAR" );
 			literal->setValue( 1 );
@@ -214,7 +212,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_ELiteral->push_back( literal );
 		}
 		{
-			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral() );
+			std::shared_ptr<ecore::EEnumLiteral> literal( factory->createEEnumLiteral_in_EEnum(enum_Veranstaltung) );
 			literal->setName( "PRAKTIKUM" );
 			literal->setLiteral( "PRAKTIKUM" );
 			literal->setValue( 2 );
@@ -234,14 +232,9 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	list_pck_enum->push_back( enum_StudentStatus );
 	list_pck_enum->push_back( enum_Veranstaltung );
 
-	enum_Geschlecht->setContainer( pck_enum );
-	enum_Verein->setContainer( pck_enum );
-	enum_Position->setContainer( pck_enum );
-	enum_StudentStatus->setContainer( pck_enum );
-	enum_Veranstaltung->setContainer( pck_enum );
 
 	// Create some classes with attributes, operations, compositions and association to each other
-	std::shared_ptr<ecore::EClass> cls_UniModel( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_UniModel( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_UniModel->setName( "UniModel" );
 		cls_UniModel->setInterface( false );
@@ -253,7 +246,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EClass> cls_Universitaet( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_Universitaet( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_Universitaet->setName( "Universitaet" );
 		cls_Universitaet->setInterface( false );
@@ -284,7 +277,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EClass> cls_Mensch( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_Mensch( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_Mensch->setName( "Mensch" );
 		cls_Mensch->setInterface( false );
@@ -357,7 +350,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EClass> cls_Person( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_Person( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_Person->setName( "Person" );
 		cls_Person->setInterface( true );
@@ -461,7 +454,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EClass> cls_Mitarbeiter( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_Mitarbeiter( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_Mitarbeiter->setName( "Mitarbeiter" );
 		cls_Mitarbeiter->setInterface( false );
@@ -540,7 +533,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EClass> cls_Student( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_Student( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_Student->setName( "Student" );
 		cls_Student->setInterface( false );
@@ -578,7 +571,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 	}
 
-	std::shared_ptr<ecore::EClass> cls_Veranstaltung( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_Veranstaltung( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_Veranstaltung->setName( "Veranstaltung" );
 		cls_Veranstaltung->setInterface( false );
@@ -587,7 +580,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		// Create attributes, set their names and types
 		std::shared_ptr<Bag<ecore::EAttribute>> list_EAttribute = cls_Veranstaltung->getEAttributes();
 		{
-			std::shared_ptr<ecore::EAttribute> attrib( factory->createEAttribute() );
+			std::shared_ptr<ecore::EAttribute> attrib( factory->createEAttribute_in_EContainingClass(cls_Veranstaltung) );
 
 			attrib->setName( "name" );
 			attrib->setEType( enum_Veranstaltung );
@@ -608,7 +601,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_EAttribute->push_back( attrib );
 		}
 		{
-			std::shared_ptr<ecore::EAttribute> attrib( factory->createEAttribute() );
+			std::shared_ptr<ecore::EAttribute> attrib( factory->createEAttribute_in_EContainingClass(cls_Veranstaltung) );
 
 			attrib->setName( "maxTeilnehmer" );
 			attrib->setEType( package->getEInt() );
@@ -630,7 +623,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		}
 	}
 
-	std::shared_ptr<ecore::EClass> cls_Verein( factory->createEClass() );
+	std::shared_ptr<ecore::EClass> cls_Verein( factory->createEClass_in_EPackage(pck_class) );
 	{
 		cls_Verein->setName( "Verein" );
 		cls_Verein->setInterface( false );
@@ -639,7 +632,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		// Create attributes, set their names and types
 		std::shared_ptr<Bag<ecore::EAttribute>> list_EAttribute = cls_Veranstaltung->getEAttributes();
 		{
-			std::shared_ptr<ecore::EAttribute> attrib( factory->createEAttribute() );
+			std::shared_ptr<ecore::EAttribute> attrib( factory->createEAttribute_in_EContainingClass(cls_Veranstaltung) );
 
 			attrib->setName( "name" );
 			attrib->setEType( enum_Verein );
@@ -674,27 +667,18 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	list_pck_class->push_back( cls_Veranstaltung );
 	list_pck_class->push_back( cls_Verein );
 
-	cls_UniModel->setContainer( pck_class );
-	cls_Universitaet->setContainer( pck_class );
-	cls_Mensch->setContainer( pck_class );
-	cls_Person->setContainer( pck_class );
-	cls_Mitarbeiter->setContainer( pck_class );
-	cls_Student->setContainer( pck_class );
-	cls_Veranstaltung->setContainer( pck_class );
-	cls_Verein->setContainer( pck_class );
 
 	// Create Compositions and Associations
 	{
 		std::shared_ptr<Bag<ecore::EReference>> list_reference = cls_UniModel->getEReferences();
 		{
-			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference_in_EContainingClass(cls_UniModel) );
 
 			reference->setName( "universitaet" );
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Universitaet );
 			//reference->getEReferenceType();
 			reference->setContainment( true ); // set reference as composition
-			reference->setContainer( cls_UniModel ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -715,14 +699,13 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	{
 		std::shared_ptr<Bag<ecore::EReference>> list_reference = cls_Universitaet->getEReferences();
 		{
-			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference_in_EContainingClass(cls_Universitaet) );
 
 			reference->setName( "person" );
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( true );			// set reference as composition
-			reference->setContainer( cls_Universitaet ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -740,14 +723,13 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_reference->push_back( reference );
 		}
 		{
-			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference_in_EContainingClass(cls_Universitaet) );
 
 			reference->setName( "veranstaltung" );
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Veranstaltung );
 			//reference->getEReferenceType();
 			reference->setContainment( true );			// set reference as composition
-			reference->setContainer( cls_Universitaet ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -768,14 +750,13 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	{
 		std::shared_ptr<Bag<ecore::EReference>> list_reference = cls_Person->getEReferences();
 		{
-			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference_in_EContainingClass(cls_Person) );
 
 			reference->setName( "veranstaltung" );
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Veranstaltung );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Person ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -796,14 +777,13 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	{
 		std::shared_ptr<Bag<ecore::EReference>> list_reference = cls_Veranstaltung->getEReferences();
 		{
-			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference_in_EContainingClass(cls_Veranstaltung) );
 
 			reference->setName( "dozent" );
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Veranstaltung ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -821,14 +801,13 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 			list_reference->push_back( reference );
 		}
 		{
-			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference_in_EContainingClass(cls_Veranstaltung) );
 
 			reference->setName( "student" );
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Person );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Veranstaltung ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
@@ -849,14 +828,13 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 	{
 		std::shared_ptr<Bag<ecore::EReference>> list_reference = cls_Student->getEReferences();
 		{
-			std::shared_ptr<ecore::EReference> reference( factory->createEReference() );
+			std::shared_ptr<ecore::EReference> reference( factory->createEReference_in_EContainingClass(cls_Student) );
 
 			reference->setName( "verein" );
 			// TODO hier muss spater eine Art setEReferenceType verwendet werden.
 			reference->setEType( cls_Verein );
 			//reference->getEReferenceType();
 			reference->setContainment( false );			// set reference as association
-			reference->setContainer( cls_Veranstaltung ); // TODO need comment
 			reference->setResolveProxies( true ); // default: resolveProxies=true
 
 			reference->setOrdered( true ); // default: ordered=true
