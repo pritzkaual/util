@@ -128,9 +128,9 @@ void Handler::setCurrentObj ( std::shared_ptr<ecore::EObject> object )
 	m_current_obj = object;
 }
 
-//std::shared_ptr<ecore::EObject> Handler::getCurrentObj ()
-template<typename T>
-std::shared_ptr<T> Handler::getCurrentObj ()
+std::shared_ptr<ecore::EObject> Handler::getCurrentObj ()
+//template<typename T>
+//std::shared_ptr<T> Handler::getCurrentObj ()
 {
 	return m_current_obj;
 }
@@ -269,9 +269,9 @@ std::string Handler::getType ( std::shared_ptr<ecore::EObject> obj ) const
 
 	std::stringstream ss;
 	std::shared_ptr<ecore::EClass> metaClass = obj->eClass();
-	std::shared_ptr<ecore::EPackage> pkg = metaClass->getEPackage();
+	std::weak_ptr<ecore::EPackage> pkg = metaClass->getEPackage();
 
-	ss << pkg->getName() << ":" << metaClass->getName();
+	ss << pkg.lock()->getName() << ":" << metaClass->getName();
 
 	return ss.str();
 }
@@ -369,12 +369,12 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const
 
 		if ( dataType )
 		{
-			std::shared_ptr<ecore::EPackage> dPck = dataType->getEPackage();
+			std::weak_ptr<ecore::EPackage> dPck = dataType->getEPackage();
 
 			//if ( (m_root_obj != dPck) || (m_root_obj == nullptr) )
-			if ( m_root_obj != dPck )
+			if ( m_root_obj != dPck.lock() ) // TODO use here other way to find equality of m_root_obj and current EPackage-Obj
 			{
-				value << getType( to ) << " " << dPck->getNsURI();
+				value << getType( to ) << " " << dPck.lock()->getNsURI();
 			}
 			value << "#/";
 			value << "/" << dataType->getName();
@@ -429,7 +429,7 @@ void Handler::releaseObj ()
 int Handler::getNumOfChildren ()
 {
 	DOMNode *child;
-	int count = 0;
+	unsigned int count = 0;
 
 	for ( child = m_current_elem->getLastChild(); child != 0; child = child->getPreviousSibling() )
 	{
