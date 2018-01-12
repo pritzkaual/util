@@ -22,10 +22,10 @@ Persistence::~Persistence () {
 std::shared_ptr<ecore::EObject> Persistence::load ( const std::string& filename, std::set<std::string> options ) {
 	std::shared_ptr<ecore::EObject> retvalue = nullptr;
 
-	/*if ( isValidFile( filename ) == false ) {
+	if ( isValidFile( filename ) == false ) {
 		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << "Given filename: '" << filename << "' is not valid!" << std::endl;
 		retvalue = nullptr;
-	}*/
+	}
 
 	if ( true ) {
 		std::cout << "| INFO     | " << "Load from XML-File" << "\n";
@@ -41,10 +41,10 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 		std::set<std::string> options ) {
 	bool retvalue = false;
 
-	/*if ( isValidFile( filename ) == false ) {
+	if ( isValidFile( filename ) == false ) {
 		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << "Given filename: '" << filename << "' is not valid!" << std::endl;
 		return false;
-	}*/
+	}
 
 	if ( options.find( persistence::Option::OPTION_SAVE_JSON ) != options.end() ) {
 		std::cout << "| INFO     | " << "Save as JSON-File" << "\n";
