@@ -74,8 +74,7 @@ MyTestXerces::~MyTestXerces () {
 
 bool MyTestXerces::load ( const std::string& filename ) {
 
-	//XERCES_CPP_NAMESPACE_USE
-	using namespace xercesc_3_1;
+	XERCES_CPP_NAMESPACE_USE
 
 	//
 	//  Parse the XML file, catching any XML exceptions that might propogate
