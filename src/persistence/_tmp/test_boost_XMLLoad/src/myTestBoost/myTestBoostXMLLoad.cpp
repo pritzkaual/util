@@ -9,16 +9,16 @@
 
 namespace testBoostXMLLoad {
 
-myTestBoostXMLLoad::myTestBoostXMLLoad () :
-				m_level( 0 ) {
+myTestBoostXMLLoad::myTestBoostXMLLoad ()
+{
 	// TODO Auto-generated constructor stub
-
 }
 
 // TODO Auto-generated destructor stub
-myTestBoostXMLLoad::~myTestBoostXMLLoad () {
-}
+myTestBoostXMLLoad::~myTestBoostXMLLoad ()
+{ }
 
+#if 0
 void myTestBoostXMLLoad::load ( const std::string& filename ) {
 	// Create empty property tree object
 	//boost::property_tree::ptree tree;
@@ -88,5 +88,5 @@ void myTestBoostXMLLoad::save ( const std::string& filename ) {
 	boost::property_tree::write_xml( filename, m_tree, std::locale(), boost::property_tree::xml_writer_make_settings<std::string>( ' ', 2 ) );
 	//boost::property_tree::write_xml(filename, m_tree, std::locale(), boost::property_tree::xml_writer_make_settings<std::string>('\n', 1));
 }
-
+#endif
 } /* namespace testBoostXMLLoad */
