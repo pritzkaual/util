@@ -4,7 +4,7 @@ task compilePersistence(dependsOn: ['compilePersistenceDebug', 'compilePersisten
 	group 'Examples'
 	description 'compile test_boost_XMLLoad in debug and release'
 }
-task compilePersistenceDebug(dependsOn: ['deliverPersistenceHeader']) {
+task compilePersistenceDebug {
 	group 'Examples'
 	description 'compile test_boost_XMLLoad in Debug'
 
@@ -16,7 +16,7 @@ task compilePersistenceDebug(dependsOn: ['deliverPersistenceHeader']) {
 	doLast {
 		exec {
 			workingDir 'test_boost_XMLLoad/.cmake/Debug'
-			commandLine 'cmd', '/c', 'cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Debug ' + file("./test_boost_XMLLoad").absolutePath
+			commandLine 'cmd', '/c', 'cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Debug ' + file("./test_boost_XMLLoad/src").absolutePath
 		}
 		exec {
 			workingDir 'test_boost_XMLLoad/.cmake/Debug'
@@ -43,7 +43,7 @@ task compilePersistenceRelease {
 	doLast {
 		exec {
 			workingDir 'test_boost_XMLLoad/.cmake/Release'
-			commandLine 'cmd', '/c', 'cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Release ' + file("./test_boost_XMLLoad").absolutePath
+			commandLine 'cmd', '/c', 'cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Release ' + file("./test_boost_XMLLoad/src").absolutePath
 		}
 		exec {
 			workingDir 'test_boost_XMLLoad/.cmake/Release'
