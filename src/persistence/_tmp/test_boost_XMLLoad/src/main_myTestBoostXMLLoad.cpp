@@ -12,8 +12,8 @@
  */
 #include "TestModel.hpp"
 
-#include "myTestBoost/myTestBoostXMLLoad.hpp"
-#include "myTestXerces/MyTestXerces.hpp"
+//#include "myTestBoost/myTestBoostXMLLoad.hpp"
+//#include "myTestXerces/MyTestXerces.hpp"
 
 #include "persistence/Persistence.hpp"
 
@@ -21,41 +21,19 @@
 
 int main () {
 	try {
-		//testBoostXMLLoad::myTestBoostXMLLoad myTestBoostObject;
-
-		//myTestBoostObject.load( "_tmp/uml.ecore" );
-		//myTestBoostObject.save( "_tmp/uml_out.ecore" );
-
-		testXerces::MyTestXerces myXMLObject;
-		/*
-		 if ( !myXMLObject.load( "_tmp/uml.ecore" ) && !(myXMLObject.getSawErrors()) ) {
-
-		 myXMLObject.save( "_tmp/uml_out.ecore" );
-		 std::cout << "Successful load() and save() of '_tmp/uml.ecore' \n";
-		 }
-
-		 myXMLObject.createTestDOMDocument();
-		 myXMLObject.save( "_tmp/test_out.ecore" );
-		 */
-
-		// Create Models
-		std::cout << "| INFO     | " << "Create 'myEcoreTestSaveMetaModel'" << std::endl;
-		std::shared_ptr<ecore::EObject> myEcoreTestSaveMetaModel = testmodel::TestModel::createEcoreTestMetaModel();
-
-		if ( myEcoreTestSaveMetaModel == 0 ) {
-			std::cout << "| ERROR    | " << "'myEcoreTestSaveMetaModel' is empty" << std::endl;
-			return 0;
-		}
-
-		std::cout << "| INFO     | " << "Create 'myEcoreTestLoadMetaModel'" << std::endl;
-		std::shared_ptr<ecore::EObject> myEcoreTestLoadMetaModel;
-
 		// Get MetaPackage
 		std::cout << "| INFO     | " << "Get 'myEcoreMetaMetaPackage'" << std::endl;
 		std::shared_ptr<ecore::EPackage> myEcoreMetaMetaPackage = testmodel::TestModel::getMetaMetaPackage();
-
 		if ( myEcoreMetaMetaPackage == 0 ) {
 			std::cout << "| ERROR    | " << "'myEcoreMetaMetaPackage' is empty" << std::endl;
+			return 0;
+		}
+
+		// Create Save-Model
+		std::cout << "| INFO     | " << "Create 'myEcoreTestSaveMetaModel'" << std::endl;
+		std::shared_ptr<ecore::EObject> myEcoreTestSaveMetaModel = testmodel::TestModel::createEcoreTestMetaModel();
+		if ( myEcoreTestSaveMetaModel == 0 ) {
+			std::cout << "| ERROR    | " << "'myEcoreTestSaveMetaModel' is empty" << std::endl;
 			return 0;
 		}
 
@@ -80,6 +58,10 @@ int main () {
 		else {
 			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestSaveMetaModel'" << std::endl;
 		}
+
+		// Create Load-Model
+		std::cout << "| INFO     | " << "Create 'myEcoreTestLoadMetaModel'" << std::endl;
+		std::shared_ptr<ecore::EObject> myEcoreTestLoadMetaModel;
 
 		// Perform load()
 		std::cout << "| INFO     | " << "Start load() of 'myEcoreTestSaveMetaModel'" << std::endl;
