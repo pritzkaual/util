@@ -52,7 +52,7 @@ XMLLoad::XMLLoad ()
 
 XMLLoad::~XMLLoad ()
 {
-
+	m_handler->deleteHandler();
 	XMLPlatformUtils::Terminate();
 }
 
@@ -108,10 +108,5 @@ bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::H
 	handler->setDOMDocument( m_parser->getDocument() );
 
 	return ((errorsOccured == false) && (m_errReporter->getSawErrors() == false));
-}
-
-void XMLLoad::perform ( std::shared_ptr<persistence::Handler> handler )
-{
-
 }
 } /* namespace persistence */

@@ -90,11 +90,10 @@ private:
 
 public:
 	XMLLoad ();
-	virtual ~XMLLoad ();
+	~XMLLoad ();
 
 private:
 	bool read ( const std::string &filename, std::shared_ptr<persistence::Handler> handler );
-	void perform ( std::shared_ptr<persistence::Handler> handler );
 };
 
 } /* namespace persistence */

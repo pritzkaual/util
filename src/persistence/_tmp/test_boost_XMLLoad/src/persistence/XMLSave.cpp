@@ -11,13 +11,8 @@
 namespace persistence {
 
 
-XMLSave::XMLSave () {
-	//m_XmlFile = 0;
-	//m_DoNamespaces = false;
-	//m_DoSchema = false;
-	//m_SchemaFullChecking = false;
-	//m_DoCreate = false;
-
+XMLSave::XMLSave ()
+{
 	m_XPathExpression = 0;
 
 	// options for DOMLSSerializer's features
@@ -32,7 +27,8 @@ XMLSave::XMLSave () {
 	//m_ValScheme = XercesDOMParser::Val_Auto;
 
 	// Initialize the XML4C2 system
-	try {
+	try
+	{
 		XMLPlatformUtils::Initialize();
 	}
 
@@ -40,38 +36,14 @@ XMLSave::XMLSave () {
 		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << StrX( toCatch.getMessage() ) << std::endl;
 		return;
 	}
-
-	//
-	//  Create our parser, then attach an error handler to the parser.
-	//  The parser will call back to methods of the ErrorHandler if it
-	//  discovers errors during the course of parsing the XML document.
-	//
-/*
-	m_parser = new XercesDOMParser;
-	m_parser->setValidationScheme( m_ValScheme );
-	m_parser->setDoNamespaces( m_DoNamespaces );
-	m_parser->setDoSchema( m_DoSchema );
-	m_parser->setHandleMultipleImports( true );
-	m_parser->setValidationSchemaFullChecking( m_SchemaFullChecking );
-	m_parser->setCreateEntityReferenceNodes( m_DoCreate );
-
-	m_errReporter = new DOMTreeErrorReporter();
-	m_parser->setErrorHandler( m_errReporter );
-*/
-	//m_doc = nullptr;
 }
 
-XMLSave::~XMLSave () {
-
+XMLSave::~XMLSave ()
+{
+	m_handler->deleteHandler();
 	XMLPlatformUtils::Terminate();
 }
 
-/*
- bool XMLSave::save ( const std::string& filename, std::shared_ptr<ecore::EObject> model, std::set<std::string> options ) {
-
- return write(filename, options);
- }
- */
 bool XMLSave::write ( const std::string &filename, std::shared_ptr<persistence::Handler> handler ) {
 
 	char* outputfile = (char*) filename.c_str();
