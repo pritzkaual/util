@@ -9,58 +9,38 @@
 
 namespace persistence {
 
-Save::Save () {
-	m_handler = std::make_shared<persistence::Handler>();
-	//m_package = ecore::EcorePackage::eInstance();
-	//m_tree = nullptr;
+Save::Save () : m_handler(new persistence::Handler())
+{
+
 }
 
-Save::~Save () {
+Save::~Save ()
+{
 	// TODO Auto-generated destructor stub
 }
 
-void Save::setFilename ( const std::string& filename ) {
-	m_filename = filename;
-}
+bool Save::save (const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
+		std::set<std::string> options)
+{
+	m_handler->setMetaMetaPackage( metaMetaPackage );
 
-void Save::setModel ( std::shared_ptr<ecore::EObject> model ) {
-	m_model = model;
-}
-
-void Save::setMetaMetaPackage ( std::shared_ptr<ecore::EPackage> metaMetaPackage ) {
-	m_metaMetaPackage = metaMetaPackage;
-}
-
-void Save::setOptions ( std::set<std::string> options ) {
-	m_options = options;
-}
-
-bool Save::save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
-		std::set<std::string> options ) {
-
-	setFilename( filename );
-	setModel( model );
-	setMetaMetaPackage( metaMetaPackage );
-	setOptions( options );
-
-	return save();
-}
-
-bool Save::save () {
-
-	std::shared_ptr<ecore::EClass> metaClass = m_model->eClass();
+	std::shared_ptr<ecore::EClass> metaClass = model->eClass();
 
 	std::cout << "| DEBUG    | " << "metaClass: " << metaClass->getName() << std::endl;
-	std::cout << "| DEBUG    | " << "metaMetaPck-NS: " << m_metaMetaPackage->getNsPrefix() << std::endl;
-	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << m_metaMetaPackage->getNsURI() << std::endl;
+	std::cout << "| DEBUG    | " << "metaMetaPck-NS: " << m_handler->getMetaMetaPackage()->getNsPrefix() << std::endl;
+	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << m_handler->getMetaMetaPackage()->getNsURI() << std::endl;
 
-	m_handler->createRootNode( m_metaMetaPackage->getNsPrefix(), metaClass->getName(), m_metaMetaPackage->getNsURI() );
-	m_handler->setRootObj( m_model );
-	m_model->save( m_handler );
+	m_handler->createRootNode( m_handler->getMetaMetaPackage()->getNsPrefix(), metaClass->getName(), m_handler->getMetaMetaPackage()->getNsURI() );
+	m_handler->setRootObj( model );
+
+	std::cout << "| DEBUG    | " << m_handler->extractType(model) << std::endl;
+
+	model->save( m_handler );
 	//traverse( m_model, m_handler );
 	m_handler->release();
 
-	return write( m_filename, m_handler );
+	// Call write() method in corresponding derived class
+	return write( filename, m_handler );
 }
 #if 0
 boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, const std::string prefix ) {
@@ -412,6 +392,7 @@ boost::property_tree::ptree Save::traverse ( std::shared_ptr<ecore::EObject> obj
 }
 #endif
 
+#if 0
 void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<persistence::Handler> handler ) {
 
 	std::shared_ptr<ecore::EClass> metaClass = object->eClass();
@@ -480,7 +461,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		//handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
-		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
+		handler->addAttribute( "xsi:type", handler->extractType( tmp_object ) );
 
 		std::shared_ptr<ecore::EStructuralFeature> wasd = metaClass->getEStructuralFeature( ecore::EcorePackage::ENAMEDELEMENT_NAME );
 		//if ( tmp_object->eIsSet( wasd ) ) {
@@ -536,7 +517,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		//m_handler->addToMap( tmp_object, tmp_object->getName() );
 		//handler->addToMap( tmp_object );
 
-		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
+		handler->addAttribute( "xsi:type", handler->extractType( tmp_object ) );
 		handler->addAttribute( "name", tmp_object->getName() );
 		//handler->addAttribute_xsi_type(tmp_object->getInstanceTypeName() ); // TODO remove this
 
@@ -581,7 +562,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		//handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
-		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
+		handler->addAttribute( "xsi:type", handler->extractType( tmp_object ) );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 
@@ -633,7 +614,7 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 		//handler->addToMap( tmp_object );
 
 		//std::shared_ptr<ecore::EClass> metaClass = tmp_object->eClass();
-		handler->addAttribute( "xsi:type", handler->getType( tmp_object ) );
+		handler->addAttribute( "xsi:type", handler->extractType( tmp_object ) );
 
 		handler->addAttribute( "name", tmp_object->getName() );
 
@@ -796,6 +777,6 @@ void Save::traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<pe
 
 	}
 }
-
+#endif
 } /* namespace persistence */
 

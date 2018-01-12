@@ -42,28 +42,16 @@ public:
 	Save ();
 	virtual ~Save ();
 
-	void setFilename ( const std::string &filename );
-	void setModel ( std::shared_ptr<ecore::EObject> model );
-	void setMetaMetaPackage ( std::shared_ptr<ecore::EPackage> metaMetaPackage );
-	void setOptions ( std::set<std::string> options );
-
-	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
-			std::set<std::string> options );
-	bool save ();
+	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage, std::set<std::string> options );
 
 protected:
 	std::shared_ptr<persistence::Handler> m_handler;
-
-	std::string m_filename;
-	std::shared_ptr<ecore::EObject> m_model;
-	std::shared_ptr<ecore::EPackage> m_metaMetaPackage;
-	std::set<std::string> m_options;
 
 private:
 	virtual bool write ( const std::string &filename, std::shared_ptr<persistence::Handler> handler ) = 0;
 
 	//boost::property_tree::ptree traverse(std::shared_ptr<ecore::EObject> object, boost::property_tree::ptree &tree, std::string prefix);
-	void traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<persistence::Handler> handler );
+	//void traverse ( std::shared_ptr<ecore::EObject> object, std::shared_ptr<persistence::Handler> handler );
 
 };
 
