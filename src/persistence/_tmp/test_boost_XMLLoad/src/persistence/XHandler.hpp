@@ -64,7 +64,7 @@ public:
 	//DOMDocument *getDOMDocument () = 0;
 
 	virtual std::string getPrefix () = 0;
-	virtual std::string getType ( std::shared_ptr<ecore::EObject> obj ) const = 0;
+	virtual std::string extractType ( std::shared_ptr<ecore::EObject> obj ) const = 0;
 
 	//virtual void addToMap ( std::shared_ptr<ecore::EObject> object ) = 0;
 	virtual void addToMap ( std::shared_ptr<ecore::EObject> object ) = 0;
@@ -73,7 +73,7 @@ public:
 	virtual void setCurrentObj ( std::shared_ptr<ecore::EObject> object ) = 0;
   
 	//template<typename T>
-	std::shared_ptr<ecore::EObject> getCurrentObj ( );
+	virtual std::shared_ptr<ecore::EObject> getCurrentObj ( ) = 0;
   
 	virtual bool createRootNode ( const std::string& name, const std::string& ns_uri ) = 0;
 	virtual bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri ) = 0;
