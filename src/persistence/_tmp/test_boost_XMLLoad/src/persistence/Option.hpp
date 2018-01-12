@@ -36,13 +36,7 @@ public:
 	 *
 	 */
 	static const std::string OPTION_USE_ID__AT;
-	/**
-	 *
-	 */
 
-	/**
-	 *
-	 */
 
 	static std::set<std::string> get_DefaultOptions();
 };

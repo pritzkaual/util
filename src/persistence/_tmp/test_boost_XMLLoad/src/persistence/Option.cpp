@@ -26,7 +26,7 @@ std::set<std::string> Option::get_DefaultOptions () {
 
 	default_options.insert( Option::OPTION_SAVE_XML );
 	//default_options.insert( Option::OPTION_SAVE_JSON );
-	default_options.insert( Option::OPTION_USE_ID__HASH );
+	//default_options.insert( Option::OPTION_USE_ID__HASH );
 	//default_options.insert( Option::OPTION_USE_ID__HASHTAG );
 
 	return default_options;
