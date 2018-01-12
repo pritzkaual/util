@@ -19,8 +19,8 @@ TestModel::~TestModel () {
 
 std::shared_ptr<ecore::EPackage> TestModel::getMetaMetaPackage () {
 	return ecore::EcorePackage::eInstance();
-
 }
+
 std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 
 	std::shared_ptr<ecore::EcorePackage> package = ecore::EcorePackage::eInstance();
