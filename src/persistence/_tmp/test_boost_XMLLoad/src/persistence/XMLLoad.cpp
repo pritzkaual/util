@@ -12,7 +12,6 @@ namespace persistence
 
 XMLLoad::XMLLoad ()
 {
-
 	m_DoNamespaces = false;
 	m_DoSchema = false;
 	m_SchemaFullChecking = false;
@@ -59,19 +58,21 @@ XMLLoad::~XMLLoad ()
 
 bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::Handler> handler )
 {
-	//XERCES_CPP_NAMESPACE_USE
-	using namespace xercesc_3_1;
+	XERCES_CPP_NAMESPACE_USE
 
 	//
 	//  Parse the XML file, catching any XML exceptions that might propogate
 	//  out of it.
 	//
-	char* xmlFile = (char*) filename.c_str();
+	//std::cout << "Filename: " << filename << std::endl;
+	std::string _filename = filename; // TODO check if _filename is necessary, because of Error-Message "Multiple errors.." in var filename
 
 	bool errorsOccured = false;
+
 	try
 	{
-		m_parser->parse( xmlFile );
+		m_parser->parse( _filename.c_str() );
+		//std::cout << "Errors: " << m_parser->getErrorCount() << std::endl;
 	}
 	catch ( const OutOfMemoryException& )
 	{
@@ -89,7 +90,7 @@ bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::H
 		const unsigned int maxChars = 2047;
 		XMLCh errText[maxChars + 1];
 
-		std::cout << "\nDOM Error during parsing: '" << xmlFile << "'\n" << "DOMException code is:  " << e.code << std::endl;
+		std::cout << "\nDOM Error during parsing: '" << _filename.c_str() << "'\n" << "DOMException code is:  " << e.code << std::endl;
 
 		if ( DOMImplementation::loadDOMExceptionMsg( e.code, errText, maxChars ) )
 			std::cout << "Message is: " << StrX( errText ) << std::endl;
