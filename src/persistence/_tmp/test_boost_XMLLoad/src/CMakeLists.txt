@@ -20,28 +20,28 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 SET(CMAKE_CXX_STANDARD 14)
 SET(GCC_COVERAGE_LINK_FLAGS "-fopenmp")
 SET(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-overloaded-virtual -Wdeprecated-declarations -fopenmp -fmax-errors=5")
-SET(CMAKE_CXX_FLAGS_DEBUG " -Og")
+SET(CMAKE_CXX_FLAGS_DEBUG " -Og -ggdb -DACTIVITY_DEBUG_ON")
 SET(CMAKE_CXX_FLAGS_RELEASE " -O3 -DNDEBUG")
 
 string(REPLACE "\\" "/" MDE4CPP_HOME $ENV{MDE4CPP_HOME})
 
 SET(SOURCE_FILES
-	src/main_myTestBoostXMLLoad.cpp
-	src/TestModel.cpp
-	src/myTestXerces/MyTestXerces.cpp
-	src/persistence/xerces/DOMPrintFilter.cpp
-	src/persistence/xerces/DOMPrintErrorHandler.cpp
-	src/persistence/xerces/DOMTreeErrorReporter.cpp
-	src/persistence/xerces/WStr.cpp
-	src/persistence/xerces/XStr.cpp
-	src/persistence/Persistence.cpp
-	src/persistence/Load.cpp
-	src/persistence/Save.cpp
-	src/persistence/XMLLoad.cpp
-	src/persistence/XMLSave.cpp
-	src/persistence/Handler.cpp
-	src/persistence/ExtendedMetaData.cpp
-	src/persistence/Option.cpp
+	main_myTestBoostXMLLoad.cpp
+	TestModel.cpp
+	myTestXerces/MyTestXerces.cpp
+	persistence/xerces/DOMPrintFilter.cpp
+	persistence/xerces/DOMPrintErrorHandler.cpp
+	persistence/xerces/DOMTreeErrorReporter.cpp
+	persistence/xerces/WStr.cpp
+	persistence/xerces/XStr.cpp
+	persistence/Persistence.cpp
+	persistence/Load.cpp
+	persistence/Save.cpp
+	persistence/XMLLoad.cpp
+	persistence/XMLSave.cpp
+	persistence/Handler.cpp
+	persistence/ExtendedMetaData.cpp
+	persistence/Option.cpp
 )
 
 INCLUDE_DIRECTORIES(
@@ -63,8 +63,10 @@ SET(DEBUG_LIBRARIES ${DEBUG_LIBRARIES} ${TYPES_DEBUG})
 FIND_LIBRARY(TYPES_RELEASE types ${MDE4CPP_HOME}/application/lib)
 SET(RELEASE_LIBRARIES ${RELEASE_LIBRARIES} ${TYPES_RELEASE})
 
-FIND_LIBRARY(LIBXERCES xerces-c ${MDE4CPP_HOME}/application/lib)
-MESSAGE(${LIBXERCES})
+FIND_LIBRARY(XERCES_DEBUG xerces-c ${MDE4CPP_HOME}/application/lib)
+FIND_LIBRARY(XERCES_RELEASE xerces-c ${MDE4CPP_HOME}/application/lib)
+MESSAGE(${XERCES_DEBUG})
+MESSAGE(${XERCES_RELEASE})
 FIND_LIBRARY(PLUGINFRAMEWORK_DEBUG PluginFrameworkd ${MDE4CPP_HOME}/application/lib)
 FIND_LIBRARY(PLUGINFRAMEWORK_RELEASE PluginFramework ${MDE4CPP_HOME}/application/lib)
 
@@ -74,13 +76,13 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 	debug ${ECORE_DEBUG}
 	debug ${TYPES_DEBUG}
 	debug ${PLUGINFRAMEWORK_DEBUG}
-	optimized ${LIBXERCES}
+	debug ${XERCES_DEBUG}
 )
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 	optimized ${ECORE_RELEASE}
 	optimized ${TYPES_RELEASE}
 	optimized ${PLUGINFRAMEWORK_RELEASE}
-	optimized ${LIBXERCES}
+	${XERCES_RELEASE}
 )
 
 #-----------------------------------------------------

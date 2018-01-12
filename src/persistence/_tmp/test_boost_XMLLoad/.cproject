@@ -19,8 +19,7 @@
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
@@ -28,7 +27,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.exe.debug.1501375146." name="/" resourcePath="">
 						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.mingw.exe.debug.6516184" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.exe.debug">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.exe.debug.1985322545" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.debug"/>
-							<builder arguments="build" buildPath="C:\Git\MDE4CPP_pritzkaual\MDE4CPP\src\util\src\persistence\_tmp\test_boost_XMLLoad" command="gradle.bat" enableCleanBuild="false" enabledIncrementalBuild="true" id="cdt.managedbuild.builder.gnu.cross.1184567601" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
+							<builder buildPath="C:\Git\MDE4CPP_pritzkaual\MDE4CPP\src\util\src\persistence\_tmp\test_boost_XMLLoad" enableCleanBuild="false" id="de.marw.cdt.cmake.core.genmakebuilder.2104019091" managedBuildOn="false" parallelBuildOn="false" superClass="de.marw.cdt.cmake.core.genmakebuilder"/>
 							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug.89825327" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1362558050" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -37,6 +36,12 @@
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level.337780663" name="Optimization Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.692890423" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.760167331" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${MINGW_HOME}/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MINGW_HOME}/lib/gcc/mingw32/6.3.0/include/c++&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MINGW_HOME}/lib/gcc/mingw32/6.3.0/include/c++/backward&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MINGW_HOME}/lib/gcc/mingw32/6.3.0/include/c++/mingw32&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MINGW_HOME}/lib/gcc/mingw32/6.3.0/include-fixed&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MINGW_HOME}/lib/gcc/mingw32/6.3.0/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MDE4CPP_HOME}/application/include/ecore&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MDE4CPP_HOME}/application/include/persistence&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MDE4CPP_HOME}/application/include&quot;"/>
@@ -55,6 +60,7 @@
 							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug.1454522550" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug">
 								<option id="gnu.cpp.link.option.paths.1489047288" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${MDE4CPP_HOME}/application/bin&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MDE4CPP_HOME}/application/lib&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.1909586980" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1058975877" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
@@ -75,6 +81,17 @@
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule buildDir="build/${ConfigName}" moduleId="de.marw.cdt.cmake.core.settings">
+				<options/>
+				<linux command="cmake" generator="UnixMakefiles" use-default="true">
+					<defs/>
+					<undefs/>
+				</linux>
+				<win32 command="cmake" generator="MinGWMakefiles" use-default="true">
+					<defs/>
+					<undefs/>
+				</win32>
+			</storageModule>
 		</cconfiguration>
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.release.1098901170">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.release.1098901170" moduleId="org.eclipse.cdt.core.settings" name="Release">
