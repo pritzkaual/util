@@ -71,13 +71,17 @@ public:
 	//std::map<std::shared_ptr<ecore::EObject>, std::string> get_ObjectToId_Map ();
 
 	//std::string get_Id ( std::shared_ptr<ecore::EObject> object );
+
+	void setMetaMetaPackage( std::shared_ptr<ecore::EPackage> metaMetaPackage );
+	std::shared_ptr<ecore::EPackage> getMetaMetaPackage( );
+
 	std::shared_ptr<ecore::EObject> get_Object ( std::string id );
 
 	DOMDocument *getDOMDocument ();
 	void setDOMDocument ( DOMDocument * doc );
 
 	std::string getPrefix ();
-	std::string getType ( std::shared_ptr<ecore::EObject> obj ) const;
+	std::string extractType ( std::shared_ptr<ecore::EObject> obj ) const;
 
 	//void addToMap ( std::shared_ptr<ecore::EObject> object );
 	void addToMap ( std::shared_ptr<ecore::EObject> object );
@@ -153,6 +157,8 @@ private:
 	std::shared_ptr<ecore::EObject> m_root_obj;
 	std::shared_ptr<ecore::EObject> m_current_obj;
 
+	std::shared_ptr<ecore::EPackage> m_metaMetaPackage;
+
 	std::set<std::string> m_options;
 
 	std::string m_rootPrefix;
@@ -163,7 +169,7 @@ private:
 
 	void addChild ( DOMElement *parent_elem, DOMElement *child_elem );
 
-	std::string getReference ( std::shared_ptr<ecore::EObject> to ) const;
+	std::string extractReference ( std::shared_ptr<ecore::EObject> to ) const;
 	std::string create_Hash ( std::shared_ptr<ecore::EObject> object );
 }
 ;

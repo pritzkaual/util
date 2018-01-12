@@ -18,6 +18,7 @@ Handler::Handler ()
 	m_root_obj = nullptr;
 	m_current_obj = nullptr;
 	m_current_elem = nullptr;
+	m_metaMetaPackage = nullptr;
 }
 
 Handler::~Handler ()
@@ -29,7 +30,7 @@ Handler::~Handler ()
 }
 
 /*void Handler::handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options ) {
- std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while is not implemented yet." << std::endl;
+ std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while is not implemented yet." << std::endl;
  }
 
  std::map<std::string, std::shared_ptr<ecore::EObject> > Handler::get_IdToObject_Map () {
@@ -52,6 +53,16 @@ Handler::~Handler ()
  return id;
  }
  */
+void Handler::setMetaMetaPackage( std::shared_ptr<ecore::EPackage> metaMetaPackage )
+{
+	m_metaMetaPackage = metaMetaPackage;
+}
+
+std::shared_ptr<ecore::EPackage> Handler::getMetaMetaPackage( )
+{
+	return m_metaMetaPackage;
+}
+
 std::shared_ptr<ecore::EObject> Handler::get_Object ( std::string id )
 {
 	std::shared_ptr<ecore::EObject> tmp;
@@ -79,7 +90,7 @@ std::shared_ptr<ecore::EObject> Handler::get_Object ( std::string id )
  */
 void Handler::addToMap ( std::shared_ptr<ecore::EObject> object )
 {
-	std::string id = getReference( object );
+	std::string id = extractReference( object );
 
 	std::cout << "| DEBUG    | " << "Object-RefName: " << id << std::endl;
 
@@ -109,7 +120,7 @@ void Handler::setDOMDocument ( DOMDocument * doc )
 	}
 	else
 	{
-		std::cout << "| ERROR    | " << __FUNCTION__ << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." << std::endl;
+		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." << std::endl;
 	}
 }
 
@@ -129,8 +140,6 @@ void Handler::setCurrentObj ( std::shared_ptr<ecore::EObject> object )
 }
 
 std::shared_ptr<ecore::EObject> Handler::getCurrentObj ()
-//template<typename T>
-//std::shared_ptr<T> Handler::getCurrentObj ()
 {
 	return m_current_obj;
 }
@@ -153,7 +162,6 @@ bool Handler::createRootNode ( const std::string& prefix, const std::string& nam
 
 bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype )
 {
-
 	DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation( X( "Core" ) );
 
 	if ( impl != NULL )
@@ -201,7 +209,7 @@ bool Handler::createAndAddElement ( const std::string& name )
 {
 	if ( m_doc == nullptr )
 	{
-		std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while their is no root-Element created before." << std::endl;
+		std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while their is no root-Element created before." << std::endl;
 		return false;
 	}
 	else
@@ -239,22 +247,15 @@ void Handler::addAttribute ( const std::string& name, const std::string& value )
 	}
 }
 
-/*void Handler::addAttribute_xsi_type ( const std::string& value )
- {
- addAttribute( "xsi:type", value );
- }*/
-
 void Handler::addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object )
 {
-
-	addAttribute( name, getReference( object ) );
-
+	addAttribute( name, extractReference( object ) );
 }
 
 void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject> > objects )
 {
 	// TODO need implementation
-	std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while is not implemented yet." << std::endl;
+	std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while is not implemented yet." << std::endl;
 }
 
 /*
@@ -264,14 +265,19 @@ void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject>
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_type(EObject_ptr obj) const
  *
  */
-std::string Handler::getType ( std::shared_ptr<ecore::EObject> obj ) const
+std::string Handler::extractType ( std::shared_ptr<ecore::EObject> obj ) const
 {
-
 	std::stringstream ss;
 	std::shared_ptr<ecore::EClass> metaClass = obj->eClass();
-	std::weak_ptr<ecore::EPackage> pkg = metaClass->getEPackage();
 
-	ss << pkg.lock()->getName() << ":" << metaClass->getName();
+	if (m_metaMetaPackage)
+	{
+		ss << m_metaMetaPackage->getNsPrefix() << ":" << metaClass->getName();
+	}
+	else
+	{
+		ss << metaClass->getName();
+	}
 
 	return ss.str();
 }
@@ -283,13 +289,11 @@ std::string Handler::getType ( std::shared_ptr<ecore::EObject> obj ) const
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_reference(EObject_ptr from, EObject_ptr to) const
  *
  */
-std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const
+std::string Handler::extractReference ( std::shared_ptr<ecore::EObject> to ) const
 {
 
 	std::stringstream value;
-
 	std::list<std::shared_ptr<ecore::EObject> > to_antecessors;
-
 	std::shared_ptr<ecore::EObject> antecessor = to; //pre-init antecessor
 
 	while ( antecessor )
@@ -306,7 +310,7 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const
 		//if ( (m_root_obj != pkg) || (m_root_obj == nullptr) )
 		if ( m_root_obj != pkg )
 		{
-			value << getType( to ) << " " << pkg->getNsURI();
+			value << extractType( to ) << " " << pkg->getNsURI();
 		}
 
 		value << "#/";
@@ -330,7 +334,7 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const
 
 		// TODO this case is used for non ecore-models
 
-		std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while else-if-case is not implemented yet." << std::endl;
+		std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while else-if-case is not implemented yet." << std::endl;
 
 		value << "/";
 		std::shared_ptr<ecore::EObject> prev = to_antecessors.back();
@@ -374,14 +378,14 @@ std::string Handler::getReference ( std::shared_ptr<ecore::EObject> to ) const
 			//if ( (m_root_obj != dPck) || (m_root_obj == nullptr) )
 			if ( m_root_obj != dPck.lock() ) // TODO use here other way to find equality of m_root_obj and current EPackage-Obj
 			{
-				value << getType( to ) << " " << dPck.lock()->getNsURI();
+				value << extractType( to ) << " " << dPck.lock()->getNsURI();
 			}
 			value << "#/";
 			value << "/" << dataType->getName();
 		}
 		else
 		{
-			std::cout << "| ERROR    | " << "Called " << __FUNCTION__ << " while else-case is not implemented yet." << std::endl;
+			std::cout << "| ERROR    | " << "Called " << __PRETTY_FUNCTION__ << " while else-case is not implemented yet." << std::endl;
 		}
 	}
 
@@ -393,7 +397,7 @@ void Handler::release ()
 {
 	if ( m_current_elem == nullptr )
 	{
-		std::cout << "| ERROR    | " << "You can't call " << __FUNCTION__ << " while current DOMElement m_current_elem is nullptr." << std::endl;
+		std::cout << "| ERROR    | " << "You can't call " << __PRETTY_FUNCTION__ << " while current DOMElement m_current_elem is nullptr." << std::endl;
 	}
 	else
 	{
@@ -406,7 +410,7 @@ void Handler::releaseObj ()
 {
 	if ( m_current_obj == nullptr )
 	{
-		std::cout << "| ERROR    | " << "You can't call " << __FUNCTION__ << " while current Object m_current_obj is nullptr." << std::endl;
+		std::cout << "| ERROR    | " << "You can't call " << __PRETTY_FUNCTION__ << " while current Object m_current_obj is nullptr." << std::endl;
 	}
 	else
 	{
@@ -440,7 +444,7 @@ int Handler::getNumOfChildren ()
 	}
 	if ( count != m_current_elem->getChildElementCount() )
 	{
-		std::cout << "| ERROR    | " << " In " << __FUNCTION__ << " different Number of Children." << std::endl;
+		std::cout << "| ERROR    | " << " In " << __PRETTY_FUNCTION__ << " different Number of Children." << std::endl;
 	}
 	return count;
 }
