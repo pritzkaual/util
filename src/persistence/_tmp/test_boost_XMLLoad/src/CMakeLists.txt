@@ -28,7 +28,6 @@ string(REPLACE "\\" "/" MDE4CPP_HOME $ENV{MDE4CPP_HOME})
 SET(SOURCE_FILES
 	main_myTestBoostXMLLoad.cpp
 	TestModel.cpp
-	myTestXerces/MyTestXerces.cpp
 	persistence/xerces/DOMPrintFilter.cpp
 	persistence/xerces/DOMPrintErrorHandler.cpp
 	persistence/xerces/DOMTreeErrorReporter.cpp
