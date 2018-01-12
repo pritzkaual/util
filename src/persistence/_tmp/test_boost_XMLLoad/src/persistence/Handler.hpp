@@ -64,6 +64,7 @@ class Handler : public XHandler
 public:
 	Handler ();
 	virtual ~Handler ();
+	void deleteHandler (); // TODO find other way to del handler
 
 	//void handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options );
 
@@ -155,7 +156,7 @@ private:
 	std::list<DOMNode *> m_element_list;
 
 	std::shared_ptr<ecore::EObject> m_root_obj;
-	std::shared_ptr<ecore::EObject> m_current_obj;
+	std::list<std::shared_ptr<ecore::EObject> > m_current_obj_list;
 
 	std::shared_ptr<ecore::EPackage> m_metaMetaPackage;
 
