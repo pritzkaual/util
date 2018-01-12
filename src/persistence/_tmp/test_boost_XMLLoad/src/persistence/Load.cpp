@@ -144,6 +144,9 @@ std::shared_ptr<ecore::EObject> Load::load (const std::string &filename, std::se
 		m_handler->setRootObj( pck_root );
 		pck_root->load( m_handler ); // TODO remove this comment
 
+		// resolve references
+		m_handler->resolveReferences();
+
 		retvalue = std::dynamic_pointer_cast<ecore::EObject>( pck_root );
 	}
 
