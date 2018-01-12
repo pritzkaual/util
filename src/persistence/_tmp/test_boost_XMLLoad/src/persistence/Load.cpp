@@ -10,10 +10,9 @@
 namespace persistence
 {
 
-Load::Load ()
+Load::Load () : m_handler(new persistence::Handler())
 {
-	m_handler = std::make_shared<persistence::Handler>();
-	m_model = nullptr;
+
 }
 
 Load::~Load ()
@@ -21,40 +20,13 @@ Load::~Load ()
 	// TODO Auto-generated destructor stub
 }
 
-void Load::setFilename ( const std::string& filename )
-{
-	m_filename = filename;
-}
 
-void Load::setModel ( std::shared_ptr<ecore::EObject> model )
-{
-	m_model = model;
-}
 
-void Load::setMetaMetaPackage ( std::shared_ptr<ecore::EPackage> metaMetaPackage )
-{
-	m_metaMetaPackage = metaMetaPackage;
-}
-
-void Load::setOptions ( std::set<std::string> options )
-{
-	m_options = options;
-}
-
-std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename, std::set<std::string> options )
-/*{
-
- setFilename( filename );
- setModel( model ); // TODO dont need this
- setMetaMetaPackage( metaMetaPackage ); // TODO dont need this
- setOptions( options ); // TODO dont need this
-
- return load();
- }
-
- std::shared_ptr<ecore::EObject> Load::load ()*/
+std::shared_ptr<ecore::EObject> Load::load (const std::string &filename, std::set<std::string> options)
 {
 	std::shared_ptr<ecore::EObject> retvalue = nullptr;
+
+	std::cout << "| INFO     | " << "Reading file '" << filename << "'"<< std::endl;
 
 	if ( read( filename, m_handler ) == false )
 	{
@@ -75,6 +47,7 @@ std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename, std::s
 		m_handler->getNextNodeName(); // TODO need here
 
 		std::shared_ptr<ecore::EPackage> pck_root( factory->createEPackage() );
+#if 0
 		std::shared_ptr<ecore::EPackage> pck_root1( factory->createEPackage() );
 		pck_root1->setName("MyPck");
 
@@ -167,14 +140,11 @@ std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename, std::s
 		 {
 		 std::cout << e.what() << '\n';
 		 }*/
+#endif
 		m_handler->setRootObj( pck_root );
 		pck_root->load( m_handler ); // TODO remove this comment
 
-		m_model = std::dynamic_pointer_cast<ecore::EObject>( pck_root );
-
-		//
-
-		retvalue = m_model;
+		retvalue = std::dynamic_pointer_cast<ecore::EObject>( pck_root );
 	}
 
 	return retvalue;

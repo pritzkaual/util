@@ -22,19 +22,15 @@ Persistence::~Persistence () {
 std::shared_ptr<ecore::EObject> Persistence::load ( const std::string& filename, std::set<std::string> options ) {
 	std::shared_ptr<ecore::EObject> retvalue = nullptr;
 
-	if ( isValidFile( filename ) == false ) {
+	/*if ( isValidFile( filename ) == false ) {
 		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << "Given filename: '" << filename << "' is not valid!" << std::endl;
 		retvalue = nullptr;
-	}
+	}*/
 
 	if ( true ) {
 		std::cout << "| INFO     | " << "Load from XML-File" << "\n";
 
-		std::shared_ptr<persistence::XMLLoad> tmp_load = std::make_shared<persistence::XMLLoad>();
-		//tmp_load->setOptions( options );
-		//tmp_load->setFilename( filename );
-		//tmp_load->setModel( model );
-		//tmp_load->setMetaMetaPackage( metaMetaPackage );
+		std::shared_ptr<persistence::XMLLoad> tmp_load(new persistence::XMLLoad());
 
 		retvalue = tmp_load->load( filename, options ); // TODO use inheritance method in XMLLoad
 	}
@@ -45,10 +41,10 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 		std::set<std::string> options ) {
 	bool retvalue = false;
 
-	if ( isValidFile( filename ) == false ) {
+	/*if ( isValidFile( filename ) == false ) {
 		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << "Given filename: '" << filename << "' is not valid!" << std::endl;
 		return false;
-	}
+	}*/
 
 	if ( options.find( persistence::Option::OPTION_SAVE_JSON ) != options.end() ) {
 		std::cout << "| INFO     | " << "Save as JSON-File" << "\n";
@@ -63,11 +59,8 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 	else if ( options.find( persistence::Option::OPTION_SAVE_XML ) != options.end() ) {
 		std::cout << "| INFO     | " << "Save as XML-File" << "\n";
 
-		std::shared_ptr<persistence::XMLSave> tmp_save = std::make_shared<persistence::XMLSave>();
-		//tmp_save->setOptions( options );
-		//tmp_save->setFilename( filename );
-		//tmp_save->setModel( model );
-		//tmp_save->setMetaMetaPackage( metaMetaPackage );
+		std::shared_ptr<persistence::XMLSave> tmp_save(new persistence::XMLSave());
+
 		retvalue = tmp_save->save( filename, model, metaMetaPackage, options ); // TODO use inheritance method in XMLSave
 
 	}
