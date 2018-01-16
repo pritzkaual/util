@@ -7,6 +7,10 @@
 
 #include "Load.hpp"
 
+#include "PluginFramework.hpp"
+#include "MDE4CPPPlugin.hpp"
+#include "EcoreModelPlugin.hpp"
+
 namespace persistence
 {
 
@@ -52,7 +56,16 @@ std::shared_ptr<ecore::EObject> Load::load (const std::string &filename, std::se
 			std::shared_ptr<EcoreModelPlugin> ecorePlugin = std::dynamic_pointer_cast<EcoreModelPlugin>(plugin);
 			std::shared_ptr<ecore::EcoreFactory> factory = std::dynamic_pointer_cast<ecore::EcoreFactory>(ecorePlugin->getFactory())->eInstance();
 			std::shared_ptr<ecore::EcorePackage> package = std::dynamic_pointer_cast<ecore::EcorePackage>(ecorePlugin->getPackage())->eInstance();
+#if 0
+			std::shared_ptr<ecore::EPackage> package = ecorePlugin->getPackage();
 
+			std::shared_ptr<Bag<ecore::EClassifier>> eClassifiers = package->getEClassifiers();
+
+			for(std::shared_ptr<ecore::EClassifier> eClassifier : *eClassifiers)
+			{
+				std::cout << eClassifier->getName() << std::endl;
+			}
+#endif
 			// Add Primitive DataTypes to Handler's internal map
 			m_handler->addToMap(package->getEBigDecimal());
 			m_handler->addToMap(package->getEBigInteger());
