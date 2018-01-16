@@ -7,6 +7,7 @@
 
 #include "Handler.hpp"
 
+
 #include <sstream> // used for get_Hash()
 
 namespace persistence
@@ -58,15 +59,6 @@ void Handler::deleteHandler ()
  return id;
  }
  */
-void Handler::setMetaMetaPackage( std::shared_ptr<ecore::EPackage> metaMetaPackage )
-{
-	m_metaMetaPackage = metaMetaPackage;
-}
-
-std::shared_ptr<ecore::EPackage> Handler::getMetaMetaPackage( )
-{
-	return m_metaMetaPackage;
-}
 
 std::shared_ptr<ecore::EObject> Handler::get_Object ( std::string id ) // TODO rename to getObject_by_ref(std::string ref)
 {
@@ -116,9 +108,12 @@ DOMDocument *Handler::getDOMDocument ()
 
 void Handler::setDOMDocument ( DOMDocument * doc )
 {
+	assert(doc);
 	m_doc = doc;
 	m_root_obj = nullptr;
 	m_current_elem = m_doc->getDocumentElement(); // get root element
+
+	m_rootPrefix = "ecore"; // TODO get prefix from document
 
 	if ( m_current_elem->getNodeType() == DOMNode::ELEMENT_NODE )
 	{
@@ -278,9 +273,9 @@ std::string Handler::extractType ( std::shared_ptr<ecore::EObject> obj ) const
 	std::stringstream ss;
 	std::shared_ptr<ecore::EClass> metaClass = obj->eClass();
 
-	if (m_metaMetaPackage)
+	if (!m_rootPrefix.empty())
 	{
-		ss << m_metaMetaPackage->getNsPrefix() << ":" << metaClass->getName();
+		ss << m_rootPrefix << ":" << metaClass->getName();
 	}
 	else
 	{
@@ -618,7 +613,7 @@ bool Handler::resolveReferences ()
 
 		if ( esf->getUpperBound() == 1 )
 		{
-			// EStructuralfeature is a single object
+			// EStructuralFeature is a single object
 			try
 			{
 				std::shared_ptr<ecore::EClassifier> _elem = boost::any_cast<std::shared_ptr<ecore::EClassifier> >( _any );

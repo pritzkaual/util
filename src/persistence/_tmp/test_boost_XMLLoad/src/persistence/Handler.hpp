@@ -70,9 +70,6 @@ public:
 
 	//std::string get_Id ( std::shared_ptr<ecore::EObject> object );
 
-	void setMetaMetaPackage( std::shared_ptr<ecore::EPackage> metaMetaPackage );
-	std::shared_ptr<ecore::EPackage> getMetaMetaPackage( );
-
 	std::shared_ptr<ecore::EObject> get_Object ( std::string id );
 
 	DOMDocument *getDOMDocument ();
