@@ -15,6 +15,7 @@
 
 #include "EObject.hpp"
 #include "EPackage.hpp"
+#include "EcorePackage.hpp"
 #include "EcoreFactory.hpp"
 
 //#include "EClass.hpp"
