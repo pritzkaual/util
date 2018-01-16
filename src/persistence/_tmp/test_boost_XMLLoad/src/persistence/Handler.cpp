@@ -616,10 +616,9 @@ bool Handler::resolveReferences ()
 			// EStructuralFeature is a single object
 			try
 			{
-				std::shared_ptr<ecore::EClassifier> _elem = boost::any_cast<std::shared_ptr<ecore::EClassifier> >( _any );
-
-				std::shared_ptr<ecore::EObject> resolved_object = this->get_Object( name );
-
+				std::shared_ptr<ecore::EClassifier> resolved_object = std::dynamic_pointer_cast<ecore::EClassifier>(this->get_Object( name ));
+				assert(resolved_object);
+				object->eSet(esf, resolved_object);
 			}
 			catch ( std::exception& e )
 			{
@@ -630,8 +629,43 @@ bool Handler::resolveReferences ()
 		{
 			try
 			{
-				// EStructuralfeature is a list (Bag/Union/Subset)
-				std::shared_ptr<Bag<ecore::EClassifier>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EClassifier>> >( _any );
+				// EStructuralFeature is a list (Bag/Union/Subset)
+
+				try
+				{
+					std::shared_ptr<Bag<ecore::EClass>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EClass>> >( _any );
+					std::shared_ptr<ecore::EClass> resolved_object = std::dynamic_pointer_cast<ecore::EClass>(this->get_Object( name ));
+					assert(resolved_object);
+
+					_collection->add(resolved_object);
+				}
+				catch ( boost::bad_any_cast& e )
+				{
+					try
+					{
+						std::shared_ptr<Bag<ecore::EDataType>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EDataType>> >( _any );
+						std::shared_ptr<ecore::EDataType> resolved_object = std::dynamic_pointer_cast<ecore::EDataType>(this->get_Object( name ));
+						assert(resolved_object);
+
+						_collection->add(resolved_object);
+					}
+					catch ( boost::bad_any_cast& e )
+					{
+						// TODO here raises compiler error during casting EObject to EEnum
+//						try
+//						{
+//							std::shared_ptr<Bag<ecore::EEnum>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EEnum>> >( _any );
+//							std::shared_ptr<ecore::EEnum> resolved_object = std::dynamic_pointer_cast<ecore::EEnum>(this->get_Object( name ));
+//							assert(resolved_object);
+//
+//							_collection->add(resolved_object);
+//						}
+//						catch ( boost::bad_any_cast& e )
+//						{
+//							throw(e);
+//						}
+					}
+				}
 			}
 			catch ( std::exception& e )
 			{
