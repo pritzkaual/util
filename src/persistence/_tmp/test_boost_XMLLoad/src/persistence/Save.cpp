@@ -22,15 +22,13 @@ Save::~Save ()
 bool Save::save (const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
 		std::set<std::string> options)
 {
-	m_handler->setMetaMetaPackage( metaMetaPackage );
-
 	std::shared_ptr<ecore::EClass> metaClass = model->eClass();
 
 	std::cout << "| DEBUG    | " << "metaClass: " << metaClass->getName() << std::endl;
-	std::cout << "| DEBUG    | " << "metaMetaPck-NS: " << m_handler->getMetaMetaPackage()->getNsPrefix() << std::endl;
-	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << m_handler->getMetaMetaPackage()->getNsURI() << std::endl;
+	std::cout << "| DEBUG    | " << "metaMetaPck-NS: " << metaMetaPackage->getNsPrefix() << std::endl;
+	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << metaMetaPackage->getNsURI() << std::endl;
 
-	m_handler->createRootNode( m_handler->getMetaMetaPackage()->getNsPrefix(), metaClass->getName(), m_handler->getMetaMetaPackage()->getNsURI() );
+	m_handler->createRootNode( metaMetaPackage->getNsPrefix(), metaClass->getName(), metaMetaPackage->getNsURI() );
 	m_handler->setRootObj( model );
 
 	std::cout << "| DEBUG    | " << m_handler->extractType(model) << std::endl;
