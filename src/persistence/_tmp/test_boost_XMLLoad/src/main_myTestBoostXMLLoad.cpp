@@ -76,8 +76,8 @@ int main () {
 		// Perform save() again
 		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestLoadMetaModel'" << std::endl;
 
-		if ( myPersistence.save( filename2, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage, options ) ) {
-
+		if ( myPersistence.save( filename2, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage, options ) )
+		{
 			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename2 << "'" << std::endl;
 		}
 		else {
