@@ -28,9 +28,6 @@
 #include <exception>
 #include "boost/exception/to_string.hpp"
 
-#include "EcoreModelPlugin.hpp"
-#include "PluginFramework.hpp"
-
 #include "EClass.hpp"
 #include "EDataType.hpp"
 #include "ENamedElement.hpp"
@@ -82,6 +79,7 @@ public:
 	void setDOMDocument ( DOMDocument * doc );
 
 	std::string getPrefix ();
+
 	std::string extractType ( std::shared_ptr<ecore::EObject> obj ) const;
 
 	//void addToMap ( std::shared_ptr<ecore::EObject> object );
