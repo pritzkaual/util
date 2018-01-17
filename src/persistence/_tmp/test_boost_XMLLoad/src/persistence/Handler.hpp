@@ -14,6 +14,7 @@
 #include <list>
 #include <string>
 #include <set>
+#include <exception>
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMException.hpp>
@@ -21,11 +22,7 @@
 
 #include "xerces/XStr.hpp"
 #include "xerces/WStr.hpp"
-#include "xerces/DOMTreeErrorReporter.hpp"
-//#include "xerces/DOMPrintFilter.hpp"
-//#include "xerces/DOMPrintErrorHandler.hpp"
 
-#include <exception>
 #include "boost/exception/to_string.hpp"
 
 #include "EClass.hpp"
@@ -36,7 +33,6 @@
 #include "EPackage.hpp"
 #include "EStructuralFeature.hpp"
 
-#include "Option.hpp"
 
 namespace persistence
 {
