@@ -60,7 +60,7 @@ public:
 	virtual ~Handler ();
 	void deleteHandler (); // TODO find other way to del handler
 
-	std::shared_ptr<ecore::EObject> getObjectByRef ( std::string id );
+	std::shared_ptr<ecore::EObject> getObjectByRef ( std::string ref );
 
 	DOMDocument *getDOMDocument ();
 	void setDOMDocument ( DOMDocument * doc );

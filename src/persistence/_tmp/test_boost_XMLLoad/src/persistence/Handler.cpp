@@ -35,20 +35,20 @@ void Handler::deleteHandler ()
 }
 
 
-std::shared_ptr<ecore::EObject> Handler::getObjectByRef ( std::string id ) // TODO rename to getObject_by_ref(std::string ref)
+std::shared_ptr<ecore::EObject> Handler::getObjectByRef ( std::string ref ) // TODO rename to getObject_by_ref(std::string ref)
 {
 	std::shared_ptr<ecore::EObject> tmp;
 
-	if ( m_refToObject_map.find( id ) != m_refToObject_map.end() )
+	if ( m_refToObject_map.find( ref ) != m_refToObject_map.end() )
 	{
 		// found
-		tmp = m_refToObject_map.at( id );
+		tmp = m_refToObject_map.at( ref );
 		//return std::dynamic_pointer_cast<ecore::EObject>( tmp );
 		return tmp;
 	}
 	else
 	{
-		std::cout << "| WARNING  | " << "Given Reference-Name: '" << id << "' is not in stored map." << std::endl;
+		std::cout << "| WARNING  | " << "Given Reference-Name: '" << ref << "' is not in stored map." << std::endl;
 		return nullptr;
 	}
 }
@@ -73,6 +73,11 @@ DOMDocument *Handler::getDOMDocument ()
 void Handler::setDOMDocument ( DOMDocument * doc )
 {
 	assert(doc);
+	if (doc == nullptr)
+	{
+		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMDocument 'doc' is empty." << std::endl;
+		return;
+	}
 	m_doc = doc;
 	m_rootObject = nullptr;
 	m_currentElement = m_doc->getDocumentElement(); // get root element
@@ -511,30 +516,25 @@ void Handler::resolveReferences ()
 	{
 		persistence::UnresolvedReference uref = m_unresolvedReferences.back();
 		m_unresolvedReferences.pop_back();
+
 		std::string name = uref.refName;
 		std::shared_ptr<ecore::EObject> object = uref.eObject;
 		std::shared_ptr<ecore::EStructuralFeature> esf = uref.eStructuralFeature;
-
-		boost::any _any = object->eGet( esf );
-
-		if ( esf->getUpperBound() == 1 )
+		try
 		{
-			// EStructuralFeature is a single object
-			try
+			if ( esf->getUpperBound() == 1 )
 			{
+				// EStructuralFeature is a single object
 				std::shared_ptr<ecore::EClassifier> resolved_object = std::dynamic_pointer_cast<ecore::EClassifier>(this->getObjectByRef( name ));
 				assert(resolved_object);
-				object->eSet(esf, resolved_object);
+				if(resolved_object)
+				{
+					object->eSet(esf, resolved_object);
+				}
 			}
-			catch ( std::exception& e )
+			else
 			{
-				std::cout << "| ERROR    | " <<  __PRETTY_FUNCTION__ << " Exception: " << e.what() << std::endl;
-			}
-		}
-		else
-		{
-			try
-			{
+				// EStructuralFeature is a single object
 				std::list<std::shared_ptr<ecore::EObject> >references;
 				std::shared_ptr<ecore::EObject> resolved_object;
 				std::list<std::string> _strs;
@@ -553,14 +553,13 @@ void Handler::resolveReferences ()
 					}
 					_strs.pop_front();
 				}
-
+				// Call resolveReferences() of corresponding 'object'
 				object->resolveReferences(esf->getFeatureID(), references);
-
 			}
-			catch ( std::exception& e )
-			{
-				std::cout << "| ERROR    | " <<  __PRETTY_FUNCTION__ << " Exception: " << e.what() << std::endl;
-			}
+		}
+		catch ( std::exception& e )
+		{
+			std::cout << "| ERROR    | " <<  __PRETTY_FUNCTION__ << " Exception: " << e.what() << std::endl;
 		}
 	}
 }
