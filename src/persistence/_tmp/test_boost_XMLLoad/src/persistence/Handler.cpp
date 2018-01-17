@@ -150,7 +150,7 @@ bool Handler::createRootNode ( const std::string& name, const std::string& ns_ur
 		}
 		catch ( const DOMException& e )
 		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
+			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
 			//errorCode = 2;
 			return false;
 		}
@@ -205,7 +205,7 @@ void Handler::addAttribute ( const std::string& name, const std::string& value )
 	}
 	catch ( const DOMException& e )
 	{
-		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
+		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
 	}
 	catch ( std::exception& e )
 	{
@@ -230,7 +230,7 @@ void Handler::addReferences ( const std::string &name, std::shared_ptr<ecore::EO
 	}
 	catch ( const DOMException& e )
 	{
-		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
+		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
 	}
 	catch ( std::exception& e )
 	{
