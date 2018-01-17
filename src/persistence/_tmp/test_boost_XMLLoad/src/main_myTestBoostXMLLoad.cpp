@@ -4,12 +4,8 @@
  *  Created on: 05.05.2017
  *      Author: Alexander P.
  */
-/*
- #include <xercesc/util/PlatformUtils.hpp>
- #include <xercesc/util/XMLString.hpp>
- #include <xercesc/dom/DOM.hpp>
- #include <xercesc/util/OutOfMemoryException.hpp>
- */
+
+#include <omp.h>
 #include "TestModel.hpp"
 
 //#include "myTestBoost/myTestBoostXMLLoad.hpp"
@@ -21,6 +17,9 @@
 
 int main () {
 	try {
+		// Set OpenMP number of threads
+		omp_set_num_threads(1);
+
 		// Get MetaPackage
 		std::cout << "| INFO     | " << "Get 'myEcoreMetaMetaPackage'" << std::endl;
 		std::shared_ptr<ecore::EPackage> myEcoreMetaMetaPackage = testmodel::TestModel::getMetaMetaPackage();
