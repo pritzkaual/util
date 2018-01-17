@@ -55,18 +55,23 @@ std::shared_ptr<ecore::EObject> Load::load (const std::string &filename, std::se
 		{
 			std::shared_ptr<EcoreModelPlugin> ecorePlugin = std::dynamic_pointer_cast<EcoreModelPlugin>(plugin);
 			std::shared_ptr<ecore::EPackage> package = ecorePlugin->getPackage();
-			//std::shared_ptr<ecore::EFactory> factory = package->getEFactoryInstance();
+			//std::shared_ptr<ecore::EFactory> factory = ecorePlugin->getFactory(); // TODO not supported yet
 			std::shared_ptr<ecore::EcoreFactory> factory =  std::dynamic_pointer_cast<ecore::EcoreFactory>(ecorePlugin->getFactory())->eInstance();
 
 			std::shared_ptr<Bag<ecore::EClassifier>> eClassifiers = package->getEClassifiers();
 			for(std::shared_ptr<ecore::EClassifier> eClassifier : *eClassifiers)
 			{
-				std::cout << eClassifier->getName() << std::endl;
-				m_handler->addToMap(eClassifier);
+				// TODO filter EDataType
+				std::shared_ptr<ecore::EClass> _metaClass = eClassifier->eClass();
+				if (_metaClass->getName().compare("EDataType") == 0)
+				{
+					m_handler->addToMap(eClassifier);
+				}
 			}
 
 			// Create root object of model
-			std::shared_ptr<ecore::EPackage> pck_root( factory->createEPackage() );
+			//std::shared_ptr<ecore::EPackage> pck_root = std::dynamic_pointer_cast<ecore::EPackage>(factory->create(std::dynamic_pointer_cast<ecore::EClass>(package->getEClassifier("EPackage"))) ); // TODO Not supported yet
+			std::shared_ptr<ecore::EPackage> pck_root = factory->createEPackage();
 
 			m_handler->setRootObj( pck_root );
 
