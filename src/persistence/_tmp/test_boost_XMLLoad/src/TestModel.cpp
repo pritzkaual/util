@@ -287,6 +287,7 @@ std::shared_ptr<ecore::EObject> TestModel::createEcoreTestMetaModel () {
 		{
 			std::shared_ptr<Bag<ecore::EClass>> list_ESuperTypes = cls_Person->getESuperTypes();
 			list_ESuperTypes->push_back( cls_Mensch );
+			list_ESuperTypes->push_back( cls_Universitaet ); // TODO this does not make sense, and is just for testing multiple ESuperTypes.
 		}
 
 		// Create attributes, set their names and types
