@@ -73,7 +73,7 @@ std::shared_ptr<ecore::EObject> Load::load (const std::string &filename, std::se
 			//std::shared_ptr<ecore::EPackage> pck_root = std::dynamic_pointer_cast<ecore::EPackage>(factory->create(std::dynamic_pointer_cast<ecore::EClass>(package->getEClassifier("EPackage"))) ); // TODO Not supported yet
 			std::shared_ptr<ecore::EPackage> pck_root = factory->createEPackage();
 
-			m_handler->setRootObj( pck_root );
+			m_handler->setCurrentObject( pck_root );
 
 			// Start loading process by calling load() on root object
 			pck_root->load( m_handler );

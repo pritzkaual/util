@@ -64,14 +64,7 @@ public:
 	virtual ~Handler ();
 	void deleteHandler (); // TODO find other way to del handler
 
-	//void handle ( std::shared_ptr<ecore::EObject> element, std::set<std::string> options );
-
-	//std::map<std::string, std::shared_ptr<ecore::EObject>> get_IdToObject_Map ();
-	//std::map<std::shared_ptr<ecore::EObject>, std::string> get_ObjectToId_Map ();
-
-	//std::string get_Id ( std::shared_ptr<ecore::EObject> object );
-
-	std::shared_ptr<ecore::EObject> get_Object ( std::string id );
+	std::shared_ptr<ecore::EObject> getObjectByRef ( std::string id );
 
 	DOMDocument *getDOMDocument ();
 	void setDOMDocument ( DOMDocument * doc );
@@ -80,14 +73,11 @@ public:
 
 	std::string extractType ( std::shared_ptr<ecore::EObject> obj ) const;
 
-	//void addToMap ( std::shared_ptr<ecore::EObject> object );
 	void addToMap ( std::shared_ptr<ecore::EObject> object );
 
-	void setRootObj ( std::shared_ptr<ecore::EObject> object );
-	void setCurrentObj ( std::shared_ptr<ecore::EObject> object );
+	void setCurrentObject ( std::shared_ptr<ecore::EObject> object );
   
-	//template<typename T>
-	std::shared_ptr<ecore::EObject> getCurrentObj ( );
+	std::shared_ptr<ecore::EObject> getCurrentObject ( );
 
 	bool createRootNode ( const std::string& name, const std::string& ns_uri );
 	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri );
@@ -96,18 +86,6 @@ public:
 
 	bool createAndAddElement ( const std::string& name );
 
-	/*
-	 void addAttribute ( const std::string& name, float value );
-	 void addAttribute ( const std::string& name, double value );
-	 void addAttribute ( const std::string& name, long double value );
-
-	 void addAttribute ( const std::string& name, int value );
-	 void addAttribute ( const std::string& name, long int value );
-	 void addAttribute ( const std::string& name, long long int value );
-	 void addAttribute ( const std::string& name, unsigned int value );
-	 void addAttribute ( const std::string& name, unsigned long int value );
-	 void addAttribute ( const std::string& name, unsigned long long int value );
-	 */
 	template<typename T>
 	void addAttribute ( const std::string& name, T value )
 	{
@@ -115,7 +93,6 @@ public:
 	}
 	void addAttribute ( const std::string &name, bool value );
 	void addAttribute ( const std::string &name, const std::string& value );
-	//void addAttribute_xsi_type ( const std::string& value );
 
 	void addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object );
 	void addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object );
@@ -123,40 +100,30 @@ public:
 	void release ();
 	void releaseObj ();
 
-	int countChildElements ( DOMNode *n, bool printOutEncounteredEles );
-
-	int getNumOfChildren ();
+	int getNumOfChildNodes ();
 	std::string getNextNodeName ();
 	std::map<std::string, std::string> getAttributeList ();
 
 	void addUnresolvedReference ( const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf );
 
-	bool resolveReferences ();
+	void resolveReferences ();
 
 private:
 
 	DOMDocument *m_doc;
+	DOMElement *m_currentElement;
+	std::list<DOMNode *> m_currentElements;
 
-	DOMElement *m_current_elem;
-	std::list<DOMNode *> m_element_list;
-
-	std::shared_ptr<ecore::EObject> m_root_obj;
-	std::list<std::shared_ptr<ecore::EObject> > m_current_obj_list;
-
-	std::shared_ptr<ecore::EPackage> m_metaMetaPackage;
-
-	std::set<std::string> m_options;
+	std::shared_ptr<ecore::EObject> m_rootObject;
+	std::list<std::shared_ptr<ecore::EObject> > m_currentObjects;
 
 	std::string m_rootPrefix;
 
-	std::map<std::string, std::shared_ptr<ecore::EObject>> m_Id_to_Object;
-//	std::map<std::shared_ptr<ecore::EObject>, std::string> m_Object_to_Id;
+	std::map<std::string, std::shared_ptr<ecore::EObject>> m_refToObject_map;
 	std::list<persistence::UnresolvedReference> m_unresolvedReferences;
 
 	void addChild ( DOMElement *parent_elem, DOMElement *child_elem );
-
 	std::string extractReference ( std::shared_ptr<ecore::EObject> to ) const;
-	std::string create_Hash ( std::shared_ptr<ecore::EObject> object );
 }
 ;
 

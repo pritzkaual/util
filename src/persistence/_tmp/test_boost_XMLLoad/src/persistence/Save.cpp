@@ -29,7 +29,7 @@ bool Save::save (const std::string &filename, std::shared_ptr<ecore::EObject> mo
 	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << metaMetaPackage->getNsURI() << std::endl;
 
 	m_handler->createRootNode( metaMetaPackage->getNsPrefix(), metaClass->getName(), metaMetaPackage->getNsURI() );
-	m_handler->setRootObj( model );
+	m_handler->setCurrentObject( model );
 
 	std::cout << "| DEBUG    | " << m_handler->extractType(model) << std::endl;
 
