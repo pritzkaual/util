@@ -13,7 +13,6 @@
 #include <string>
 #include <set>
 
-#include <memory>
 
 #include "SubsetUnion.hpp"
 
@@ -104,14 +103,14 @@ public:
 	//virtual void addAttribute_xsi_type ( const std::string& value ) = 0;
 
 	virtual void addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object ) = 0;
+	virtual void addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object ) = 0;
 
 	template<typename T>
-	void addReference ( const std::string &name, std::shared_ptr<Bag<T> > objects )
+	void addReferences ( const std::string &name, std::shared_ptr<Bag<T> > objects )
 	{
-		if ( objects->size() ) {
-			for ( std::shared_ptr<T> object : *objects ) {
-				addReference( name, object );
-			}
+		for (std::shared_ptr<T> _object : *objects)
+		{
+			addReferences ( name, _object );
 		}
 	}
 

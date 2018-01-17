@@ -30,6 +30,7 @@
 
 #include "EClass.hpp"
 #include "EDataType.hpp"
+#include "EEnum.hpp"
 #include "ENamedElement.hpp"
 #include "EObject.hpp"
 #include "EPackage.hpp"
@@ -117,18 +118,7 @@ public:
 	//void addAttribute_xsi_type ( const std::string& value );
 
 	void addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object );
-
-	template<typename T>
-	void addReference ( const std::string &name, std::shared_ptr<Bag<T> > objects )
-	{
-		if ( objects->size() )
-		{
-			for ( std::shared_ptr<T> object : *objects )
-			{
-				addReference( name, object );
-			}
-		}
-	}
+	void addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object );
 
 	void release ();
 	void releaseObj ();

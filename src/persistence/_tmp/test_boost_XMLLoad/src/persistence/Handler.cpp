@@ -9,6 +9,7 @@
 
 
 #include <sstream> // used for get_Hash()
+#include <boost/algorithm/string.hpp> // used for string splitting
 
 namespace persistence
 {
@@ -255,10 +256,24 @@ void Handler::addReference ( const std::string &name, std::shared_ptr<ecore::EOb
 	addAttribute( name, extractReference( object ) );
 }
 
-void addReference ( const std::string &name, std::shared_ptr<Bag<ecore::EObject> > objects )
+void Handler::addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object )
 {
-	// TODO need implementation
-	std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while is not implemented yet." << std::endl;
+	try
+	{
+		std::stringstream ss;
+		ss << W(m_current_elem->getAttribute(X( name )));
+		ss << " " << extractReference( object );
+
+		addAttribute( name, ss.str() );
+	}
+	catch ( const DOMException& e )
+	{
+		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << StrX( e.getMessage() ) << std::endl;
+	}
+	catch ( std::exception& e )
+	{
+		std::cout << "| ERROR    | " << "Exception code is:  " << e.what() << std::endl;
+	}
 }
 
 /*
@@ -478,7 +493,7 @@ std::string Handler::getNextNodeName ()
 			}
 		}
 
-#if true
+#if 0
 		std::cout << "| DEBUG    | " << "Node-List: " << std::endl << "|          | ";
 		for ( auto current_elem : m_element_list )
 		{
@@ -629,8 +644,28 @@ bool Handler::resolveReferences ()
 		{
 			try
 			{
-				// EStructuralFeature is a list (Bag/Union/Subset)
+				std::list<std::shared_ptr<ecore::EObject> >references;
+				std::shared_ptr<ecore::EObject> resolved_object;
+				std::list<std::string> _strs;
+				std::string _tmpStr;
 
+				boost::split(_strs, name, boost::is_any_of(" "));
+				while(_strs.size() > 0)
+				{
+					_tmpStr = _strs.front();
+					if(std::string::npos != _tmpStr.find("#//")){
+						resolved_object = this->get_Object(_tmpStr);
+						if (resolved_object)
+						{
+							references.push_back(resolved_object);
+						}
+					}
+					_strs.pop_front();
+				}
+
+				object->resolveReferences(esf->getFeatureID(), references);
+#if 0
+				// EStructuralFeature is a list (Bag/Union/Subset)
 				try
 				{
 					std::shared_ptr<Bag<ecore::EClass>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EClass>> >( _any );
@@ -651,21 +686,21 @@ bool Handler::resolveReferences ()
 					}
 					catch ( boost::bad_any_cast& e )
 					{
-						// TODO here raises compiler error during casting EObject to EEnum
-//						try
-//						{
-//							std::shared_ptr<Bag<ecore::EEnum>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EEnum>> >( _any );
-//							std::shared_ptr<ecore::EEnum> resolved_object = std::dynamic_pointer_cast<ecore::EEnum>(this->get_Object( name ));
-//							assert(resolved_object);
-//
-//							_collection->add(resolved_object);
-//						}
-//						catch ( boost::bad_any_cast& e )
-//						{
-//							throw(e);
-//						}
+						try
+						{
+							std::shared_ptr<Bag<ecore::EEnum>> _collection = boost::any_cast<std::shared_ptr<Bag<ecore::EEnum>> >( _any );
+							std::shared_ptr<ecore::EEnum> resolved_object = std::dynamic_pointer_cast<ecore::EEnum>(this->get_Object( name ));
+							assert(resolved_object);
+
+							_collection->add(resolved_object);
+						}
+						catch ( boost::bad_any_cast& e )
+						{
+							throw(e);
+						}
 					}
 				}
+#endif
 			}
 			catch ( std::exception& e )
 			{
