@@ -1,5 +1,5 @@
 /*
- * XStr.h
+ * WStr.h
  *
  *  Created on: 28.06.2017
  *      Author: Alexander
@@ -23,21 +23,26 @@ XERCES_CPP_NAMESPACE_USE
 class WStr
 {
 public:
+	// -----------------------------------------------------------------------
+	//  Constructors and Destructor
+	// -----------------------------------------------------------------------
 	WStr ( const XMLCh* const toTranscode );
 	WStr ( const WStr& other );
 	~WStr ();
 
+	// -----------------------------------------------------------------------
+	//  Getter methods
+	// -----------------------------------------------------------------------
 	const std::string unicodeForm () const;
 
 private:
-
+	// -----------------------------------------------------------------------
+	//  Private data members
+	//
+	//  m_local
+	//      This is the string of the Unicode XMLCh format.
+	// -----------------------------------------------------------------------
 	char* m_local;
 };
-/*
- std::ostream& operator<< ( std::ostream& target, const WStr& toDump )
- {
- target << toDump.unicodeForm();
- return target;
- }
- */
-#endif /* XSTR_HPP_ */
+
+#endif /* WSTR_HPP_ */

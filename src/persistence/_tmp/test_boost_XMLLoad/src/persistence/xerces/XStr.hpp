@@ -12,13 +12,9 @@
 #include <xercesc/util/XMLString.hpp>
 #include <string>
 
-
-
-
 XERCES_CPP_NAMESPACE_USE
 
 #define X(str) XStr(str).unicodeForm()
-
 
 // ---------------------------------------------------------------------------
 //  This is a simple class that lets us do easy (though not terribly efficient)
@@ -26,21 +22,18 @@ XERCES_CPP_NAMESPACE_USE
 // ---------------------------------------------------------------------------
 class XStr
 {
-public :
+public:
     // -----------------------------------------------------------------------
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
     XStr(const char* const toTranscode);
     XStr(const std::string& str);
-
     ~XStr();
-
 
     // -----------------------------------------------------------------------
     //  Getter methods
     // -----------------------------------------------------------------------
     const XMLCh* unicodeForm() const;
-
 
 private :
     // -----------------------------------------------------------------------
@@ -51,7 +44,5 @@ private :
     // -----------------------------------------------------------------------
     XMLCh*   fUnicodeForm;
 };
-
-
 
 #endif /* XSTR_HPP_ */

@@ -16,10 +16,8 @@ XStr::XStr(const char* const toTranscode)
 
 XStr::XStr(const std::string& str)
 {
-    // Call the private transcoding method
     fUnicodeForm = XMLString::transcode(str.c_str());
 }
-
 
 XStr::~XStr ()
 {
@@ -31,5 +29,4 @@ const XMLCh* XStr::unicodeForm() const
 {
 	return fUnicodeForm;
 }
-
 

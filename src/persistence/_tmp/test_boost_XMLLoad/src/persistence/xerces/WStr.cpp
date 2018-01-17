@@ -10,6 +10,7 @@
 
 WStr::WStr ( const XMLCh* const toTranscode )
 {
+    // Call the private transcoding method
 	m_local = xercesc::XMLString::transcode( toTranscode );
 }
 
