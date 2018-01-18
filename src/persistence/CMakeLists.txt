@@ -11,7 +11,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.9)
 SET(CMAKE_C_COMPILER "gcc.exe")
 SET(CMAKE_CXX_COMPILER "g++.exe")
 
-PROJECT(test_boost_XMLLoad)
+PROJECT(examplePersistence)
 
 IF(NOT CMAKE_BUILD_TYPE) 
     SET(CMAKE_BUILD_TYPE Debug)
@@ -26,21 +26,16 @@ SET(CMAKE_CXX_FLAGS_RELEASE " -O3 -DNDEBUG")
 string(REPLACE "\\" "/" MDE4CPP_HOME $ENV{MDE4CPP_HOME})
 
 SET(SOURCE_FILES
-	main_myTestBoostXMLLoad.cpp
-	TestModel.cpp
-	persistence/xerces/DOMPrintFilter.cpp
-	persistence/xerces/DOMPrintErrorHandler.cpp
-	persistence/xerces/DOMTreeErrorReporter.cpp
-	persistence/xerces/WStr.cpp
-	persistence/xerces/XStr.cpp
-	persistence/Persistence.cpp
-	persistence/Load.cpp
-	persistence/Save.cpp
-	persistence/XMLLoad.cpp
-	persistence/XMLSave.cpp
-	persistence/Handler.cpp
-	persistence/ExtendedMetaData.cpp
-	persistence/Option.cpp
+	test/Persistence_test.cpp
+	test/TestModel.cpp
+	src/xerces/WStr.cpp
+	src/xerces/XStr.cpp
+	src/Persistence.cpp
+	src/Load.cpp
+	src/Save.cpp
+	src/XMLLoad.cpp
+	src/XMLSave.cpp
+	src/Handler.cpp
 )
 
 INCLUDE_DIRECTORIES(
