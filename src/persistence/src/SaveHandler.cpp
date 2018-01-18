@@ -62,7 +62,7 @@ bool SaveHandler::createRootNode ( const std::string& prefix, const std::string&
 bool SaveHandler::createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype )
 {
 	m_rootPrefix = prefix;
-	return this->createRootNode( prefix + ":" + name, ns_uri, nullptr );
+	return this->createRootNode( prefix + ":" + name, ns_uri, doctype );
 }
 
 bool SaveHandler::createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype )
