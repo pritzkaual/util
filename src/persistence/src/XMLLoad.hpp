@@ -65,27 +65,12 @@ private:
 	bool m_SchemaFullChecking;
 	bool m_DoCreate;
 
-	//char* m_outputfile;
-	//char* m_XPathExpression;
-
-	// options for DOMLSSerializer's features
-	//XMLCh* m_OutputEncoding;
-
-	//bool m_SplitCdataSections;
-	//bool m_DiscardDefaultContent;
-	//bool m_UseFilter;
-	//bool m_FormatPrettyPrint;
-	//bool m_WriteBOM;
-
 	XercesDOMParser::ValSchemes m_ValScheme;
 
 	// Parser and Error	handler
 
 	XercesDOMParser *m_parser;
 	DOMTreeErrorReporter *m_errReporter;
-
-	// get the DOM representation
-	//DOMDocument *m_doc;
 
 public:
 	XMLLoad ();
