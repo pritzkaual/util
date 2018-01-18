@@ -31,3 +31,65 @@ task deliverPersistence(type: Copy) {
 	outputs.dir file(System.getenv('MDE4CPP_HOME')+"/application/include/persistence")
 }
 
+task compilePersistence(dependsOn: ['compilePersistenceDebug', 'compilePersistenceRelease']) {
+	group 'Examples'
+	description 'compile Persistence Example in debug and release'
+}
+
+task compilePersistenceDebug {
+	group 'Examples'
+	description 'compile Persistence Example in Debug'
+
+	def folder = new File(file('./src/persistence/.cmake/Debug').absolutePath)
+	if( !folder.exists() ) {
+		folder.mkdirs()
+	}
+
+	doLast {
+		exec {
+			workingDir 'src/persistence/.cmake/Debug'
+			commandLine 'cmd', '/c', 'cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Debug ' + file("./src/persistence").absolutePath
+		}
+		exec {
+			workingDir 'src/persistence/.cmake/Debug'
+			if (make_parallel_jobs)
+			{			
+				commandLine 'cmd', '/c', 'mingw32-make install -j' + make_parallel_jobs
+			}
+			else
+			{
+				commandLine 'cmd', '/c', 'mingw32-make install' 
+			}
+		}
+	}
+}
+
+task compilePersistenceRelease {
+	group 'Examples'
+	description 'compile Persistence Example in Release'
+
+	def folder = new File(file('./src/persistence/.cmake/Release').absolutePath)
+	if( !folder.exists() ) {
+		folder.mkdirs()
+	}
+
+	doLast {
+		exec {
+			workingDir 'src/persistence/.cmake/Release'
+			commandLine 'cmd', '/c', 'cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Release ' + file("./src/persistence").absolutePath
+		}
+		exec {
+			workingDir 'src/persistence/.cmake/Release'
+			if (make_parallel_jobs)
+			{			
+				commandLine 'cmd', '/c', 'mingw32-make install -j' + make_parallel_jobs
+			}
+			else
+			{
+				commandLine 'cmd', '/c', 'mingw32-make install' 
+			}
+		}
+	}
+}
+
+
