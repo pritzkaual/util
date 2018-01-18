@@ -14,19 +14,6 @@
 
 #include "EObject.hpp"
 #include "EPackage.hpp"
-//#include "EClass.hpp"
-//#include "EEnum.hpp"
-//#include "EEnumLiteral.hpp"
-//#include "EDataType.hpp"
-//#include "EAttribute.hpp"
-//#include "EAnnotation.hpp"
-//#include "EStructuralFeature.hpp"
-//#include "EOperation.hpp"
-//#include "EParameter.hpp"
-//#include "EReference.hpp"
-//#include "EStringToStringMapEntry.hpp"
-//#include "EFactory.hpp"
-//#include "EcorePackage.hpp"
 
 #include "SaveHandler.hpp"
 
