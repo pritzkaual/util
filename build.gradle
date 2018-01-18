@@ -14,7 +14,7 @@ task deliverUtil(type: Copy) {
 }
 
 task deliverPersistence(type: Copy) {
-  group 'persistence'
+  group 'Persistence'
 	description 'deliver persistence header to %MDE4CPP_HOME%/application/include/persistence'
 	from ("src/persistence/interface") {
     include "*.hpp"
@@ -32,13 +32,13 @@ task deliverPersistence(type: Copy) {
 }
 
 task compilePersistence(dependsOn: ['compilePersistenceDebug', 'compilePersistenceRelease']) {
-	group 'Examples'
-	description 'compile Persistence Example in debug and release'
+	group 'Persistence'
+	description 'compile Persistence in debug and release'
 }
 
 task compilePersistenceDebug {
-	group 'Examples'
-	description 'compile Persistence Example in Debug'
+	group 'Persistence'
+	description 'compile Persistence in Debug'
 
 	def folder = new File(file('./src/persistence/.cmake/Debug').absolutePath)
 	if( !folder.exists() ) {
@@ -65,8 +65,8 @@ task compilePersistenceDebug {
 }
 
 task compilePersistenceRelease {
-	group 'Examples'
-	description 'compile Persistence Example in Release'
+	group 'Persistence'
+	description 'compile Persistence in Release'
 
 	def folder = new File(file('./src/persistence/.cmake/Release').absolutePath)
 	if( !folder.exists() ) {

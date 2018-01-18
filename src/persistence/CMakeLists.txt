@@ -11,7 +11,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.9)
 SET(CMAKE_C_COMPILER "gcc.exe")
 SET(CMAKE_CXX_COMPILER "g++.exe")
 
-PROJECT(examplePersistence)
+PROJECT(persistence)
 
 IF(NOT CMAKE_BUILD_TYPE) 
     SET(CMAKE_BUILD_TYPE Debug)
@@ -26,8 +26,6 @@ SET(CMAKE_CXX_FLAGS_RELEASE " -O3 -DNDEBUG")
 string(REPLACE "\\" "/" MDE4CPP_HOME $ENV{MDE4CPP_HOME})
 
 SET(SOURCE_FILES
-	test/Persistence_test.cpp
-	test/TestModel.cpp
 	src/xerces/DOMPrintErrorHandler.cpp
 	src/xerces/DOMPrintFilter.cpp
 	src/xerces/DOMTreeErrorReporter.cpp
@@ -45,12 +43,13 @@ SET(SOURCE_FILES
 )
 
 INCLUDE_DIRECTORIES(
-	${MDE4CPP_HOME}/application/include
-	${MDE4CPP_HOME}/application/include/abstractDataTypes
-	${MDE4CPP_HOME}/application/include/ecore
-	${MDE4CPP_HOME}/application/include/types
-	${MDE4CPP_HOME}/application/include/PluginFramework
-	${MDE4CPP_HOME}/application/include/persistence
+  src
+  interface
+	$ENV{MDE4CPP_HOME}/application/include
+	$ENV{MDE4CPP_HOME}/application/include/abstractDataTypes
+	$ENV{MDE4CPP_HOME}/application/include/ecore
+	$ENV{MDE4CPP_HOME}/application/include/types
+	$ENV{MDE4CPP_HOME}/application/include/PluginFramework
 )
 
 FIND_LIBRARY(ECORE_DEBUG ecored ${MDE4CPP_HOME}/application/lib)
@@ -71,7 +70,8 @@ MESSAGE("-- Found xerces-c library (Release): " ${XERCES_RELEASE})
 FIND_LIBRARY(PLUGINFRAMEWORK_DEBUG PluginFrameworkd ${MDE4CPP_HOME}/application/lib)
 FIND_LIBRARY(PLUGINFRAMEWORK_RELEASE PluginFramework ${MDE4CPP_HOME}/application/lib)
 
-ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCE_FILES})
+#ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCE_FILES})
+ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "d")
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} 
 	debug ${ECORE_DEBUG}
@@ -92,4 +92,14 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 
 INSTALL(TARGETS ${PROJECT_NAME} 
 	RUNTIME DESTINATION ${MDE4CPP_HOME}/application/bin
+    LIBRARY DESTINATION ${MDE4CPP_HOME}/application/bin
+    ARCHIVE DESTINATION ${MDE4CPP_HOME}/application/lib
+)
+
+INSTALL(FILES 
+	src/Persistence.hpp
+	src/Option.hpp
+	interface/XLoadHandler.hpp
+	interface/XSaveHandler.hpp
+	DESTINATION ${MDE4CPP_HOME}/application/include/${PROJECT_NAME}
 )
