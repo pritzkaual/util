@@ -12,3 +12,22 @@ task deliverUtil(type: Copy) {
 	inputs.dir file("src/util")
 	outputs.dir file(System.getenv('MDE4CPP_HOME')+"/application/include/util")
 }
+
+task deliverPersistence(type: Copy) {
+  group 'persistence'
+	description 'deliver persistence header to %MDE4CPP_HOME%/application/include/persistence'
+	from ("src/persistence/interface") {
+    include "*.hpp"
+    include "*.h"
+    include "*.cpp"
+  }
+  from ("src/persistence/src") {
+    include "Persistence.hpp"
+    include "Option.hpp"
+  }
+	exclude "build", ".gradle"
+	into System.getenv('MDE4CPP_HOME')+"/application/include/persistence"
+  inputs.dir file("src/persistence")
+	outputs.dir file(System.getenv('MDE4CPP_HOME')+"/application/include/persistence")
+}
+
