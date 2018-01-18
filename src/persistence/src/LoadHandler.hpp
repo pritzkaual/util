@@ -9,6 +9,7 @@
 #define LoadHandler_HPP_
 
 #include "XLoadHandler.hpp"
+#include "HandlerHelper.hpp"
 
 #include <map>
 #include <list>
@@ -25,12 +26,12 @@
 
 #include "boost/exception/to_string.hpp"
 
-#include "EClass.hpp"
-#include "EDataType.hpp"
-#include "EEnum.hpp"
-#include "ENamedElement.hpp"
+//#include "EClass.hpp"
+//#include "EDataType.hpp"
+//#include "EEnum.hpp"
+//#include "ENamedElement.hpp"
 #include "EObject.hpp"
-#include "EPackage.hpp"
+//#include "EPackage.hpp"
 #include "EStructuralFeature.hpp"
 
 
@@ -97,8 +98,6 @@ private:
 
 	std::map<std::string, std::shared_ptr<ecore::EObject>> m_refToObject_map;
 	std::list<persistence::UnresolvedReference> m_unresolvedReferences;
-
-	std::string extractReference ( std::shared_ptr<ecore::EObject> to ) const;
 }
 ;
 

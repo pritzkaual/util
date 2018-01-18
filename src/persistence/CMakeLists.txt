@@ -41,6 +41,7 @@ SET(SOURCE_FILES
 	src/XMLSave.cpp
 	src/LoadHandler.cpp
 	src/SaveHandler.cpp
+	src/HandlerHelper.cpp
 )
 
 INCLUDE_DIRECTORIES(

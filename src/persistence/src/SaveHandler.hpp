@@ -9,6 +9,7 @@
 #define SaveHandler_HPP_
 
 #include "XSaveHandler.hpp"
+#include "HandlerHelper.hpp"
 
 #include <map>
 #include <list>
@@ -25,13 +26,7 @@
 
 #include "boost/exception/to_string.hpp"
 
-#include "EClass.hpp"
-#include "EDataType.hpp"
-#include "EEnum.hpp"
-#include "ENamedElement.hpp"
 #include "EObject.hpp"
-#include "EPackage.hpp"
-#include "EStructuralFeature.hpp"
 
 
 namespace persistence
@@ -49,7 +44,6 @@ public:
 
 	std::string extractType ( std::shared_ptr<ecore::EObject> obj ) const;
 
-  
 	bool createRootNode ( const std::string& name, const std::string& ns_uri );
 	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri );
 	bool createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype );
@@ -81,7 +75,6 @@ private:
 	std::string m_rootPrefix;
 
 	void addChild ( DOMElement *parent_elem, DOMElement *child_elem );
-	std::string extractReference ( std::shared_ptr<ecore::EObject> to ) const;
 }
 ;
 
