@@ -40,7 +40,7 @@ XMLSave::XMLSave ()
 
 XMLSave::~XMLSave ()
 {
-	m_handler->deleteHandler();
+	m_handler.reset();
 	XMLPlatformUtils::Terminate();
 }
 

@@ -52,7 +52,7 @@ XMLLoad::XMLLoad ()
 
 XMLLoad::~XMLLoad ()
 {
-	m_handler->deleteHandler();
+	m_handler.reset();
 	XMLPlatformUtils::Terminate();
 }
 

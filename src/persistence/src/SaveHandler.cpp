@@ -23,11 +23,6 @@ SaveHandler::SaveHandler ()
 
 SaveHandler::~SaveHandler ()
 {
-
-}
-
-void SaveHandler::deleteHandler ()
-{
 	if ( m_doc )
 	{
 		m_doc->release();

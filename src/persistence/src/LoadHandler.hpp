@@ -59,7 +59,6 @@ class LoadHandler : public XLoadHandler
 public:
 	LoadHandler ();
 	virtual ~LoadHandler ();
-	void deleteHandler (); // TODO find other way to del LoadHandler
 
 	std::shared_ptr<ecore::EObject> getObjectByRef ( std::string ref );
 

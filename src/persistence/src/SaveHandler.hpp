@@ -36,7 +36,6 @@ class SaveHandler : public XSaveHandler
 public:
 	SaveHandler ();
 	virtual ~SaveHandler ();
-	void deleteHandler (); // TODO find other way to del SaveHandler
 
 	DOMDocument *getDOMDocument ();
 	std::string getPrefix ();
@@ -51,11 +50,6 @@ public:
 
 	bool createAndAddElement ( const std::string& name );
 
-	template<typename T>
-	void addAttribute ( const std::string& name, T value )
-	{
-		addAttribute( name, boost::to_string( value ) );
-	}
 	void addAttribute ( const std::string &name, bool value );
 	void addAttribute ( const std::string &name, const std::string& value );
 

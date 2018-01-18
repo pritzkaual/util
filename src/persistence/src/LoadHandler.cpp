@@ -23,17 +23,11 @@ LoadHandler::LoadHandler ()
 
 LoadHandler::~LoadHandler ()
 {
-
-}
-
-void LoadHandler::deleteHandler ()
-{
 	if ( m_doc )
 	{
 		m_doc->release();
 	}
 }
-
 
 std::shared_ptr<ecore::EObject> LoadHandler::getObjectByRef ( std::string ref ) // TODO rename to getObject_by_ref(std::string ref)
 {
