@@ -14,8 +14,7 @@
 #include <xercesc/dom/DOM.hpp>
 
 #include "xerces/DOMTreeErrorReporter.hpp"
-#include "xerces/DOMPrintFilter.hpp"
-#include "xerces/DOMPrintErrorHandler.hpp"
+#include "xerces/WStr.hpp"
 
 namespace persistence
 {

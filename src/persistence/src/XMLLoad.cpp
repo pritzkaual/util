@@ -27,7 +27,7 @@ XMLLoad::XMLLoad ()
 
 	catch ( const XMLException &toCatch )
 	{
-		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << StrX( toCatch.getMessage() ) << std::endl;
+		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << W( toCatch.getMessage() ) << std::endl;
 		return;
 	}
 
@@ -81,7 +81,7 @@ bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::H
 	}
 	catch ( const XMLException& e )
 	{
-		std::cout << "An error occurred during parsing\n   Message: " << StrX( e.getMessage() ) << std::endl;
+		std::cout << "An error occurred during parsing\n   Message: " << W( e.getMessage() ) << std::endl;
 		errorsOccured = true;
 	}
 
@@ -93,7 +93,7 @@ bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::H
 		std::cout << "\nDOM Error during parsing: '" << _filename.c_str() << "'\n" << "DOMException code is:  " << e.code << std::endl;
 
 		if ( DOMImplementation::loadDOMExceptionMsg( e.code, errText, maxChars ) )
-			std::cout << "Message is: " << StrX( errText ) << std::endl;
+			std::cout << "Message is: " << W( errText ) << std::endl;
 
 		errorsOccured = true;
 	}
