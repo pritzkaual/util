@@ -69,7 +69,7 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 		//if ( (m_rootObject != pkg) || (m_rootObject == nullptr) )
 		if ( rootObject != pkg )
 		{
-			value << extractType( toObject, prefix ) << " " << pkg->getNsURI();
+			value << extractType( toObject, prefix ) << " " << pkg->getNsURI(); // TODO this case is not tested yet
 		}
 
 		value << "#/";
@@ -135,7 +135,7 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 			{
 				if ( rootObject != ePck) // TODO use here other way to find equality of m_rootObject and current EPackage-Obj
 				{
-					value << extractType( toObject, prefix ) << " " << ePck->getNsURI();
+					value << extractType( toObject, prefix ) << " " << ePck->getNsURI(); // TODO this case is not tested yet
 				}
 			}
 
