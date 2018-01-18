@@ -1,19 +1,19 @@
 /*
- * main_myTestBoostXMLLoad.cpp
+ * Persistence_test.cpp
  *
  *  Created on: 05.05.2017
  *      Author: Alexander P.
  */
 
 #include <omp.h>
+#include <stdlib.h>
+
+#include "Option.hpp"
+#include "Persistence.hpp"
 #include "TestModel.hpp"
 
-//#include "myTestBoost/myTestBoostXMLLoad.hpp"
-//#include "myTestXerces/MyTestXerces.hpp"
-
-#include "persistence/Persistence.hpp"
-
-#include <stdlib.h>
+#include "EPackage.hpp"
+#include "EObject.hpp"
 
 int main () {
 	try {

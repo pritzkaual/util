@@ -6,7 +6,13 @@
  */
 
 #include "Persistence.hpp"
+#include "Load.hpp"
+#include "Save.hpp"
+//#include "JSONSave.hpp"
+#include "XMLSave.hpp"
+#include "XMLLoad.hpp"
 
+#include "Option.hpp"
 using namespace std;
 
 namespace persistence {
@@ -49,8 +55,8 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 	if ( options.find( persistence::Option::OPTION_SAVE_JSON ) != options.end() ) {
 		std::cout << "| INFO     | " << "Save as JSON-File" << "\n";
 		/*
-		 std::shared_ptr<persistence::JSONSave> tmp_save = std::make_shared<persistence::JSONSave>();
-		 tmp_save->save(filename, model, options); // TODO use inheritance method in JSONSave
+		 std::shared_ptr<persistence::JSONSave> jsonSave = std::make_shared<persistence::JSONSave>();
+		 jsonSave->save(filename, model, options); // TODO use inheritance method in JSONSave
 		 */
 		std::cout << "| ERROR    | " << "Save as JSON-File is not implemented." << "\n";
 		retvalue = false;
@@ -59,9 +65,9 @@ bool Persistence::save ( const std::string& filename, std::shared_ptr<ecore::EOb
 	else if ( options.find( persistence::Option::OPTION_SAVE_XML ) != options.end() ) {
 		std::cout << "| INFO     | " << "Save as XML-File" << "\n";
 
-		std::shared_ptr<persistence::XMLSave> tmp_save(new persistence::XMLSave());
+		std::shared_ptr<persistence::XMLSave> xmlSave(new persistence::XMLSave());
 
-		retvalue = tmp_save->save( filename, model, metaMetaPackage, options ); // TODO use inheritance method in XMLSave
+		retvalue = xmlSave->save( filename, model, metaMetaPackage, options ); // TODO use inheritance method in XMLSave
 
 	}
 	return retvalue;

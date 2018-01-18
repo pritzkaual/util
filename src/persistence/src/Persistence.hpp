@@ -8,16 +8,8 @@
 #ifndef PERSISTENCE_HPP_
 #define PERSISTENCE_HPP_
 
-#include "Load.hpp"
-#include "Save.hpp"
-//#include "JSONSave.hpp"
-#include "XMLSave.hpp"
-#include "XMLLoad.hpp"
-
-#include "Option.hpp"
-
 #include "EObject.hpp"
-#include "EcorePackage.hpp"
+#include "EPackage.hpp"
 
 //#include "boost/filesystem.hpp"   // includes all needed Boost.Filesystem declarations
 #include <string>

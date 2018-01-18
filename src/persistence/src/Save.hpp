@@ -30,7 +30,6 @@
 
 #include "EcorePackage.hpp"
 
-#include "ExtendedMetaData.hpp"
 #include "Handler.hpp"
 
 //#include "types/TypesPackage.hpp"

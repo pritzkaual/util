@@ -10,7 +10,7 @@
 
 #include <exception>
 
-#include "ExtendedMetaData.hpp"
+//#include "ExtendedMetaData.hpp"
 #include "Handler.hpp"
 
 #include "EObject.hpp"
