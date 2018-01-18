@@ -92,7 +92,7 @@ public:
 	~XMLLoad ();
 
 private:
-	bool read ( const std::string &filename, std::shared_ptr<persistence::Handler> handler );
+	bool read ( const std::string &filename, std::shared_ptr<persistence::LoadHandler> handler );
 };
 
 } /* namespace persistence */

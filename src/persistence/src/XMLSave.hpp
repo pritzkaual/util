@@ -113,7 +113,7 @@ private:
 	//DOMDocument *m_doc;
 
 
-	bool write ( const std::string &filename, std::shared_ptr<persistence::Handler> handler );
+	bool write ( const std::string &filename, std::shared_ptr<persistence::SaveHandler> handler );
 
 };
 

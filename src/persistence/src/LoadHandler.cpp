@@ -1,11 +1,11 @@
 /*
- * Handler.cpp
+ * LoadHandler.cpp
  *
  *  Created on: 29.05.2017
  *      Author: Alexander
  */
 
-#include "Handler.hpp"
+#include "LoadHandler.hpp"
 
 
 #include <sstream> // used for get_Hash()
@@ -14,19 +14,19 @@
 namespace persistence
 {
 
-Handler::Handler ()
+LoadHandler::LoadHandler ()
 {
 	m_doc = nullptr;
 	m_rootObject = nullptr;
 	m_currentElement = nullptr;
 }
 
-Handler::~Handler ()
+LoadHandler::~LoadHandler ()
 {
 
 }
 
-void Handler::deleteHandler ()
+void LoadHandler::deleteHandler ()
 {
 	if ( m_doc )
 	{
@@ -35,7 +35,7 @@ void Handler::deleteHandler ()
 }
 
 
-std::shared_ptr<ecore::EObject> Handler::getObjectByRef ( std::string ref ) // TODO rename to getObject_by_ref(std::string ref)
+std::shared_ptr<ecore::EObject> LoadHandler::getObjectByRef ( std::string ref ) // TODO rename to getObject_by_ref(std::string ref)
 {
 	std::shared_ptr<ecore::EObject> tmp;
 
@@ -53,7 +53,7 @@ std::shared_ptr<ecore::EObject> Handler::getObjectByRef ( std::string ref ) // T
 	}
 }
 
-void Handler::addToMap ( std::shared_ptr<ecore::EObject> object )
+void LoadHandler::addToMap ( std::shared_ptr<ecore::EObject> object )
 {
 	std::string ref = extractReference( object );
 
@@ -65,12 +65,12 @@ void Handler::addToMap ( std::shared_ptr<ecore::EObject> object )
 }
 /**/
 
-DOMDocument *Handler::getDOMDocument ()
+DOMDocument *LoadHandler::getDOMDocument ()
 {
 	return m_doc;
 }
 
-void Handler::setDOMDocument ( DOMDocument * doc )
+void LoadHandler::setDOMDocument ( DOMDocument * doc )
 {
 	assert(doc);
 	if (doc == nullptr)
@@ -94,13 +94,13 @@ void Handler::setDOMDocument ( DOMDocument * doc )
 	}
 }
 
-std::string Handler::getPrefix ()
+std::string LoadHandler::getPrefix ()
 {
 	return m_rootPrefix;
 }
 
 
-void Handler::setCurrentObject ( std::shared_ptr<ecore::EObject> object )
+void LoadHandler::setCurrentObject ( std::shared_ptr<ecore::EObject> object )
 {
 	if (m_rootObject == nullptr)
 	{
@@ -109,138 +109,12 @@ void Handler::setCurrentObject ( std::shared_ptr<ecore::EObject> object )
 	m_currentObjects.push_back(object);
 }
 
-std::shared_ptr<ecore::EObject> Handler::getCurrentObject ()
+std::shared_ptr<ecore::EObject> LoadHandler::getCurrentObject ()
 {
 	std::shared_ptr<ecore::EObject> tmp_obj = m_currentObjects.back();
 	assert(tmp_obj);
 
 	return tmp_obj;
-}
-
-bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri )
-{
-	return this->createRootNode( name, ns_uri, nullptr );
-}
-
-bool Handler::createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri )
-{
-	return this->createRootNode( prefix, name, ns_uri, nullptr );
-}
-
-bool Handler::createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype )
-{
-	m_rootPrefix = prefix;
-	return this->createRootNode( prefix + ":" + name, ns_uri, nullptr );
-}
-
-bool Handler::createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype )
-{
-	DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation( X( "Core" ) );
-
-	if ( impl != NULL )
-	{
-		try
-		{
-			m_doc = impl->createDocument( (ns_uri.empty()) ? 0 : X( ns_uri ), // root element namespace URI.
-			X( name ),         					// root element name
-			doctype ); 	                		// document type object (DTD).
-
-			m_currentElement = m_doc->getDocumentElement(); // get root element
-		}
-		catch ( const OutOfMemoryException& )
-		{
-			std::cerr << "| ERROR    | " << __PRETTY_FUNCTION__ << " OutOfMemoryException" << std::endl;
-			//errorCode = 5;
-			return false;
-		}
-		catch ( const DOMException& e )
-		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
-			//errorCode = 2;
-			return false;
-		}
-		catch ( ... )
-		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " An error occurred creating the document" << std::endl;
-			//errorCode = 3;
-			return false;
-		}
-	}  // (impl != NULL)
-	else
-	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Requested implementation is not supported" << std::endl;
-		//errorCode = 4;
-		return false;
-	}
-
-	return true;
-}
-
-bool Handler::createAndAddElement ( const std::string& name )
-{
-	if ( m_doc == nullptr )
-	{
-		std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while their is no root-Element created before." << std::endl;
-		return false;
-	}
-	else
-	{
-		addChild( m_currentElement, m_doc->createElement( X( name ) ) );
-
-		return true;
-	}
-}
-
-void Handler::addChild ( DOMElement* parent_elem, DOMElement* child_elem )
-{
-	// Add child to parent Element, and set child as current Element.
-	m_currentElement = (DOMElement *) parent_elem->appendChild( child_elem );
-}
-
-void Handler::addAttribute ( const std::string &name, bool value )
-{
-	addAttribute( name, (value ? (std::string) "true" : (std::string) "false") );
-}
-
-void Handler::addAttribute ( const std::string& name, const std::string& value )
-{
-	try
-	{
-		m_currentElement->setAttribute( X( name ), X( value ) );
-	}
-	catch ( const DOMException& e )
-	{
-		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
-	}
-	catch ( std::exception& e )
-	{
-		std::cout << "| ERROR    | " << "Exception code is:  " << e.what() << std::endl;
-	}
-}
-
-void Handler::addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object )
-{
-	addAttribute( name, extractReference( object ) );
-}
-
-void Handler::addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object )
-{
-	try
-	{
-		std::stringstream ss;
-		ss << W(m_currentElement->getAttribute(X( name )));
-		ss << " " << extractReference( object );
-
-		addAttribute( name, ss.str() );
-	}
-	catch ( const DOMException& e )
-	{
-		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
-	}
-	catch ( std::exception& e )
-	{
-		std::cout << "| ERROR    | " << "Exception code is:  " << e.what() << std::endl;
-	}
 }
 
 /*
@@ -250,7 +124,7 @@ void Handler::addReferences ( const std::string &name, std::shared_ptr<ecore::EO
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_type(EObject_ptr obj) const
  *
  */
-std::string Handler::extractType ( std::shared_ptr<ecore::EObject> obj ) const
+std::string LoadHandler::extractType ( std::shared_ptr<ecore::EObject> obj ) const
 {
 	std::stringstream ss;
 	std::shared_ptr<ecore::EClass> metaClass = obj->eClass();
@@ -274,7 +148,7 @@ std::string Handler::extractType ( std::shared_ptr<ecore::EObject> obj ) const
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_reference(EObject_ptr from, EObject_ptr to) const
  *
  */
-std::string Handler::extractReference ( std::shared_ptr<ecore::EObject> to ) const
+std::string LoadHandler::extractReference ( std::shared_ptr<ecore::EObject> to ) const
 {
 	std::stringstream value;
 	std::list<std::shared_ptr<ecore::EObject> > to_antecessors;
@@ -375,20 +249,7 @@ std::string Handler::extractReference ( std::shared_ptr<ecore::EObject> to ) con
 	return value.str();
 }
 
-void Handler::release ()
-{
-	if ( m_currentElement == nullptr )
-	{
-		std::cout << "| ERROR    | " << "You can't call " << __PRETTY_FUNCTION__ << " while current DOMElement m_currentElement is nullptr." << std::endl;
-	}
-	else
-	{
-		// set m_currentElement's parent node as new m_currentElement (decrease depth)
-		m_currentElement = (DOMElement*) m_currentElement->getParentNode();
-	}
-}
-
-void Handler::releaseObj ()
+void LoadHandler::release ()
 {
 	std::shared_ptr<ecore::EObject> tmp_obj = m_currentObjects.back();
 
@@ -403,7 +264,7 @@ void Handler::releaseObj ()
 	}
 }
 
-int Handler::getNumOfChildNodes ()
+int LoadHandler::getNumOfChildNodes ()
 {
 	DOMNode *child;
 	unsigned int count = 0;
@@ -422,7 +283,7 @@ int Handler::getNumOfChildNodes ()
 	return count;
 }
 
-std::string Handler::getNextNodeName ()
+std::string LoadHandler::getNextNodeName ()
 {
 	std::string nodeName;
 	DOMNode *child;
@@ -461,7 +322,7 @@ std::string Handler::getNextNodeName ()
 	return nodeName;
 }
 
-std::map<std::string, std::string> Handler::getAttributeList ()
+std::map<std::string, std::string> LoadHandler::getAttributeList ()
 {
 	std::map<std::string, std::string> attributeList;
 
@@ -493,7 +354,7 @@ std::map<std::string, std::string> Handler::getAttributeList ()
 	return attributeList;
 }
 
-void Handler::addUnresolvedReference ( const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf )
+void LoadHandler::addUnresolvedReference ( const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf )
 {
 	if(object != nullptr){
 		if (esf != nullptr){
@@ -510,7 +371,7 @@ void Handler::addUnresolvedReference ( const std::string &name, std::shared_ptr<
 	}
 }
 
-void Handler::resolveReferences ()
+void LoadHandler::resolveReferences ()
 {
 	while ( !m_unresolvedReferences.empty() )
 	{

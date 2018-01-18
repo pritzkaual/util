@@ -1,14 +1,14 @@
 /*
- * Handler.hpp
+ * LoadHandler.hpp
  *
  *  Created on: 29.05.2017
  *      Author: Alexander
  */
 
-#ifndef HANDLER_HPP_
-#define HANDLER_HPP_
+#ifndef LoadHandler_HPP_
+#define LoadHandler_HPP_
 
-#include "XHandler.hpp"
+#include "XLoadHandler.hpp"
 
 #include <map>
 #include <list>
@@ -53,12 +53,12 @@ struct UnresolvedReference
 
 namespace persistence
 {
-class Handler : public XHandler
+class LoadHandler : public XLoadHandler
 {
 public:
-	Handler ();
-	virtual ~Handler ();
-	void deleteHandler (); // TODO find other way to del handler
+	LoadHandler ();
+	virtual ~LoadHandler ();
+	void deleteHandler (); // TODO find other way to del LoadHandler
 
 	std::shared_ptr<ecore::EObject> getObjectByRef ( std::string ref );
 
@@ -72,29 +72,9 @@ public:
 	void addToMap ( std::shared_ptr<ecore::EObject> object );
 
 	void setCurrentObject ( std::shared_ptr<ecore::EObject> object );
-  
 	std::shared_ptr<ecore::EObject> getCurrentObject ( );
 
-	bool createRootNode ( const std::string& name, const std::string& ns_uri );
-	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri );
-	bool createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype );
-	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype );
-
-	bool createAndAddElement ( const std::string& name );
-
-	template<typename T>
-	void addAttribute ( const std::string& name, T value )
-	{
-		addAttribute( name, boost::to_string( value ) );
-	}
-	void addAttribute ( const std::string &name, bool value );
-	void addAttribute ( const std::string &name, const std::string& value );
-
-	void addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object );
-	void addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object );
-
 	void release ();
-	void releaseObj ();
 
 	int getNumOfChildNodes ();
 	std::string getNextNodeName ();
@@ -118,11 +98,10 @@ private:
 	std::map<std::string, std::shared_ptr<ecore::EObject>> m_refToObject_map;
 	std::list<persistence::UnresolvedReference> m_unresolvedReferences;
 
-	void addChild ( DOMElement *parent_elem, DOMElement *child_elem );
 	std::string extractReference ( std::shared_ptr<ecore::EObject> to ) const;
 }
 ;
 
 } /* namespace persistence */
 
-#endif /* HANDLER_HPP_ */
+#endif /* LoadHandler_HPP_ */

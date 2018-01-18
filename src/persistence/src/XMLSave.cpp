@@ -44,7 +44,7 @@ XMLSave::~XMLSave ()
 	XMLPlatformUtils::Terminate();
 }
 
-bool XMLSave::write ( const std::string &filename, std::shared_ptr<persistence::Handler> handler ) {
+bool XMLSave::write ( const std::string &filename, std::shared_ptr<persistence::SaveHandler> handler ) {
 
 	char* outputfile = (char*) filename.c_str();
 

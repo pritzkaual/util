@@ -56,7 +56,7 @@ XMLLoad::~XMLLoad ()
 	XMLPlatformUtils::Terminate();
 }
 
-bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::Handler> handler )
+bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::LoadHandler> handler )
 {
 	XERCES_CPP_NAMESPACE_USE
 

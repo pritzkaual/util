@@ -14,7 +14,7 @@
 namespace persistence
 {
 
-Load::Load () : m_handler(new persistence::Handler())
+Load::Load () : m_handler(new persistence::LoadHandler())
 {
 
 }

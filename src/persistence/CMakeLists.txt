@@ -39,7 +39,8 @@ SET(SOURCE_FILES
 	src/Save.cpp
 	src/XMLLoad.cpp
 	src/XMLSave.cpp
-	src/Handler.cpp
+	src/LoadHandler.cpp
+	src/SaveHandler.cpp
 )
 
 INCLUDE_DIRECTORIES(

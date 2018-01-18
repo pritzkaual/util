@@ -9,7 +9,7 @@
 
 namespace persistence {
 
-Save::Save () : m_handler(new persistence::Handler())
+Save::Save () : m_handler(new persistence::SaveHandler())
 {
 
 }
@@ -29,7 +29,7 @@ bool Save::save (const std::string &filename, std::shared_ptr<ecore::EObject> mo
 	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << metaMetaPackage->getNsURI() << std::endl;
 
 	m_handler->createRootNode( metaMetaPackage->getNsPrefix(), metaClass->getName(), metaMetaPackage->getNsURI() );
-	m_handler->setCurrentObject( model );
+	m_handler->setRootObject( model );
 
 	std::cout << "| DEBUG    | " << m_handler->extractType(model) << std::endl;
 
