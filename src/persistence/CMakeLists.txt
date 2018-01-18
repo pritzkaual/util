@@ -28,8 +28,12 @@ string(REPLACE "\\" "/" MDE4CPP_HOME $ENV{MDE4CPP_HOME})
 SET(SOURCE_FILES
 	test/Persistence_test.cpp
 	test/TestModel.cpp
+	src/xerces/DOMPrintErrorHandler.cpp
+	src/xerces/DOMPrintFilter.cpp
+	src/xerces/DOMTreeErrorReporter.cpp
 	src/xerces/WStr.cpp
 	src/xerces/XStr.cpp
+	src/Option.cpp
 	src/Persistence.cpp
 	src/Load.cpp
 	src/Save.cpp
@@ -58,9 +62,10 @@ FIND_LIBRARY(TYPES_RELEASE types ${MDE4CPP_HOME}/application/lib)
 SET(RELEASE_LIBRARIES ${RELEASE_LIBRARIES} ${TYPES_RELEASE})
 
 FIND_LIBRARY(XERCES_DEBUG xerces-c ${MDE4CPP_HOME}/application/lib)
+MESSAGE("-- Found xerces-c library (Debug): " ${XERCES_DEBUG})
 FIND_LIBRARY(XERCES_RELEASE xerces-c ${MDE4CPP_HOME}/application/lib)
-MESSAGE(${XERCES_DEBUG})
-MESSAGE(${XERCES_RELEASE})
+MESSAGE("-- Found xerces-c library (Release): " ${XERCES_RELEASE})
+
 FIND_LIBRARY(PLUGINFRAMEWORK_DEBUG PluginFrameworkd ${MDE4CPP_HOME}/application/lib)
 FIND_LIBRARY(PLUGINFRAMEWORK_RELEASE PluginFramework ${MDE4CPP_HOME}/application/lib)
 
