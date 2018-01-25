@@ -99,10 +99,11 @@ INSTALL(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${MDE4CPP_HOME}/application/lib
 )
 
-INSTALL(FILES 
-	src/Persistence.hpp
-	src/XMLPersistence.hpp
-	interface/XLoadHandler.hpp
-	interface/XSaveHandler.hpp
-	DESTINATION ${MDE4CPP_HOME}/application/include/${PROJECT_NAME}
+INSTALL(DIRECTORY interface xml base DESTINATION ${MDE4CPP_HOME}/application/include/${PROJECT_NAME}
+  FILES_MATCHING 
+    PATTERN "interface/*.hpp"
+    PATTERN "xml/XMLPersistence.hpp"
+    PATTERN "base/Persistence.hpp"
+    PATTERN "xerces" EXCLUDE
+    PATTERN ".cmake" EXCLUDE
 )
