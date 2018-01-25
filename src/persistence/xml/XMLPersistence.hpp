@@ -8,7 +8,7 @@
 #ifndef XMLPersistence_HPP_
 #define XMLPersistence_HPP_
 
-#include "Persistence.hpp"
+#include "persistence/base/Persistence.hpp"
 
 #include "EObject.hpp"
 #include "EPackage.hpp"
