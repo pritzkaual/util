@@ -9,6 +9,7 @@
 #define XMLLOAD_HPP_
 
 #include "Load.hpp"
+#include "XMLLoadHandler.hpp"
 
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
@@ -16,10 +17,12 @@
 #include "xerces/DOMTreeErrorReporter.hpp"
 #include "xerces/WStr.hpp"
 
-namespace persistence
+#include <exception>
+
+namespace XMLPersistence
 {
 
-class XMLLoad : public Load
+class XMLLoad : public BasePersistence::Load
 {
 private:
 
@@ -77,9 +80,10 @@ public:
 	~XMLLoad ();
 
 private:
-	bool read ( const std::string &filename, std::shared_ptr<persistence::LoadHandler> handler );
+	bool read ( const std::string &filename );
+
 };
 
-} /* namespace persistence */
+} /* namespace XMLPersistence */
 
 #endif /* XMLLOAD_HPP_ */

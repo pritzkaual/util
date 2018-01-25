@@ -8,11 +8,12 @@
 #include "XMLSave.hpp"
 //#include "ExtendedMetaData.hpp"
 
-namespace persistence {
+namespace XMLPersistence {
 
 
 XMLSave::XMLSave ()
 {
+	m_handler.reset(new XMLPersistence::XMLSaveHandler());
 	m_XPathExpression = 0;
 
 	// options for DOMLSSerializer's features
@@ -33,21 +34,31 @@ XMLSave::XMLSave ()
 	}
 
 	catch ( const XMLException &toCatch ) {
-		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << StrX( toCatch.getMessage() ) << std::endl;
+		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << W( toCatch.getMessage() ) << std::endl;
 		return;
 	}
 }
 
 XMLSave::~XMLSave ()
 {
-	m_handler.reset();
+	if(m_handler)
+	{
+		m_handler.reset();
+	}
 	XMLPlatformUtils::Terminate();
 }
 
-bool XMLSave::write ( const std::string &filename, std::shared_ptr<persistence::SaveHandler> handler ) {
+bool XMLSave::write ( const std::string &filename ) {
 
 	char* outputfile = (char*) filename.c_str();
 
+	std::shared_ptr<XMLPersistence::XMLSaveHandler> handler = std::dynamic_pointer_cast<XMLPersistence::XMLSaveHandler>(m_handler);
+	if(!handler)
+	{
+		std::cout << "SaveHandler is empty" << std::endl;
+		return false;
+	}
+	// Get DOM Document from handler
 	DOMDocument *doc = handler->getDOMDocument();
 
 	DOMPrintFilter *myFilter = 0;
@@ -134,11 +145,11 @@ bool XMLSave::write ( const std::string &filename, std::shared_ptr<persistence::
 				resolver->release();
 			}
 			catch ( const DOMXPathException& e ) {
-				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << StrX( e.getMessage() ) << std::endl;
+				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
 				//retval = 4;
 			}
 			catch ( const DOMException& e ) {
-				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << StrX( e.getMessage() ) << std::endl;
+				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
 				//retval = 4;
 			}
 			XMLString::release( &xpathStr );
@@ -166,11 +177,11 @@ bool XMLSave::write ( const std::string &filename, std::shared_ptr<persistence::
 		//retval = 5;
 	}
 	catch ( XMLException& e ) {
-		std::cerr << "An error occurred during creation of output transcoder. Msg is:" << std::endl << StrX( e.getMessage() ) << std::endl;
+		std::cerr << "An error occurred during creation of output transcoder. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
 		//retval = 4;
 	}
 	return true;
 }
 
 
-} /* namespace persistence */
+} /* namespace XMLPersistence */

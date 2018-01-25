@@ -16,22 +16,21 @@
 #include <set>
 #include <iostream>
 
-namespace persistence {
+namespace BasePersistence {
 
 class Persistence {
 public:
 	Persistence ();
 	virtual ~Persistence ();
 
-	std::shared_ptr<ecore::EObject> load ( const std::string &filename, std::set<std::string> options );
-	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
-			std::set<std::string> options );
+	virtual std::shared_ptr<ecore::EObject> load ( const std::string &filename) = 0;
+	virtual bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage ) = 0;
 
-private:
+protected:
 	bool isValidFile ( const std::string &filename );
 
 };
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
 #endif /* PERSISTENCE_HPP_ */

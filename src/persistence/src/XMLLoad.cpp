@@ -7,11 +7,14 @@
 
 #include "XMLLoad.hpp"
 
-namespace persistence
+namespace XMLPersistence
 {
 
 XMLLoad::XMLLoad ()
 {
+	m_handler.reset(new XMLPersistence::XMLLoadHandler());
+
+
 	m_DoNamespaces = false;
 	m_DoSchema = false;
 	m_SchemaFullChecking = false;
@@ -52,11 +55,14 @@ XMLLoad::XMLLoad ()
 
 XMLLoad::~XMLLoad ()
 {
-	m_handler.reset();
+	if (m_handler)
+	{
+		m_handler.reset();
+	}
 	XMLPlatformUtils::Terminate();
 }
 
-bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::LoadHandler> handler )
+bool XMLLoad::read ( const std::string &filename )
 {
 	XERCES_CPP_NAMESPACE_USE
 
@@ -104,9 +110,17 @@ bool XMLLoad::read ( const std::string &filename, std::shared_ptr<persistence::L
 		errorsOccured = true;
 	}
 
-	//m_doc = m_parser->getDocument();
-	handler->setDOMDocument( m_parser->getDocument() );
+	std::shared_ptr<XMLPersistence::XMLLoadHandler> handler = std::dynamic_pointer_cast<XMLPersistence::XMLLoadHandler>(m_handler);
+	if (handler)
+	{
+		handler->setDOMDocument( m_parser->getDocument() );
+	}
+	else
+	{
+		errorsOccured = true;
+		std::cout<< "| ERROR    | " << "LoadHandler is empty in XMLLoad::read()." << std::endl;
+	}
 
 	return ((errorsOccured == false) && (m_errReporter->getSawErrors() == false));
 }
-} /* namespace persistence */
+} /* namespace XMLPersistence */

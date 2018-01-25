@@ -23,12 +23,13 @@ namespace ecore {
 	class EStructuralFeature;
 }
 
-namespace persistence {
+namespace XPersistence {
 
 class XLoadHandler {
 public:
 	//destructor
 	virtual ~XLoadHandler () {}
+	virtual std::string getLevel() = 0;
 
 	virtual void addToMap ( std::shared_ptr<ecore::EObject> object ) = 0;
 
@@ -37,7 +38,7 @@ public:
 
 	virtual void release () = 0;
 
-	virtual int getNumOfChildNodes() = 0;
+	virtual unsigned int getNumOfChildNodes() = 0;
 	virtual std::string getNextNodeName() = 0;
 	virtual std::map<std::string, std::string> getAttributeList () = 0;
 
@@ -45,6 +46,6 @@ public:
 }
 ;
 
-} /* namespace persistence */
+} /* namespace XPersistence */
 
 #endif /* XLoadHandler_HPP_ */

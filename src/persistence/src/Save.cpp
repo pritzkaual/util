@@ -7,9 +7,9 @@
 
 #include "Save.hpp"
 
-namespace persistence {
+namespace BasePersistence {
 
-Save::Save () : m_handler(new persistence::SaveHandler())
+Save::Save ()
 {
 
 }
@@ -19,8 +19,7 @@ Save::~Save ()
 	// TODO Auto-generated destructor stub
 }
 
-bool Save::save (const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage,
-		std::set<std::string> options)
+bool Save::save (const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage)
 {
 	std::shared_ptr<ecore::EClass> metaClass = model->eClass();
 
@@ -38,8 +37,8 @@ bool Save::save (const std::string &filename, std::shared_ptr<ecore::EObject> mo
 	m_handler->release();
 
 	// Call write() method in corresponding derived class
-	return write( filename, m_handler );
+	return write( filename );
 }
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 

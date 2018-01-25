@@ -17,23 +17,22 @@
 
 #include "SaveHandler.hpp"
 
-namespace persistence {
+namespace BasePersistence {
 
 class Save {
 public:
 	Save ();
 	virtual ~Save ();
 
-	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage, std::set<std::string> options );
+	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage );
 
 protected:
-	std::shared_ptr<persistence::SaveHandler> m_handler;
+	std::shared_ptr<BasePersistence::SaveHandler> m_handler;
 
-private:
-	virtual bool write ( const std::string &filename, std::shared_ptr<persistence::SaveHandler> handler ) = 0;
+	virtual bool write ( const std::string &filename ) = 0;
 
 };
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
 #endif /* SAVE_HPP_ */

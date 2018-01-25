@@ -9,8 +9,7 @@
 #define XMLSAVE_HPP_
 
 #include "Save.hpp"
-
-//#include "ExtendedMetaData.hpp"
+#include "XMLSaveHandler.hpp"
 
 #include <string>
 
@@ -28,12 +27,12 @@
 #include "xerces/DOMPrintErrorHandler.hpp"
 
 
-namespace persistence {
+namespace XMLPersistence {
 
 //#define X(str) xerces::XStr(str).unicodeForm()
 
 
-class XMLSave : public Save {
+class XMLSave : public BasePersistence::Save {
 public:
 	XMLSave ();
 	~XMLSave ();
@@ -87,10 +86,10 @@ private:
 	bool m_FormatPrettyPrint;
 	bool m_WriteBOM;
 
-	bool write ( const std::string &filename, std::shared_ptr<persistence::SaveHandler> handler );
+	bool write ( const std::string &filename );
 
 };
 
-} /* namespace persistence */
+} /* namespace XMLPersistence */
 
 #endif /* XMLSAVE_HPP_ */

@@ -23,7 +23,7 @@ namespace ecore {
 	class EStructuralFeature;
 }
 
-namespace persistence {
+namespace XPersistence {
 
 class XSaveHandler {
 public:
@@ -58,6 +58,6 @@ public:
 }
 ;
 
-} /* namespace persistence */
+} /* namespace XPersistence */
 
 #endif /* XSaveHandler_HPP_ */
