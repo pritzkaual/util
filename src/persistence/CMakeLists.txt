@@ -31,14 +31,16 @@ SET(SOURCE_FILES
 	src/xerces/DOMTreeErrorReporter.cpp
 	src/xerces/WStr.cpp
 	src/xerces/XStr.cpp
-	src/Option.cpp
 	src/Persistence.cpp
+	src/XMLPersistence.cpp
 	src/Load.cpp
 	src/Save.cpp
 	src/XMLLoad.cpp
 	src/XMLSave.cpp
 	src/LoadHandler.cpp
+	src/XMLLoadHandler.cpp
 	src/SaveHandler.cpp
+	src/XMLSaveHandler.cpp
 	src/HandlerHelper.cpp
 )
 
@@ -98,7 +100,7 @@ INSTALL(TARGETS ${PROJECT_NAME}
 
 INSTALL(FILES 
 	src/Persistence.hpp
-	src/Option.hpp
+	src/XMLPersistence.hpp
 	interface/XLoadHandler.hpp
 	interface/XSaveHandler.hpp
 	DESTINATION ${MDE4CPP_HOME}/application/include/${PROJECT_NAME}
