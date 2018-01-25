@@ -26,26 +26,27 @@ SET(CMAKE_CXX_FLAGS_RELEASE " -O3 -DNDEBUG")
 string(REPLACE "\\" "/" MDE4CPP_HOME $ENV{MDE4CPP_HOME})
 
 SET(SOURCE_FILES
-	src/xerces/DOMPrintErrorHandler.cpp
-	src/xerces/DOMPrintFilter.cpp
-	src/xerces/DOMTreeErrorReporter.cpp
-	src/xerces/WStr.cpp
-	src/xerces/XStr.cpp
-	src/Persistence.cpp
-	src/XMLPersistence.cpp
-	src/Load.cpp
-	src/Save.cpp
-	src/XMLLoad.cpp
-	src/XMLSave.cpp
-	src/LoadHandler.cpp
-	src/XMLLoadHandler.cpp
-	src/SaveHandler.cpp
-	src/XMLSaveHandler.cpp
-	src/HandlerHelper.cpp
+	base/Persistence.cpp
+	base/Load.cpp
+	base/Save.cpp
+	base/LoadHandler.cpp
+	base/SaveHandler.cpp
+	base/HandlerHelper.cpp
+	xml/XMLPersistence.cpp
+	xml/XMLLoad.cpp
+	xml/XMLSave.cpp
+	xml/XMLLoadHandler.cpp
+	xml/XMLSaveHandler.cpp
+	xml/xerces/DOMPrintErrorHandler.cpp
+  xml/xerces/DOMPrintFilter.cpp
+  xml/xerces/DOMTreeErrorReporter.cpp
+  xml/xerces/WStr.cpp
+  xml/xerces/XStr.cpp
 )
 
 INCLUDE_DIRECTORIES(
-  src
+  base
+  xml
   interface
 	$ENV{MDE4CPP_HOME}/application/include
 	$ENV{MDE4CPP_HOME}/application/include/abstractDataTypes
