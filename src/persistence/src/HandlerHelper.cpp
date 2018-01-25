@@ -9,7 +9,7 @@
 
 #include <sstream> // used for extractType()
 
-namespace persistence
+namespace BasePersistence
 {
 
 HandlerHelper::HandlerHelper ()
@@ -51,9 +51,15 @@ std::string HandlerHelper::extractType (const std::shared_ptr<ecore::EObject> ob
  */
 std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObject> toObject, const std::shared_ptr<ecore::EObject> rootObject, std::string prefix )
 {
-	std::stringstream value;
+	std::stringstream ref;
 	std::list<std::shared_ptr<ecore::EObject> > to_antecessors;
 	std::shared_ptr<ecore::EObject> antecessor = toObject; //pre-init antecessor
+
+	if(!toObject)
+	{
+		std::cout << "| ERROR    | " << __FUNCTION__ << " Given Parameter 'toObject' is nullptr." << std::endl;
+		return ref.str();
+	}
 
 	while ( antecessor )
 	{
@@ -61,48 +67,62 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 		antecessor = to_antecessors.back()->eContainer();
 	}
 
-	std::shared_ptr<ecore::EPackage> pkg = std::dynamic_pointer_cast<ecore::EPackage>( to_antecessors.back() );
 
-	if ( pkg )
+	// This case is used for ecore-models
+	std::shared_ptr<ecore::EPackage> rootPkg = std::dynamic_pointer_cast<ecore::EPackage>( to_antecessors.back() );
+
+	if ( rootPkg )
 	{
-		// This case is used for ecore-models
-		//if ( (m_rootObject != pkg) || (m_rootObject == nullptr) )
-		if ( rootObject != pkg )
+		// Remove root Package from 'to_antecessors' because it is not used in reference name
+		to_antecessors.pop_back();
+
+		if ( rootObject != rootPkg )
 		{
-			value << extractType( toObject, prefix ) << " " << pkg->getNsURI(); // TODO this case is not tested yet
+			ref << extractType( toObject, prefix ) << " " << rootPkg->getNsURI(); // TODO this case is not tested yet
 		}
 
-		value << "#/";
-		//to_antecessors.pop_back();
+		ref << "#/";
 
+		// Add Package name(s) and Class/Enum/EDataType name to 'value'
 		while ( to_antecessors.size() > 0 )
 		{
 			std::shared_ptr<ecore::ENamedElement> to_antecessors_back = std::dynamic_pointer_cast<ecore::ENamedElement>( to_antecessors.back() );
+			std::shared_ptr<ecore::EAnnotation> to_antecessors_back_annotation = std::dynamic_pointer_cast<ecore::EAnnotation>( to_antecessors.back() );
+
 			if ( to_antecessors_back != nullptr )
 			{
-				value << "/" << to_antecessors_back->getName();
+				ref << "/" << to_antecessors_back->getName();
+			}
+			else if ( to_antecessors_back_annotation != nullptr )
+			{
+				ref << "/" << "%"<< to_antecessors_back_annotation->getSource() << "%";
+			}
+			else
+			{
+				std::cout << "| ERROR    | " << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "() " << "During casting Object of type '" << to_antecessors.back()->eClass()->getName() << "' to 'ENamedElement'." << std::endl;
 			}
 			to_antecessors.pop_back();
 		}
 	}
+#if 0
 	//else if ( (to_antecessors.back() == m_rootObject) || (m_rootObject == nullptr) )
 	else if ( to_antecessors.back() == rootObject )
 	{
 		// This case is used for Non-Ecore-Models
-		// TODO test this case
+		// TODO implement and test this case
 
-		std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while else-if-case (Non-Ecore-Models) is not tested yet." << std::endl;
+		std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while else-if-case (Non-Ecore-Models) is not tested yet." << std::endl;
 
-		value << "/";
+		ref << "/";
 		std::shared_ptr<ecore::EObject> prev = to_antecessors.back();
 		to_antecessors.pop_back();
 
-		while ( to_antecessors.size() )
+		while ( to_antecessors.size() > 0 )
 		{
 			std::shared_ptr<ecore::EStructuralFeature> esf = to_antecessors.back()->eContainingFeature();
 
 			if ( esf->getUpperBound() == 1 )
-				value << "/" << esf->getName();
+				ref << "/" << esf->getName();
 
 			else
 			{
@@ -114,41 +134,41 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 				size_t index_of = 0;
 				for ( ; index_of < ef->size() && (*ef)[index_of] != to_antecessors.back(); index_of++ );
 
-				value << "/@" << esf->getName() << "." << index_of;
+				ref << "/@" << esf->getName() << "." << index_of;
 			}
 
 			prev = to_antecessors.back();
 			to_antecessors.pop_back();
 		}
 	}
+#endif
 	else
 	{
-		// This case is for EDataType-Classes like EString, ...
-		std::shared_ptr<ecore::EDataType> dataType = std::dynamic_pointer_cast<ecore::EDataType>( toObject );
-
-		if ( dataType )
+		std::shared_ptr<ecore::EClassifier> clsObj = std::dynamic_pointer_cast<ecore::EClassifier>( toObject );
+		if(clsObj)
 		{
-			std::weak_ptr<ecore::EPackage> dPck = dataType->getEPackage();
+			// This case is used for Class/Enum/EDataType that are not contained within a Package
+			std::weak_ptr<ecore::EPackage> dPck = clsObj->getEPackage();
 
 			//if ( (m_rootObject != dPck) || (m_rootObject == nullptr) )
 			if(auto ePck = dPck.lock())
 			{
 				if ( rootObject != ePck) // TODO use here other way to find equality of m_rootObject and current EPackage-Obj
 				{
-					value << extractType( toObject, prefix ) << " " << ePck->getNsURI(); // TODO this case is not tested yet
+					ref << extractType( toObject, prefix ) << " " << ePck->getNsURI(); // TODO this case is not tested yet
 				}
 			}
-
-			value << "#/";
-			value << "/" << dataType->getName();
+			ref << "#/";
+			ref << "/" << clsObj->getName();
 		}
 		else
 		{
-			std::cout << "| ERROR    | " << "Called " << __PRETTY_FUNCTION__ << " while else-case (EDataType-Classes) is not implemented yet." << std::endl;
+			std::cout << "| WARNING  | " << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "() " << "Given Object's type '" << toObject->eClass()->getName() << "' is not 'EClassifier'." << std::endl;
 		}
 	}
-	return value.str();
+
+	return ref.str();
 }
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
