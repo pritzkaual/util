@@ -17,25 +17,13 @@
 #include <set>
 #include <exception>
 
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMException.hpp>
-#include <xercesc/util/OutOfMemoryException.hpp>
-
-#include "xerces/XStr.hpp"
-#include "xerces/WStr.hpp"
-
 #include "boost/exception/to_string.hpp"
 
-//#include "EClass.hpp"
-//#include "EDataType.hpp"
-//#include "EEnum.hpp"
-//#include "ENamedElement.hpp"
 #include "EObject.hpp"
-//#include "EPackage.hpp"
 #include "EStructuralFeature.hpp"
 
 
-namespace persistence
+namespace BasePersistence
 {
 struct UnresolvedReference
 {
@@ -50,11 +38,11 @@ struct UnresolvedReference
 	std::shared_ptr<ecore::EObject> eObject;
 	std::shared_ptr<ecore::EStructuralFeature> eStructuralFeature;
 };
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
-namespace persistence
+namespace BasePersistence
 {
-class LoadHandler : public XLoadHandler
+class LoadHandler : public XPersistence::XLoadHandler
 {
 public:
 	LoadHandler ();
@@ -62,8 +50,10 @@ public:
 
 	std::shared_ptr<ecore::EObject> getObjectByRef ( std::string ref );
 
-	DOMDocument *getDOMDocument ();
-	void setDOMDocument ( DOMDocument * doc );
+	//DOMDocument *getDOMDocument ();
+	//void setDOMDocument ( DOMDocument * doc );
+
+	std::string getLevel();
 
 	std::string getPrefix ();
 
@@ -76,19 +66,16 @@ public:
 
 	void release ();
 
-	int getNumOfChildNodes ();
-	std::string getNextNodeName ();
-	std::map<std::string, std::string> getAttributeList ();
+	virtual unsigned int getNumOfChildNodes () = 0;
+	virtual std::string getNextNodeName () = 0;
+	virtual std::map<std::string, std::string> getAttributeList () = 0;
 
 	void addUnresolvedReference ( const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf );
 
 	void resolveReferences ();
 
-private:
-
-	DOMDocument *m_doc;
-	DOMElement *m_currentElement;
-	std::list<DOMNode *> m_currentElements;
+protected:
+	int m_level;
 
 	std::shared_ptr<ecore::EObject> m_rootObject;
 	std::list<std::shared_ptr<ecore::EObject> > m_currentObjects;
@@ -96,10 +83,10 @@ private:
 	std::string m_rootPrefix;
 
 	std::map<std::string, std::shared_ptr<ecore::EObject>> m_refToObject_map;
-	std::list<persistence::UnresolvedReference> m_unresolvedReferences;
+	std::list<BasePersistence::UnresolvedReference> m_unresolvedReferences;
 }
 ;
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
 #endif /* LoadHandler_HPP_ */
