@@ -7,7 +7,7 @@
 
 #include "Option.hpp"
 
-namespace persistence {
+namespace BasePersistence {
 
 const std::string Option::OPTION_SAVE_JSON = "OPTION_SAVE_JSON";
 
@@ -32,4 +32,4 @@ std::set<std::string> Option::get_DefaultOptions () {
 	return default_options;
 }
 
-}/* namespace persistence */
+}/* namespace BasePersistence */

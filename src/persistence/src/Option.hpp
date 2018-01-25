@@ -11,7 +11,7 @@
 #include <string>
 #include <set>
 
-namespace persistence {
+namespace BasePersistence {
 
 class Option {
 
@@ -41,6 +41,6 @@ public:
 	static std::set<std::string> get_DefaultOptions();
 };
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
 #endif /* OPTION_HPP_ */
