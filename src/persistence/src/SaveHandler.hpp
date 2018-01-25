@@ -21,10 +21,11 @@
 
 #include "EObject.hpp"
 
-
-namespace BasePersistence
+namespace persistence
 {
-class SaveHandler : public XPersistence::XSaveHandler
+namespace base
+{
+class SaveHandler : public persistence::interface::XSaveHandler
 {
 public:
 	SaveHandler ();
@@ -51,9 +52,8 @@ public:
 protected:
 	std::shared_ptr<ecore::EObject> m_rootObject;
 	std::string m_rootPrefix;
-}
-;
-
-} /* namespace BasePersistence */
+};
+} /* namespace base */
+} /* namespace persistence */
 
 #endif /* SaveHandler_HPP_ */

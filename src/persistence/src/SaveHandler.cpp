@@ -10,7 +10,9 @@
 #include <sstream> // used for addReferences()
 #include <boost/algorithm/string.hpp> // used for string splitting
 
-namespace BasePersistence
+namespace persistence
+{
+namespace base
 {
 
 SaveHandler::SaveHandler ()
@@ -31,7 +33,7 @@ std::string SaveHandler::getPrefix ()
 
 void SaveHandler::setRootObject ( std::shared_ptr<ecore::EObject> object )
 {
-	if (m_rootObject == nullptr)
+	if ( m_rootObject == nullptr )
 	{
 		m_rootObject = object;
 	}
@@ -44,19 +46,18 @@ void SaveHandler::addAttribute ( const std::string &name, bool value )
 
 void SaveHandler::addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object )
 {
-	if(object)
+	if ( object )
 	{
-		std::string ref = BasePersistence::HandlerHelper::extractReference(object, m_rootObject, m_rootPrefix);
+		std::string ref = persistence::base::HandlerHelper::extractReference( object, m_rootObject, m_rootPrefix );
 
-		addAttribute( name,  ref);
+		addAttribute( name, ref );
 	}
 }
 
 std::string SaveHandler::extractType ( std::shared_ptr<ecore::EObject> obj ) const
 {
-	return BasePersistence::HandlerHelper::extractType(obj, m_rootPrefix);
+	return persistence::base::HandlerHelper::extractType( obj, m_rootPrefix );
 }
 
-
-} /* namespace BasePersistence */
-
+} /* namespace base */
+} /* namespace persistence */

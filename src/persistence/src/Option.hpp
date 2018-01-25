@@ -11,9 +11,12 @@
 #include <string>
 #include <set>
 
-namespace BasePersistence {
-
-class Option {
+namespace persistence
+{
+namespace base
+{
+class Option
+{
 
 public:
 	/**
@@ -37,10 +40,10 @@ public:
 	 */
 	static const std::string OPTION_USE_ID__AT;
 
-
-	static std::set<std::string> get_DefaultOptions();
+	static std::set<std::string> get_DefaultOptions ();
 };
 
-} /* namespace BasePersistence */
+} /* namespace base */
+} /* namespace persistence */
 
 #endif /* OPTION_HPP_ */

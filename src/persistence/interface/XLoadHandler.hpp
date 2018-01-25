@@ -17,35 +17,42 @@
 
 #include "SubsetUnion.hpp"
 
-namespace ecore {
-	class EObject;
-	//class EModelElement;
-	class EStructuralFeature;
+namespace ecore
+{
+class EObject;
+//class EModelElement;
+class EStructuralFeature;
 }
 
-namespace XPersistence {
+namespace persistence
+{
+namespace interface
+{
 
-class XLoadHandler {
+class XLoadHandler
+{
 public:
 	//destructor
-	virtual ~XLoadHandler () {}
-	virtual std::string getLevel() = 0;
+	virtual ~XLoadHandler ()
+	{
+	}
+	virtual std::string getLevel () = 0;
 
 	virtual void addToMap ( std::shared_ptr<ecore::EObject> object ) = 0;
 
 	virtual void setCurrentObject ( std::shared_ptr<ecore::EObject> object ) = 0;
-	virtual std::shared_ptr<ecore::EObject> getCurrentObject ( ) = 0;
+	virtual std::shared_ptr<ecore::EObject> getCurrentObject () = 0;
 
 	virtual void release () = 0;
 
-	virtual unsigned int getNumOfChildNodes() = 0;
-	virtual std::string getNextNodeName() = 0;
+	virtual unsigned int getNumOfChildNodes () = 0;
+	virtual std::string getNextNodeName () = 0;
 	virtual std::map<std::string, std::string> getAttributeList () = 0;
 
-	virtual void addUnresolvedReference(const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf ) = 0;
-}
-;
+	virtual void addUnresolvedReference ( const std::string &name, std::shared_ptr<ecore::EObject> object, std::shared_ptr<ecore::EStructuralFeature> esf ) = 0;
+};
 
-} /* namespace XPersistence */
+} /* namespace interface */
+} /* namespace persistence */
 
 #endif /* XLoadHandler_HPP_ */

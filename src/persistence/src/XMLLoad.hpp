@@ -19,10 +19,11 @@
 
 #include <exception>
 
-namespace XMLPersistence
+namespace persistence
 {
-
-class XMLLoad : public BasePersistence::Load
+namespace xml
+{
+class XMLLoad : public persistence::base::Load
 {
 private:
 
@@ -84,6 +85,7 @@ private:
 
 };
 
-} /* namespace XMLPersistence */
+} /* namespace xml */
+} /* namespace persistence */
 
 #endif /* XMLLOAD_HPP_ */

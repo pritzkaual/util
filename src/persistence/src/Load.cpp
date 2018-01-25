@@ -11,7 +11,9 @@
 #include "MDE4CPPPlugin.hpp"
 #include "EcoreModelPlugin.hpp"
 
-namespace BasePersistence
+namespace persistence
+{
+namespace base
 {
 
 Load::Load ()
@@ -24,14 +26,12 @@ Load::~Load ()
 	// TODO Auto-generated destructor stub
 }
 
-
-
-std::shared_ptr<ecore::EObject> Load::load (const std::string &filename )
+std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename )
 {
 	std::shared_ptr<ecore::EObject> retvalue = nullptr;
 	std::string prefix;
 
-	std::cout << "| INFO     | " << "Reading file '" << filename << "'"<< std::endl;
+	std::cout << "| INFO     | " << "Reading file '" << filename << "'" << std::endl;
 
 	if ( read( filename ) == false )
 	{
@@ -49,15 +49,14 @@ std::shared_ptr<ecore::EObject> Load::load (const std::string &filename )
 		prefix = m_handler->getPrefix();
 
 		std::shared_ptr<PluginFramework> pluginFramework = PluginFramework::eInstance();
-		std::shared_ptr<MDE4CPPPlugin> plugin = pluginFramework->findPluginByName(prefix);
+		std::shared_ptr<MDE4CPPPlugin> plugin = pluginFramework->findPluginByName( prefix );
 
-		if(plugin && (prefix.compare("ecore") == 0))
+		if ( plugin && (prefix.compare( "ecore" ) == 0) )
 		{
-			std::shared_ptr<EcoreModelPlugin> ecorePlugin = std::dynamic_pointer_cast<EcoreModelPlugin>(plugin);
+			std::shared_ptr<EcoreModelPlugin> ecorePlugin = std::dynamic_pointer_cast<EcoreModelPlugin>( plugin );
 			std::shared_ptr<ecore::EPackage> package = ecorePlugin->getPackage();
 			//std::shared_ptr<ecore::EFactory> factory = ecorePlugin->getFactory(); // TODO not supported yet
-			std::shared_ptr<ecore::EcoreFactory> factory =  std::dynamic_pointer_cast<ecore::EcoreFactory>(ecorePlugin->getFactory())->eInstance();
-
+			std::shared_ptr<ecore::EcoreFactory> factory = std::dynamic_pointer_cast<ecore::EcoreFactory>( ecorePlugin->getFactory() )->eInstance();
 
 			// Create root object of model
 			//std::shared_ptr<ecore::EPackage> pck_root = std::dynamic_pointer_cast<ecore::EPackage>(factory->create(std::dynamic_pointer_cast<ecore::EClass>(package->getEClassifier("EPackage"))) ); // TODO Not supported yet
@@ -70,13 +69,13 @@ std::shared_ptr<ecore::EObject> Load::load (const std::string &filename )
 
 			// Add EClassifiers of package to map if not already in.
 			std::shared_ptr<Bag<ecore::EClassifier>> eClassifiers = package->getEClassifiers();
-			for(std::shared_ptr<ecore::EClassifier> eClassifier : *eClassifiers)
+			for ( std::shared_ptr<ecore::EClassifier> eClassifier : *eClassifiers )
 			{
 				// TODO filter EDataType
 				std::shared_ptr<ecore::EClass> _metaClass = eClassifier->eClass();
-				if (_metaClass->getName().compare("EDataType") == 0)
+				if ( _metaClass->getName().compare( "EDataType" ) == 0 )
 				{
-					m_handler->addToMap(eClassifier); // TODO add default parameter force=true
+					m_handler->addToMap( eClassifier ); // TODO add default parameter force=true
 				}
 			}
 
@@ -95,4 +94,5 @@ std::shared_ptr<ecore::EObject> Load::load (const std::string &filename )
 	return retvalue;
 }
 
-} /* namespace BasePersistence */
+} /* namespace base */
+} /* namespace persistence */

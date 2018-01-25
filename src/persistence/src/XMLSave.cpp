@@ -8,12 +8,13 @@
 #include "XMLSave.hpp"
 //#include "ExtendedMetaData.hpp"
 
-namespace XMLPersistence {
-
-
+namespace persistence
+{
+namespace xml
+{
 XMLSave::XMLSave ()
 {
-	m_handler.reset(new XMLPersistence::XMLSaveHandler());
+	m_handler.reset( new persistence::xml::XMLSaveHandler() );
 	m_XPathExpression = 0;
 
 	// options for DOMLSSerializer's features
@@ -33,7 +34,8 @@ XMLSave::XMLSave ()
 		XMLPlatformUtils::Initialize();
 	}
 
-	catch ( const XMLException &toCatch ) {
+	catch ( const XMLException &toCatch )
+	{
 		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << W( toCatch.getMessage() ) << std::endl;
 		return;
 	}
@@ -41,19 +43,20 @@ XMLSave::XMLSave ()
 
 XMLSave::~XMLSave ()
 {
-	if(m_handler)
+	if ( m_handler )
 	{
 		m_handler.reset();
 	}
 	XMLPlatformUtils::Terminate();
 }
 
-bool XMLSave::write ( const std::string &filename ) {
+bool XMLSave::write ( const std::string &filename )
+{
 
 	char* outputfile = (char*) filename.c_str();
 
-	std::shared_ptr<XMLPersistence::XMLSaveHandler> handler = std::dynamic_pointer_cast<XMLPersistence::XMLSaveHandler>(m_handler);
-	if(!handler)
+	std::shared_ptr<persistence::xml::XMLSaveHandler> handler = std::dynamic_pointer_cast<persistence::xml::XMLSaveHandler>( m_handler );
+	if ( !handler )
 	{
 		std::cout << "SaveHandler is empty" << std::endl;
 		return false;
@@ -63,9 +66,11 @@ bool XMLSave::write ( const std::string &filename ) {
 
 	DOMPrintFilter *myFilter = 0;
 
-	try {
+	try
+	{
 		// get a serializer, an instance of DOMLSSerializer
-		XMLCh tempStr[3] = { chLatin_L, chLatin_S, chNull };
+		XMLCh tempStr[3] =
+		{ chLatin_L, chLatin_S, chNull };
 		DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation( tempStr );
 		DOMLSSerializer *theSerializer = ((DOMImplementationLS*) impl)->createLSSerializer();
 		DOMLSOutput *theOutputDesc = ((DOMImplementationLS*) impl)->createLSOutput();
@@ -74,7 +79,8 @@ bool XMLSave::write ( const std::string &filename ) {
 		theOutputDesc->setEncoding( m_OutputEncoding );
 
 		// plug in user's own filter
-		if ( m_UseFilter ) {
+		if ( m_UseFilter )
+		{
 			// even we say to show attribute, but the DOMLSSerializer
 			// will not show attribute nodes to the filter as
 			// the specs explicitly says that DOMLSSerializer shall
@@ -93,16 +99,20 @@ bool XMLSave::write ( const std::string &filename ) {
 		serializerConfig->setParameter( XMLUni::fgDOMErrorHandler, myErrorHandler );
 
 		// set feature if the serializer supports the feature/mode
-		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTSplitCdataSections, m_SplitCdataSections ) ){
+		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTSplitCdataSections, m_SplitCdataSections ) )
+		{
 			serializerConfig->setParameter( XMLUni::fgDOMWRTSplitCdataSections, m_SplitCdataSections );
 		}
-		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTDiscardDefaultContent, m_DiscardDefaultContent ) ){
+		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTDiscardDefaultContent, m_DiscardDefaultContent ) )
+		{
 			serializerConfig->setParameter( XMLUni::fgDOMWRTDiscardDefaultContent, m_DiscardDefaultContent );
 		}
-		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTFormatPrettyPrint, m_FormatPrettyPrint ) ){
+		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTFormatPrettyPrint, m_FormatPrettyPrint ) )
+		{
 			serializerConfig->setParameter( XMLUni::fgDOMWRTFormatPrettyPrint, m_FormatPrettyPrint );
 		}
-		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTBOM, m_WriteBOM ) ){
+		if ( serializerConfig->canSetParameter( XMLUni::fgDOMWRTBOM, m_WriteBOM ) )
+		{
 			serializerConfig->setParameter( XMLUni::fgDOMWRTBOM, m_WriteBOM );
 		}
 		//
@@ -113,10 +123,12 @@ bool XMLSave::write ( const std::string &filename ) {
 		// to stdout once it receives any thing from the serializer.
 		//
 		XMLFormatTarget *myFormTarget;
-		if ( outputfile ) {
+		if ( outputfile )
+		{
 			myFormTarget = new LocalFileFormatTarget( outputfile );
 		}
-		else {
+		else
+		{
 			myFormTarget = new StdOutFormatTarget();
 		}
 		theOutputDesc->setByteStream( myFormTarget );
@@ -127,16 +139,19 @@ bool XMLSave::write ( const std::string &filename ) {
 		//
 		// do the serialization through DOMLSSerializer::write();
 		//
-		if ( m_XPathExpression != NULL ) {
+		if ( m_XPathExpression != NULL )
+		{
 			XMLCh* xpathStr = XMLString::transcode( m_XPathExpression );
 			DOMElement* root = doc->getDocumentElement();
-			try {
+			try
+			{
 				DOMXPathNSResolver* resolver = doc->createNSResolver( root );
 				DOMXPathResult* result = doc->evaluate( xpathStr, root, resolver, DOMXPathResult::ORDERED_NODE_SNAPSHOT_TYPE,
 				NULL );
 
 				XMLSize_t nLength = result->getSnapshotLength();
-				for ( XMLSize_t i = 0; i < nLength; i++ ) {
+				for ( XMLSize_t i = 0; i < nLength; i++ )
+				{
 					result->snapshotItem( i );
 					theSerializer->write( result->getNodeValue(), theOutputDesc );
 				}
@@ -144,17 +159,20 @@ bool XMLSave::write ( const std::string &filename ) {
 				result->release();
 				resolver->release();
 			}
-			catch ( const DOMXPathException& e ) {
+			catch ( const DOMXPathException& e )
+			{
 				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
 				//retval = 4;
 			}
-			catch ( const DOMException& e ) {
+			catch ( const DOMException& e )
+			{
 				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
 				//retval = 4;
 			}
 			XMLString::release( &xpathStr );
 		}
-		else {
+		else
+		{
 			// Default write
 			theSerializer->write( doc, theOutputDesc );
 		}
@@ -168,20 +186,23 @@ bool XMLSave::write ( const std::string &filename ) {
 		delete myFormTarget;
 		delete myErrorHandler;
 
-		if ( m_UseFilter ) {
+		if ( m_UseFilter )
+		{
 			delete myFilter;
 		}
 	}
-	catch ( const OutOfMemoryException& ) {
+	catch ( const OutOfMemoryException& )
+	{
 		std::cerr << "OutOfMemoryException" << std::endl;
 		//retval = 5;
 	}
-	catch ( XMLException& e ) {
+	catch ( XMLException& e )
+	{
 		std::cerr << "An error occurred during creation of output transcoder. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
 		//retval = 4;
 	}
 	return true;
 }
 
-
-} /* namespace XMLPersistence */
+} /* namespace xml */
+} /* namespace persistence */

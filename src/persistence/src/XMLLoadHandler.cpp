@@ -10,7 +10,9 @@
 #include <sstream> // used for getLevel()
 #include <boost/algorithm/string.hpp> // used for string splitting
 
-namespace XMLPersistence
+namespace persistence
+{
+namespace xml
 {
 
 XMLLoadHandler::XMLLoadHandler ()
@@ -36,8 +38,8 @@ DOMDocument *XMLLoadHandler::getDOMDocument ()
 
 void XMLLoadHandler::setDOMDocument ( DOMDocument * doc )
 {
-	assert(doc);
-	if (doc == nullptr)
+	assert( doc );
+	if ( doc == nullptr )
 	{
 		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMDocument 'doc' is empty." << std::endl;
 		return;
@@ -46,10 +48,10 @@ void XMLLoadHandler::setDOMDocument ( DOMDocument * doc )
 	m_rootObject = nullptr;
 	m_currentElement = m_doc->getDocumentElement(); // get root element
 
-	if (!m_currentElement)
+	if ( !m_currentElement )
 	{
 		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMElement (root) does not exist." << std::endl;
-		assert(m_currentElement);
+		assert( m_currentElement );
 	}
 
 	m_rootPrefix = "ecore"; // TODO get prefix from document
@@ -63,7 +65,6 @@ void XMLLoadHandler::setDOMDocument ( DOMDocument * doc )
 		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." << std::endl;
 	}
 }
-
 
 unsigned int XMLLoadHandler::getNumOfChildNodes ()
 {
@@ -156,5 +157,5 @@ std::map<std::string, std::string> XMLLoadHandler::getAttributeList ()
 	return attributeList;
 }
 
-} /* namespace XMLPersistence */
-
+} /* namespace xml */
+} /* namespace persistence */

@@ -7,13 +7,14 @@
 
 #include "XMLLoad.hpp"
 
-namespace XMLPersistence
+namespace persistence
+{
+namespace xml
 {
 
 XMLLoad::XMLLoad ()
 {
-	m_handler.reset(new XMLPersistence::XMLLoadHandler());
-
+	m_handler.reset( new persistence::xml::XMLLoadHandler() );
 
 	m_DoNamespaces = false;
 	m_DoSchema = false;
@@ -55,7 +56,7 @@ XMLLoad::XMLLoad ()
 
 XMLLoad::~XMLLoad ()
 {
-	if (m_handler)
+	if ( m_handler )
 	{
 		m_handler.reset();
 	}
@@ -71,7 +72,7 @@ bool XMLLoad::read ( const std::string &filename )
 	//  out of it.
 	//
 	//std::cout << "Filename: " << filename << std::endl;
-	std::string _filename = filename; // TODO check if _filename is necessary, because of Error-Message "Multiple errors.." in var filename
+std	::string _filename = filename;// TODO check if _filename is necessary, because of Error-Message "Multiple errors.." in var filename
 
 	bool errorsOccured = false;
 
@@ -99,7 +100,7 @@ bool XMLLoad::read ( const std::string &filename )
 		std::cout << "\nDOM Error during parsing: '" << _filename.c_str() << "'\n" << "DOMException code is:  " << e.code << std::endl;
 
 		if ( DOMImplementation::loadDOMExceptionMsg( e.code, errText, maxChars ) )
-			std::cout << "Message is: " << W( errText ) << std::endl;
+		std::cout << "Message is: " << W( errText ) << std::endl;
 
 		errorsOccured = true;
 	}
@@ -110,7 +111,7 @@ bool XMLLoad::read ( const std::string &filename )
 		errorsOccured = true;
 	}
 
-	std::shared_ptr<XMLPersistence::XMLLoadHandler> handler = std::dynamic_pointer_cast<XMLPersistence::XMLLoadHandler>(m_handler);
+	std::shared_ptr<persistence::xml::XMLLoadHandler> handler = std::dynamic_pointer_cast<persistence::xml::XMLLoadHandler>(m_handler);
 	if (handler)
 	{
 		handler->setDOMDocument( m_parser->getDocument() );
@@ -123,4 +124,6 @@ bool XMLLoad::read ( const std::string &filename )
 
 	return ((errorsOccured == false) && (m_errReporter->getSawErrors() == false));
 }
-} /* namespace XMLPersistence */
+}
+/* namespace xml */
+} /* namespace persistence */

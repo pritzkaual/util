@@ -28,16 +28,17 @@
 
 #include "EObject.hpp"
 
-
-namespace XMLPersistence
+namespace persistence
 {
-class XMLSaveHandler : public BasePersistence::SaveHandler
+namespace xml
+{
+class XMLSaveHandler : public persistence::base::SaveHandler
 {
 public:
 	XMLSaveHandler ();
 	~XMLSaveHandler ();
 
-	void setDOMDocument (DOMDocument * doc);
+	void setDOMDocument ( DOMDocument * doc );
 	DOMDocument *getDOMDocument ();
 
 	bool createRootNode ( const std::string& name, const std::string& ns_uri );
@@ -60,9 +61,8 @@ private:
 	std::list<DOMNode *> m_currentElements;
 
 	void addChild ( DOMElement *parent_elem, DOMElement *child_elem );
-}
-;
-
-} /* namespace XMLPersistence */
+};
+} /* namespace xml */
+} /* namespace persistence */
 
 #endif /* XMLSaveHandler_HPP_ */

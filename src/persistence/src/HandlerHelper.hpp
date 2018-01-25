@@ -22,7 +22,9 @@
 #include "EStructuralFeature.hpp"
 #include "EStringToStringMapEntry.hpp"
 
-namespace BasePersistence
+namespace persistence
+{
+namespace base
 {
 class HandlerHelper
 {
@@ -30,11 +32,12 @@ public:
 	HandlerHelper ();
 	virtual ~HandlerHelper ();
 
-	static std::string extractType ( const std::shared_ptr<ecore::EObject> obj, std::string prefix);
-	static std::string extractReference ( const std::shared_ptr<ecore::EObject> toObject, const std::shared_ptr<ecore::EObject> rootObject, std::string prefix );
-}
-;
+	static std::string extractType ( const std::shared_ptr<ecore::EObject> obj, std::string prefix );
+	static std::string extractReference ( const std::shared_ptr<ecore::EObject> toObject, const std::shared_ptr<ecore::EObject> rootObject,
+			std::string prefix );
+};
 
-} /* namespace BasePersistence */
+} /* namespace base */
+} /* namespace persistence */
 
 #endif /* HandlerHelper_HPP_ */

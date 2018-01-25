@@ -17,21 +17,27 @@
 
 #include "SubsetUnion.hpp"
 
-namespace ecore {
-	class EObject;
-	//class EModelElement;
-	class EStructuralFeature;
+namespace ecore
+{
+class EObject;
+//class EModelElement;
+class EStructuralFeature;
 }
 
-namespace XPersistence {
-
-class XSaveHandler {
+namespace persistence
+{
+namespace interface
+{
+class XSaveHandler
+{
 public:
 	//destructor
-	virtual ~XSaveHandler () {}
+	virtual ~XSaveHandler ()
+	{
+	}
 
 	virtual std::string extractType ( std::shared_ptr<ecore::EObject> obj ) const = 0;
-  
+
 	virtual bool createAndAddElement ( const std::string& name ) = 0;
 
 	template<typename T>
@@ -48,16 +54,15 @@ public:
 	template<typename T>
 	void addReferences ( const std::string &name, std::shared_ptr<Bag<T> > objects )
 	{
-		for (std::shared_ptr<T> _object : *objects)
+		for ( std::shared_ptr<T> _object : *objects )
 		{
-			addReferences ( name, _object );
+			addReferences( name, _object );
 		}
 	}
 
 	virtual void release () = 0;
-}
-;
+};
 
-} /* namespace XPersistence */
-
+} /* namespace interface */
+} /* namespace persistence */
 #endif /* XSaveHandler_HPP_ */

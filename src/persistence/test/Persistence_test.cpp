@@ -8,7 +8,7 @@
 #include <omp.h>
 #include <stdlib.h>
 
-#include "XMLPersistence.hpp"
+#include "persistence/xml/XMLPersistence.hpp"
 #include "TestModel.hpp"
 
 #include "EPackage.hpp"
@@ -48,7 +48,7 @@ int main () {
 
 
 		// Crete persistence object
-		XMLPersistence::XML_Persistence myPersistence;
+		persistence::xml::XMLPersistence myPersistence;
 #if 0
 		// Perform save()
 		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestSaveMetaModel'" << std::endl;

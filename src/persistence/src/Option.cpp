@@ -7,7 +7,10 @@
 
 #include "Option.hpp"
 
-namespace BasePersistence {
+namespace persistence
+{
+namespace base
+{
 
 const std::string Option::OPTION_SAVE_JSON = "OPTION_SAVE_JSON";
 
@@ -19,9 +22,8 @@ const std::string Option::OPTION_USE_ID__HASHTAG = "OPTION_USE_ID__HASHTAG";
 
 const std::string Option::OPTION_USE_ID__AT = "OPTION_USE_ID__AT";
 
-
-
-std::set<std::string> Option::get_DefaultOptions () {
+std::set<std::string> Option::get_DefaultOptions ()
+{
 	std::set<std::string> default_options;
 
 	default_options.insert( Option::OPTION_SAVE_XML );
@@ -32,4 +34,5 @@ std::set<std::string> Option::get_DefaultOptions () {
 	return default_options;
 }
 
-}/* namespace BasePersistence */
+}/* namespace base */
+}/* namespace persistence */

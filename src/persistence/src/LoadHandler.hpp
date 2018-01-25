@@ -22,8 +22,9 @@
 #include "EObject.hpp"
 #include "EStructuralFeature.hpp"
 
-
-namespace BasePersistence
+namespace persistence
+{
+namespace base
 {
 struct UnresolvedReference
 {
@@ -38,11 +39,11 @@ struct UnresolvedReference
 	std::shared_ptr<ecore::EObject> eObject;
 	std::shared_ptr<ecore::EStructuralFeature> eStructuralFeature;
 };
-} /* namespace BasePersistence */
 
-namespace BasePersistence
-{
-class LoadHandler : public XPersistence::XLoadHandler
+/**
+ * Class LoadHandler
+ */
+class LoadHandler : public persistence::interface::XLoadHandler
 {
 public:
 	LoadHandler ();
@@ -53,7 +54,7 @@ public:
 	//DOMDocument *getDOMDocument ();
 	//void setDOMDocument ( DOMDocument * doc );
 
-	std::string getLevel();
+	std::string getLevel ();
 
 	std::string getPrefix ();
 
@@ -62,7 +63,7 @@ public:
 	void addToMap ( std::shared_ptr<ecore::EObject> object );
 
 	void setCurrentObject ( std::shared_ptr<ecore::EObject> object );
-	std::shared_ptr<ecore::EObject> getCurrentObject ( );
+	std::shared_ptr<ecore::EObject> getCurrentObject ();
 
 	void release ();
 
@@ -83,10 +84,9 @@ protected:
 	std::string m_rootPrefix;
 
 	std::map<std::string, std::shared_ptr<ecore::EObject>> m_refToObject_map;
-	std::list<BasePersistence::UnresolvedReference> m_unresolvedReferences;
-}
-;
-
-} /* namespace BasePersistence */
+	std::list<persistence::base::UnresolvedReference> m_unresolvedReferences;
+};
+} /* namespace base */
+} /* namespace persistence */
 
 #endif /* LoadHandler_HPP_ */

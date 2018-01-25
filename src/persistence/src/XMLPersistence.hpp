@@ -1,12 +1,12 @@
 /*
- * XMLPersistence.hpp
+ * persistence::xml.hpp
  *
  *  Created on: 25.01.2018
  *      Author: Alexander
  */
 
-#ifndef XMLPERSISTENCE_HPP_
-#define XMLPERSISTENCE_HPP_
+#ifndef XMLPersistence_HPP_
+#define XMLPersistence_HPP_
 
 #include "Persistence.hpp"
 
@@ -17,20 +17,24 @@
 #include <string>
 #include <iostream>
 
-namespace XMLPersistence {
+namespace persistence
+{
+namespace xml
+{
 
-class XML_Persistence : BasePersistence::Persistence  {
+class XMLPersistence : persistence::base::Persistence
+{
 public:
-	XML_Persistence ();
-	virtual ~XML_Persistence ();
+	XMLPersistence ();
+	virtual ~XMLPersistence ();
 
 	std::shared_ptr<ecore::EObject> load ( const std::string &filename );
-	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage);
+	bool save ( const std::string &filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage );
 
 private:
 
 };
+} /* namespace xml */
+} /* namespace persistence */
 
-} /* namespace XMLPersistence */
-
-#endif /* XMLPERSISTENCE_HPP_ */
+#endif /* XMLPersistence_HPP_ */

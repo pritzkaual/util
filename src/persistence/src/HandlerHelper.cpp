@@ -9,7 +9,9 @@
 
 #include <sstream> // used for extractType()
 
-namespace BasePersistence
+namespace persistence
+{
+namespace base
 {
 
 HandlerHelper::HandlerHelper ()
@@ -170,5 +172,5 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 	return ref.str();
 }
 
-} /* namespace BasePersistence */
-
+} /* namespace base */
+} /* namespace persistence */

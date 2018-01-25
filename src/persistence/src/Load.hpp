@@ -21,21 +21,25 @@
 
 #include <boost/any.hpp>
 
-namespace BasePersistence {
-
-class Load {
+namespace persistence
+{
+namespace base
+{
+class Load
+{
 public:
 	Load ();
 	virtual ~Load ();
 
-	std::shared_ptr<ecore::EObject> load (const std::string &filename );
+	std::shared_ptr<ecore::EObject> load ( const std::string &filename );
 
 protected:
-	std::shared_ptr<BasePersistence::LoadHandler> m_handler;
+	std::shared_ptr<persistence::base::LoadHandler> m_handler;
 
 	virtual bool read ( const std::string &filename ) = 0;
 };
 
-} /* namespace BasePersistence */
+} /* namespace base */
+} /* namespace persistence */
 
 #endif /* LOAD_HPP_ */

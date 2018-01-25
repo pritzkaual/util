@@ -29,11 +29,11 @@
 #include "EObject.hpp"
 #include "EStructuralFeature.hpp"
 
-
-
-namespace XMLPersistence
+namespace persistence
 {
-class XMLLoadHandler : public BasePersistence::LoadHandler
+namespace xml
+{
+class XMLLoadHandler : public persistence::base::LoadHandler
 {
 public:
 	XMLLoadHandler ();
@@ -42,12 +42,9 @@ public:
 	DOMDocument *getDOMDocument ();
 	void setDOMDocument ( DOMDocument * doc );
 
-
 	unsigned int getNumOfChildNodes ();
 	std::string getNextNodeName ();
 	std::map<std::string, std::string> getAttributeList ();
-
-
 
 private:
 	DOMDocument *m_doc;
@@ -55,6 +52,7 @@ private:
 	std::list<DOMNode *> m_currentElements;
 };
 
-} /* namespace XMLPersistence */
+} /* namespace xml */
+} /* namespace persistence */
 
 #endif /* XMLLoadHandler_HPP_ */

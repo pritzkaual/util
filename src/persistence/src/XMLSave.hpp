@@ -20,19 +20,18 @@
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 
-
 #include "xerces/XStr.hpp"
 #include "xerces/DOMTreeErrorReporter.hpp"
 #include "xerces/DOMPrintFilter.hpp"
 #include "xerces/DOMPrintErrorHandler.hpp"
 
+namespace persistence
+{
+namespace xml
+{
 
-namespace XMLPersistence {
-
-//#define X(str) xerces::XStr(str).unicodeForm()
-
-
-class XMLSave : public BasePersistence::Save {
+class XMLSave : public persistence::base::Save
+{
 public:
 	XMLSave ();
 	~XMLSave ();
@@ -89,7 +88,7 @@ private:
 	bool write ( const std::string &filename );
 
 };
-
-} /* namespace XMLPersistence */
+} /* namespace xml */
+} /* namespace persistence */
 
 #endif /* XMLSAVE_HPP_ */

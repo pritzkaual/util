@@ -10,9 +10,10 @@
 #include <sstream> // used for addReferences()
 #include <boost/algorithm/string.hpp> // used for string splitting
 
-namespace XMLPersistence
+namespace persistence
 {
-
+namespace xml
+{
 XMLSaveHandler::XMLSaveHandler ()
 {
 	m_doc = nullptr;
@@ -152,12 +153,12 @@ void XMLSaveHandler::addReferences ( const std::string &name, std::shared_ptr<ec
 {
 	try
 	{
-		std::string ref = BasePersistence::HandlerHelper::extractReference(object, m_rootObject, m_rootPrefix);
+		std::string ref = persistence::base::HandlerHelper::extractReference( object, m_rootObject, m_rootPrefix );
 
 		std::stringstream ss;
-		std::string tmpStr = W(m_currentElement->getAttribute(X( name )));
+		std::string tmpStr = W( m_currentElement->getAttribute(X( name )) );
 
-		if (!tmpStr.empty())
+		if ( !tmpStr.empty() )
 		{
 			ss << tmpStr << " ";
 		}
@@ -175,7 +176,6 @@ void XMLSaveHandler::addReferences ( const std::string &name, std::shared_ptr<ec
 	}
 }
 
-
 void XMLSaveHandler::release ()
 {
 	if ( m_currentElement == nullptr )
@@ -189,5 +189,6 @@ void XMLSaveHandler::release ()
 	}
 }
 
-} /* namespace BasePersistence */
+} /* namespace xml */
+} /* namespace persistence */
 
