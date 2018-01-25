@@ -11,15 +11,18 @@
 #include <list>
 #include <string>
 #include <set>
+#include <tuple>
 
+#include "EAnnotation.hpp"
 #include "EClass.hpp"
 #include "EDataType.hpp"
 #include "ENamedElement.hpp"
 #include "EObject.hpp"
 #include "EPackage.hpp"
 #include "EStructuralFeature.hpp"
+#include "EStringToStringMapEntry.hpp"
 
-namespace persistence
+namespace BasePersistence
 {
 class HandlerHelper
 {
@@ -32,6 +35,6 @@ public:
 }
 ;
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
 #endif /* HandlerHelper_HPP_ */
