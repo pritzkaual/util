@@ -44,7 +44,7 @@ void XMLSaveHandler::setDOMDocument ( DOMDocument * doc )
 	}
 	else
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." << std::endl;
+		MSG_ERROR( MSG_FLF << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." );
 	}
 }
 
@@ -85,26 +85,26 @@ bool XMLSaveHandler::createRootNode ( const std::string& name, const std::string
 		}
 		catch ( const OutOfMemoryException& )
 		{
-			std::cerr << "| ERROR    | " << __PRETTY_FUNCTION__ << " OutOfMemoryException" << std::endl;
+			MSG_ERROR( MSG_FLF << "OutOfMemoryException" );
 			//errorCode = 5;
 			return false;
 		}
 		catch ( const DOMException& e )
 		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
+			MSG_ERROR( MSG_FLF << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) );
 			//errorCode = 2;
 			return false;
 		}
 		catch ( ... )
 		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " An error occurred creating the document" << std::endl;
+			MSG_ERROR( MSG_FLF <<"An error occurred creating the document" );
 			//errorCode = 3;
 			return false;
 		}
 	}  // (impl != NULL)
 	else
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Requested implementation is not supported" << std::endl;
+		MSG_ERROR( MSG_FLF <<"Requested implementation is not supported" );
 		//errorCode = 4;
 		return false;
 	}
@@ -116,7 +116,7 @@ bool XMLSaveHandler::createAndAddElement ( const std::string& name )
 {
 	if ( m_doc == nullptr )
 	{
-		std::cout << "| ERROR    | " << " Called " << __PRETTY_FUNCTION__ << " while their is no root-Element created before." << std::endl;
+		MSG_ERROR( MSG_FLF <<"No root-Element created first" );
 		return false;
 	}
 	else
@@ -141,11 +141,11 @@ void XMLSaveHandler::addAttribute ( const std::string& name, const std::string& 
 	}
 	catch ( const DOMException& e )
 	{
-		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
+		MSG_ERROR( MSG_FLF << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) );
 	}
 	catch ( std::exception& e )
 	{
-		std::cout << "| ERROR    | " << "Exception code is:  " << e.what() << std::endl;
+		MSG_ERROR( MSG_FLF << "Exception code is:  " << e.what() );
 	}
 }
 
@@ -168,11 +168,11 @@ void XMLSaveHandler::addReferences ( const std::string &name, std::shared_ptr<ec
 	}
 	catch ( const DOMException& e )
 	{
-		std::cout << "| ERROR    | " << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) << std::endl;
+		MSG_ERROR( MSG_FLF << "DOMException code is:  " << e.code << std::endl << W( e.getMessage() ) );
 	}
 	catch ( std::exception& e )
 	{
-		std::cout << "| ERROR    | " << "Exception code is:  " << e.what() << std::endl;
+		MSG_ERROR( MSG_FLF << "Exception code is:  " << e.what() );
 	}
 }
 
@@ -180,7 +180,7 @@ void XMLSaveHandler::release ()
 {
 	if ( m_currentElement == nullptr )
 	{
-		std::cout << "| ERROR    | " << "You can't call " << __PRETTY_FUNCTION__ << " while current DOMElement m_currentElement is nullptr." << std::endl;
+		MSG_ERROR( MSG_FLF << "Ccurrent DOMElement m_currentElement is nullptr" );
 	}
 	else
 	{

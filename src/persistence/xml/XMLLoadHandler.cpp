@@ -41,7 +41,7 @@ void XMLLoadHandler::setDOMDocument ( DOMDocument * doc )
 	assert( doc );
 	if ( doc == nullptr )
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMDocument 'doc' is empty." << std::endl;
+		MSG_ERROR( MSG_FLF << " Current DOMDocument 'doc' is empty." );
 		return;
 	}
 	m_doc = doc;
@@ -50,7 +50,7 @@ void XMLLoadHandler::setDOMDocument ( DOMDocument * doc )
 
 	if ( !m_currentElement )
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMElement (root) does not exist." << std::endl;
+		MSG_ERROR( MSG_FLF << " Current DOMElement (root) does not exist." );
 		assert( m_currentElement );
 	}
 
@@ -62,7 +62,7 @@ void XMLLoadHandler::setDOMDocument ( DOMDocument * doc )
 	}
 	else
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." << std::endl;
+		MSG_ERROR( MSG_FLF << " Current DOMElement (root) is not a DOMNode::ELEMENT_NODE." );
 	}
 }
 
@@ -80,9 +80,8 @@ unsigned int XMLLoadHandler::getNumOfChildNodes ()
 	}
 	if ( count != m_currentElement->getChildElementCount() )
 	{
-		std::cout << "| ERROR    | " << " In " << __PRETTY_FUNCTION__ << " different Number of Children." << std::endl;
+		MSG_ERROR( MSG_FLF << "Different Number of Children" );
 	}
-	//std::cout << getLevel() << "ChildNodes: " << count << std::endl;
 	return count;
 }
 
@@ -120,7 +119,7 @@ std::string XMLLoadHandler::getNextNodeName ()
 		std::cout << std::endl;
 #endif
 	}
-	//std::cout << "| DEBUG    | " << "NodeName: " << nodeName << std::endl;
+	//MSG_DEBUG("NodeName: " << nodeName);
 
 	return nodeName;
 }
@@ -136,8 +135,8 @@ std::map<std::string, std::string> XMLLoadHandler::getAttributeList ()
 	DOMNamedNodeMap *pAttributes = m_currentElement->getAttributes();
 	const XMLSize_t nSize = pAttributes->getLength();
 
-	//std::cout << "| DEBUG    | " << "\t" << "Attributes:" << std::endl;
-	//std::cout << "|            " << "\t" << "-----------" << std::endl;
+	//MSG_DEBUG("\t" << "Attributes:");
+	//MSG_DEBUG("\t" << "-----------");
 
 	for ( XMLSize_t i = 0; i < nSize; ++i )
 	{
@@ -149,7 +148,7 @@ std::map<std::string, std::string> XMLLoadHandler::getAttributeList ()
 		aValue = W( pAttributeNode->getValue() );
 
 		// Print Attribute Name and Value
-		//std::cout << "| DEBUG    | " << "\t" << aName << "=" << aValue << std::endl;
+		//MSG_DEBUG"\t" << aName << "=" << aValue);
 
 		attributeList.insert( std::pair<std::string, std::string>( aName, aValue ) );
 	}

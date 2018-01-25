@@ -18,42 +18,40 @@ namespace xml
 {
 XMLPersistence::XMLPersistence ()
 {
-
 }
 
 XMLPersistence::~XMLPersistence ()
 {
-	// TODO Auto-generated destructor stub
 }
 
 std::shared_ptr<ecore::EObject> XMLPersistence::load ( const std::string& filename )
 {
 	if ( isValidFile( filename ) == false )
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << "Given filename: '" << filename << "' is not valid!" << std::endl;
+		MSG_ERROR( MSG_FLF << "Given filename: '" << filename << "' is not valid!" );
 		return nullptr;
 	}
 
-	std::cout << "| INFO     | " << "Load from XML-File" << "\n";
+	MSG_DEBUG( "Load from XML-File" );
 
-	std::shared_ptr < persistence::xml::XMLLoad > tmp_load( new persistence::xml::XMLLoad() );
+	std::shared_ptr<persistence::xml::XMLLoad> xmlLoad( new persistence::xml::XMLLoad() );
 
-	return tmp_load->load( filename ); // TODO use inheritance method in XMLLoad
+	return xmlLoad->load( filename );
 }
 
 bool XMLPersistence::save ( const std::string& filename, std::shared_ptr<ecore::EObject> model, std::shared_ptr<ecore::EPackage> metaMetaPackage )
 {
 	if ( isValidFile( filename ) == false )
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << "Given filename: '" << filename << "' is not valid!" << std::endl;
+		MSG_ERROR( MSG_FLF << "Given filename: '" << filename << "' is not valid!" );
 		return false;
 	}
 
-	std::cout << "| INFO     | " << "Save as XML-File" << "\n";
+	MSG_DEBUG( "Save as XML-File" );
 
-	std::shared_ptr < persistence::xml::XMLSave > xmlSave( new persistence::xml::XMLSave() );
+	std::shared_ptr<persistence::xml::XMLSave> xmlSave( new persistence::xml::XMLSave() );
 
-	return xmlSave->save( filename, model, metaMetaPackage ); // TODO use inheritance method in XMLSave
+	return xmlSave->save( filename, model, metaMetaPackage );
 }
 
 } /* namespace xml */

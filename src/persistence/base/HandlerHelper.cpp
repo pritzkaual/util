@@ -15,10 +15,12 @@ namespace base
 {
 
 HandlerHelper::HandlerHelper ()
-{ }
+{
+}
 
 HandlerHelper::~HandlerHelper ()
-{ }
+{
+}
 
 /*
  * This API is adapted to API in Project emf4cpp.
@@ -27,12 +29,12 @@ HandlerHelper::~HandlerHelper ()
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_type(EObject_ptr obj) const
  *
  */
-std::string HandlerHelper::extractType (const std::shared_ptr<ecore::EObject> obj, std::string prefix)
+std::string HandlerHelper::extractType ( const std::shared_ptr<ecore::EObject> obj, std::string prefix )
 {
 	std::stringstream ss;
 	std::shared_ptr<ecore::EClass> metaClass = obj->eClass();
 
-	if (!prefix.empty())
+	if ( !prefix.empty() )
 	{
 		ss << prefix << ":" << metaClass->getName();
 	}
@@ -40,7 +42,6 @@ std::string HandlerHelper::extractType (const std::shared_ptr<ecore::EObject> ob
 	{
 		ss << metaClass->getName();
 	}
-
 	return ss.str();
 }
 
@@ -51,15 +52,16 @@ std::string HandlerHelper::extractType (const std::shared_ptr<ecore::EObject> ob
  * ::ecorecpp::mapping::type_traits::string_t serializer::get_reference(EObject_ptr from, EObject_ptr to) const
  *
  */
-std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObject> toObject, const std::shared_ptr<ecore::EObject> rootObject, std::string prefix )
+std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObject> toObject, const std::shared_ptr<ecore::EObject> rootObject,
+		std::string prefix )
 {
 	std::stringstream ref;
 	std::list<std::shared_ptr<ecore::EObject> > to_antecessors;
 	std::shared_ptr<ecore::EObject> antecessor = toObject; //pre-init antecessor
 
-	if(!toObject)
+	if ( !toObject )
 	{
-		std::cout << "| ERROR    | " << __FUNCTION__ << " Given Parameter 'toObject' is nullptr." << std::endl;
+		MSG_ERROR( MSG_FLF << " Given Parameter 'toObject' is nullptr." );
 		return ref.str();
 	}
 
@@ -69,12 +71,12 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 		antecessor = to_antecessors.back()->eContainer();
 	}
 
-
-	// This case is used for ecore-models
 	std::shared_ptr<ecore::EPackage> rootPkg = std::dynamic_pointer_cast<ecore::EPackage>( to_antecessors.back() );
 
 	if ( rootPkg )
 	{
+		// This case is used for ecore-models
+
 		// Remove root Package from 'to_antecessors' because it is not used in reference name
 		to_antecessors.pop_back();
 
@@ -97,11 +99,11 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 			}
 			else if ( to_antecessors_back_annotation != nullptr )
 			{
-				ref << "/" << "%"<< to_antecessors_back_annotation->getSource() << "%";
+				ref << "/" << "%" << to_antecessors_back_annotation->getSource() << "%";
 			}
 			else
 			{
-				std::cout << "| ERROR    | " << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "() " << "During casting Object of type '" << to_antecessors.back()->eClass()->getName() << "' to 'ENamedElement'." << std::endl;
+				MSG_ERROR( MSG_FLF << "During casting Object of type '" << to_antecessors.back()->eClass()->getName() << "' to 'ENamedElement'." );
 			}
 			to_antecessors.pop_back();
 		}
@@ -113,7 +115,7 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 		// This case is used for Non-Ecore-Models
 		// TODO implement and test this case
 
-		std::cout << "| ERROR    | " << " Called " << __FUNCTION__ << " while else-if-case (Non-Ecore-Models) is not tested yet." << std::endl;
+		MSG_ERROR(MSG_FLF << "else-if-case (Non-Ecore-Models) is not tested yet.");
 
 		ref << "/";
 		std::shared_ptr<ecore::EObject> prev = to_antecessors.back();
@@ -124,7 +126,7 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 			std::shared_ptr<ecore::EStructuralFeature> esf = to_antecessors.back()->eContainingFeature();
 
 			if ( esf->getUpperBound() == 1 )
-				ref << "/" << esf->getName();
+			ref << "/" << esf->getName();
 
 			else
 			{
@@ -134,7 +136,7 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 
 				// calculate the index of back at father's collection
 				size_t index_of = 0;
-				for ( ; index_of < ef->size() && (*ef)[index_of] != to_antecessors.back(); index_of++ );
+				for (; index_of < ef->size() && (*ef)[index_of] != to_antecessors.back(); index_of++ );
 
 				ref << "/@" << esf->getName() << "." << index_of;
 			}
@@ -147,15 +149,14 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 	else
 	{
 		std::shared_ptr<ecore::EClassifier> clsObj = std::dynamic_pointer_cast<ecore::EClassifier>( toObject );
-		if(clsObj)
+		if ( clsObj )
 		{
 			// This case is used for Class/Enum/EDataType that are not contained within a Package
 			std::weak_ptr<ecore::EPackage> dPck = clsObj->getEPackage();
 
-			//if ( (m_rootObject != dPck) || (m_rootObject == nullptr) )
-			if(auto ePck = dPck.lock())
+			if ( auto ePck = dPck.lock() )
 			{
-				if ( rootObject != ePck) // TODO use here other way to find equality of m_rootObject and current EPackage-Obj
+				if ( rootObject != ePck ) // TODO use here other way to find equality of m_rootObject and current EPackage-Obj
 				{
 					ref << extractType( toObject, prefix ) << " " << ePck->getNsURI(); // TODO this case is not tested yet
 				}
@@ -165,7 +166,7 @@ std::string HandlerHelper::extractReference ( const std::shared_ptr<ecore::EObje
 		}
 		else
 		{
-			std::cout << "| WARNING  | " << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "() " << "Given Object's type '" << toObject->eClass()->getName() << "' is not 'EClassifier'." << std::endl;
+			MSG_WARNING( MSG_FLF << "Given Object's type '" << toObject->eClass()->getName() << "' is not 'EClassifier'." );
 		}
 	}
 

@@ -23,7 +23,6 @@ Load::Load ()
 
 Load::~Load ()
 {
-	// TODO Auto-generated destructor stub
 }
 
 std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename )
@@ -31,16 +30,16 @@ std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename )
 	std::shared_ptr<ecore::EObject> retvalue = nullptr;
 	std::string prefix;
 
-	std::cout << "| INFO     | " << "Reading file '" << filename << "'" << std::endl;
+	MSG_DEBUG( "Reading file '" << filename << "'" );
 
 	if ( read( filename ) == false )
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Occurred during reading file." << std::endl;
+		MSG_ERROR( MSG_FLF <<" Occurred during reading file." );
 		retvalue = nullptr;
 	}
 	else
 	{
-		std::cout << "| INFO     | " << "Reading file successfully." << std::endl;
+		MSG_DEBUG( "Reading file successfully." );
 
 		// TODO need comment here
 		m_handler->getNextNodeName();
@@ -87,7 +86,7 @@ std::shared_ptr<ecore::EObject> Load::load ( const std::string &filename )
 		}
 		else
 		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Given Plugin is not supported or not found by PluginFramework '" << prefix << "'" << std::endl;
+			MSG_ERROR( MSG_FLF << " Given Plugin name '" << prefix << "' is not supported or not found by PluginFramework" );
 		}
 	}
 

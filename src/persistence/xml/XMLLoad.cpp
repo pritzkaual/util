@@ -31,7 +31,7 @@ XMLLoad::XMLLoad ()
 
 	catch ( const XMLException &toCatch )
 	{
-		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << W( toCatch.getMessage() ) << std::endl;
+		MSG_ERROR( MSG_FLF << "Error during Xerces-c Initialization.\n" << "  Exception message:" << W( toCatch.getMessage() ) );
 		return;
 	}
 
@@ -71,7 +71,6 @@ bool XMLLoad::read ( const std::string &filename )
 	//  Parse the XML file, catching any XML exceptions that might propogate
 	//  out of it.
 	//
-	//std::cout << "Filename: " << filename << std::endl;
 std	::string _filename = filename;// TODO check if _filename is necessary, because of Error-Message "Multiple errors.." in var filename
 
 	bool errorsOccured = false;
@@ -79,16 +78,15 @@ std	::string _filename = filename;// TODO check if _filename is necessary, becau
 	try
 	{
 		m_parser->parse( _filename.c_str() );
-		//std::cout << "Errors: " << m_parser->getErrorCount() << std::endl;
 	}
 	catch ( const OutOfMemoryException& )
 	{
-		std::cout << "OutOfMemoryException" << std::endl;
+		MSG_ERROR(MSG_FLF << "OutOfMemoryException");
 		errorsOccured = true;
 	}
 	catch ( const XMLException& e )
 	{
-		std::cout << "An error occurred during parsing\n   Message: " << W( e.getMessage() ) << std::endl;
+		MSG_ERROR(MSG_FLF << "An error occurred during parsing\n   Message: " << W( e.getMessage() ));
 		errorsOccured = true;
 	}
 
@@ -97,17 +95,18 @@ std	::string _filename = filename;// TODO check if _filename is necessary, becau
 		const unsigned int maxChars = 2047;
 		XMLCh errText[maxChars + 1];
 
-		std::cout << "\nDOM Error during parsing: '" << _filename.c_str() << "'\n" << "DOMException code is:  " << e.code << std::endl;
+		MSG_ERROR(MSG_FLF << "DOM Error during parsing: '" << _filename.c_str() << "'\n" << "DOMException code is:  " << e.code);
 
 		if ( DOMImplementation::loadDOMExceptionMsg( e.code, errText, maxChars ) )
-		std::cout << "Message is: " << W( errText ) << std::endl;
-
+		{
+			MSG_ERROR(MSG_FLF << "Message is: " << W( errText ));
+		}
 		errorsOccured = true;
 	}
 
 	catch ( ... )
 	{
-		std::cout << "An error occurred during parsing\n " << std::endl;
+		MSG_ERROR(MSG_FLF << "An error occurred during parsing\n ");
 		errorsOccured = true;
 	}
 
@@ -119,7 +118,7 @@ std	::string _filename = filename;// TODO check if _filename is necessary, becau
 	else
 	{
 		errorsOccured = true;
-		std::cout<< "| ERROR    | " << "LoadHandler is empty in XMLLoad::read()." << std::endl;
+		MSG_ERROR(MSG_FLF << "LoadHandler is empty in XMLLoad::read()");
 	}
 
 	return ((errorsOccured == false) && (m_errReporter->getSawErrors() == false));

@@ -52,7 +52,7 @@ std::shared_ptr<ecore::EObject> LoadHandler::getObjectByRef ( std::string ref )
 			}
 			else
 			{
-				std::cout << "| WARNING  | " << "Given Reference-Name: '" << ref << "' or '" << _ref_name << "' are not in stored map." << std::endl;
+				MSG_WARNING("Given Reference-Name '" << ref << "' or '" << _ref_name << "' are not in stored map.");
 				return nullptr;
 			}
 		}
@@ -71,7 +71,7 @@ void LoadHandler::addToMap ( std::shared_ptr<ecore::EObject> object )
 			// ref not found in map, so insert
 			m_refToObject_map.insert( std::pair<std::string, std::shared_ptr<ecore::EObject>>( ref, object ) );
 
-			std::cout << "| DEBUG    | " << "Add to map: '" << ref << "'" << std::endl;
+			MSG_DEBUG("Add to map: '" << ref << "'");
 		}
 	}
 }
@@ -128,7 +128,7 @@ void LoadHandler::release ()
 
 	if ( tmp_obj == nullptr )
 	{
-		std::cout << "| ERROR    | " << "You can't call " << __PRETTY_FUNCTION__ << " while current Object is nullptr." << std::endl;
+		MSG_ERROR("You can't call " << __PRETTY_FUNCTION__ << " while current Object is nullptr.");
 	}
 	else
 	{
@@ -148,12 +148,12 @@ void LoadHandler::addUnresolvedReference ( const std::string &name, std::shared_
 		}
 		else
 		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " esf is a nullptr" << std::endl;
+			MSG_ERROR(MSG_FLF << " esf is a nullptr");
 		}
 	}
 	else
 	{
-		std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " object is a nullptr" << std::endl;
+		MSG_ERROR(MSG_FLF  << " object is a nullptr");
 	}
 }
 
@@ -215,7 +215,7 @@ void LoadHandler::resolveReferences ()
 		}
 		catch ( std::exception& e )
 		{
-			std::cout << "| ERROR    | " << __PRETTY_FUNCTION__ << " Exception: " << e.what() << std::endl;
+			MSG_ERROR(MSG_FLF << " Exception: " << e.what());
 		}
 	}
 }

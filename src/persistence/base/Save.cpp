@@ -25,17 +25,16 @@ bool Save::save ( const std::string &filename, std::shared_ptr<ecore::EObject> m
 {
 	std::shared_ptr<ecore::EClass> metaClass = model->eClass();
 
-	std::cout << "| DEBUG    | " << "metaClass: " << metaClass->getName() << std::endl;
-	std::cout << "| DEBUG    | " << "metaMetaPck-NS: " << metaMetaPackage->getNsPrefix() << std::endl;
-	std::cout << "| DEBUG    | " << "metaMetaPck-Uri: " << metaMetaPackage->getNsURI() << std::endl;
+	MSG_DEBUG( "metaClass: " << metaClass->getName() );
+	MSG_DEBUG( "metaMetaPck-NS: " << metaMetaPackage->getNsPrefix() );
+	MSG_DEBUG( "metaMetaPck-Uri: " << metaMetaPackage->getNsURI() );
 
 	m_handler->createRootNode( metaMetaPackage->getNsPrefix(), metaClass->getName(), metaMetaPackage->getNsURI() );
 	m_handler->setRootObject( model );
 
-	std::cout << "| DEBUG    | " << m_handler->extractType( model ) << std::endl;
+	MSG_DEBUG( m_handler->extractType( model ) );
 
 	model->save( m_handler );
-	//traverse( m_model, m_handler );
 	m_handler->release();
 
 	// Call write() method in corresponding derived class

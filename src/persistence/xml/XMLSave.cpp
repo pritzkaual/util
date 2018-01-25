@@ -36,7 +36,7 @@ XMLSave::XMLSave ()
 
 	catch ( const XMLException &toCatch )
 	{
-		std::cerr << "Error during Xerces-c Initialization.\n" << "  Exception message:" << W( toCatch.getMessage() ) << std::endl;
+		MSG_ERROR( MSG_FLF <<"Error during Xerces-c Initialization.\n" << "  Exception message:" << W( toCatch.getMessage() ) );
 		return;
 	}
 }
@@ -58,7 +58,7 @@ bool XMLSave::write ( const std::string &filename )
 	std::shared_ptr<persistence::xml::XMLSaveHandler> handler = std::dynamic_pointer_cast<persistence::xml::XMLSaveHandler>( m_handler );
 	if ( !handler )
 	{
-		std::cout << "SaveHandler is empty" << std::endl;
+		MSG_ERROR( MSG_FLF <<"SaveHandler is empty" );
 		return false;
 	}
 	// Get DOM Document from handler
@@ -161,12 +161,12 @@ bool XMLSave::write ( const std::string &filename )
 			}
 			catch ( const DOMXPathException& e )
 			{
-				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
+				MSG_ERROR( MSG_FLF << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) );
 				//retval = 4;
 			}
 			catch ( const DOMException& e )
 			{
-				std::cout << "An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
+				MSG_ERROR( MSG_FLF <<"An error occurred during processing of the XPath expression. Msg is:" << std::endl << W( e.getMessage() ) );
 				//retval = 4;
 			}
 			XMLString::release( &xpathStr );
@@ -193,12 +193,12 @@ bool XMLSave::write ( const std::string &filename )
 	}
 	catch ( const OutOfMemoryException& )
 	{
-		std::cerr << "OutOfMemoryException" << std::endl;
+		MSG_ERROR( MSG_FLF << "OutOfMemoryException" );
 		//retval = 5;
 	}
 	catch ( XMLException& e )
 	{
-		std::cerr << "An error occurred during creation of output transcoder. Msg is:" << std::endl << W( e.getMessage() ) << std::endl;
+		MSG_ERROR( MSG_FLF <<"An error occurred during creation of output transcoder. Msg is:" << std::endl << W( e.getMessage() ) );
 		//retval = 4;
 	}
 	return true;
