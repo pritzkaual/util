@@ -17,61 +17,43 @@
 #include <set>
 #include <exception>
 
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMException.hpp>
-#include <xercesc/util/OutOfMemoryException.hpp>
-
-#include "xerces/XStr.hpp"
-#include "xerces/WStr.hpp"
-
 #include "boost/exception/to_string.hpp"
 
 #include "EObject.hpp"
 
 
-namespace persistence
+namespace BasePersistence
 {
-class SaveHandler : public XSaveHandler
+class SaveHandler : public XPersistence::XSaveHandler
 {
 public:
 	SaveHandler ();
 	virtual ~SaveHandler ();
 
-	DOMDocument *getDOMDocument ();
 	std::string getPrefix ();
 	void setRootObject ( std::shared_ptr<ecore::EObject> object );
 
 	std::string extractType ( std::shared_ptr<ecore::EObject> obj ) const;
 
-	bool createRootNode ( const std::string& name, const std::string& ns_uri );
-	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri );
-	bool createRootNode ( const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype );
-	bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri, DOMDocumentType *doctype );
+	virtual bool createRootNode ( const std::string& name, const std::string& ns_uri ) = 0;
+	virtual bool createRootNode ( const std::string& prefix, const std::string& name, const std::string& ns_uri ) = 0;
 
-	bool createAndAddElement ( const std::string& name );
+	virtual bool createAndAddElement ( const std::string& name ) = 0;
 
 	void addAttribute ( const std::string &name, bool value );
-	void addAttribute ( const std::string &name, const std::string& value );
+	virtual void addAttribute ( const std::string &name, const std::string& value ) = 0;
 
 	void addReference ( const std::string &name, std::shared_ptr<ecore::EObject> object );
-	void addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object );
+	virtual void addReferences ( const std::string &name, std::shared_ptr<ecore::EObject> object ) = 0;
 
-	void release ();
+	virtual void release () = 0;
 
-private:
-
-	DOMDocument *m_doc;
-	DOMElement *m_currentElement;
-	std::list<DOMNode *> m_currentElements;
-
+protected:
 	std::shared_ptr<ecore::EObject> m_rootObject;
-
 	std::string m_rootPrefix;
-
-	void addChild ( DOMElement *parent_elem, DOMElement *child_elem );
 }
 ;
 
-} /* namespace persistence */
+} /* namespace BasePersistence */
 
 #endif /* SaveHandler_HPP_ */
