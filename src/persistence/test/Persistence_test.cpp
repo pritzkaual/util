@@ -8,8 +8,7 @@
 #include <omp.h>
 #include <stdlib.h>
 
-#include "Option.hpp"
-#include "Persistence.hpp"
+#include "XMLPersistence.hpp"
 #include "TestModel.hpp"
 
 #include "EPackage.hpp"
@@ -29,7 +28,8 @@ int main () {
 		// Get MetaPackage
 		std::cout << "| INFO     | " << "Get 'myEcoreMetaMetaPackage'" << std::endl;
 		std::shared_ptr<ecore::EPackage> myEcoreMetaMetaPackage = testmodel::TestModel::getMetaMetaPackage();
-		if ( myEcoreMetaMetaPackage == 0 ) {
+		if ( myEcoreMetaMetaPackage == 0 )
+		{
 			std::cout << "| ERROR    | " << "'myEcoreMetaMetaPackage' is empty" << std::endl;
 			return 0;
 		}
@@ -37,37 +37,36 @@ int main () {
 		// Create Save-Model
 		std::cout << "| INFO     | " << "Create 'myEcoreTestSaveMetaModel'" << std::endl;
 		std::shared_ptr<ecore::EObject> myEcoreTestSaveMetaModel = testmodel::TestModel::createEcoreTestMetaModel();
-		if ( myEcoreTestSaveMetaModel == 0 ) {
+		if ( myEcoreTestSaveMetaModel == 0 )
+		{
 			std::cout << "| ERROR    | " << "'myEcoreTestSaveMetaModel' is empty" << std::endl;
 			return 0;
 		}
-
-		// Set Options
-		std::cout << "| INFO     | " << "Get 'options'" << std::endl;
-		std::set<std::string> options = persistence::Option::get_DefaultOptions();
-
-		// Crete persistence object
-		persistence::Persistence myPersistence;
-
-		// Perform save()
-		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestSaveMetaModel'" << std::endl;
-
-		if ( myPersistence.save( filename, myEcoreTestSaveMetaModel, myEcoreMetaMetaPackage, options ) ) {
-
-			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename.c_str() << "'" << std::endl;
-		}
-		else {
-			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestSaveMetaModel'" << std::endl;
-		}
-
 		// Create Load-Model
 		std::cout << "| INFO     | " << "Create 'myEcoreTestLoadMetaModel'" << std::endl;
 		std::shared_ptr<ecore::EObject> myEcoreTestLoadMetaModel;
 
+
+		// Crete persistence object
+		XMLPersistence::XML_Persistence myPersistence;
+#if 0
+		// Perform save()
+		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestSaveMetaModel'" << std::endl;
+
+		if ( myPersistence.save( filename, myEcoreTestSaveMetaModel, myEcoreMetaMetaPackage ) ) {
+
+			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename.c_str() << "'" << std::endl;
+		}
+		else
+		{
+			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestSaveMetaModel'" << std::endl;
+		}
+
 		// Perform load()
 		std::cout << "| INFO     | " << "Start load() of 'myEcoreTestSaveMetaModel'" << std::endl;
-		myEcoreTestLoadMetaModel = myPersistence.load( filename, options );
-		if ( myEcoreTestLoadMetaModel != nullptr ) {
+		myEcoreTestLoadMetaModel = myPersistence.load( filename );
+		if ( myEcoreTestLoadMetaModel != nullptr )
+		{
 			std::cout << "| INFO     | " << "Successful load() of 'myEcoreTestLoadMetaModel' from '" << filename << "'" << std::endl;
 		}
 		else {
@@ -77,28 +76,30 @@ int main () {
 		// Perform save() again
 		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestLoadMetaModel'" << std::endl;
 
-		if ( myPersistence.save( filename2, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage, options ) )
+		if ( myPersistence.save( filename2, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage ) )
 		{
 			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename2 << "'" << std::endl;
 		}
 		else {
 			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestLoadMetaModel'" << std::endl;
 		}
-
+#endif
 		// Perform load() on unknown model
 		std::cout << "| INFO     | " << "Start load() of 'myEcoreTestSaveMetaModel'" << std::endl;
-		myEcoreTestLoadMetaModel = myPersistence.load( filename3, options );
-		if ( myEcoreTestLoadMetaModel != nullptr ) {
+		myEcoreTestLoadMetaModel = myPersistence.load( filename3 );
+		if ( myEcoreTestLoadMetaModel != nullptr )
+		{
 			std::cout << "| INFO     | " << "Successful load() of 'myEcoreTestLoadMetaModel' from '" << filename3 << "'" << std::endl;
 		}
-		else {
+		else
+		{
 			std::cout << "| ERROR    | " << "During load() of 'myEcoreTestLoadMetaModel'" << std::endl;
 		}
 
 		// Perform save() again
 		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestLoadMetaModel'" << std::endl;
 
-		if ( myPersistence.save( filename4, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage, options ) )
+		if ( myPersistence.save( filename4, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage ) )
 		{
 			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename4 << "'" << std::endl;
 		}
@@ -106,7 +107,8 @@ int main () {
 			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestLoadMetaModel'" << std::endl;
 		}
 	}
-	catch ( std::exception &e ) {
+	catch ( std::exception &e )
+	{
 		std::cout << "| ERROR    | " << e.what() << std::endl;
 	}
 	return 0;
