@@ -14,10 +14,12 @@
 #include "EPackage.hpp"
 #include "EObject.hpp"
 
-int main () {
-	try {
+int main ()
+{
+	try
+	{
 		// Set OpenMP number of threads
-		omp_set_num_threads(1);
+		omp_set_num_threads( 1 );
 
 		// Set filename with path
 		std::string filename = "_tmp/UniModel.ecore";
@@ -46,14 +48,14 @@ int main () {
 		std::cout << "| INFO     | " << "Create 'myEcoreTestLoadMetaModel'" << std::endl;
 		std::shared_ptr<ecore::EObject> myEcoreTestLoadMetaModel;
 
-
 		// Crete persistence object
 		persistence::xml::XMLPersistence myPersistence;
 #if 0
 		// Perform save()
 		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestSaveMetaModel'" << std::endl;
 
-		if ( myPersistence.save( filename, myEcoreTestSaveMetaModel, myEcoreMetaMetaPackage ) ) {
+		if ( myPersistence.save( filename, myEcoreTestSaveMetaModel, myEcoreMetaMetaPackage ) )
+		{
 
 			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename.c_str() << "'" << std::endl;
 		}
@@ -69,7 +71,8 @@ int main () {
 		{
 			std::cout << "| INFO     | " << "Successful load() of 'myEcoreTestLoadMetaModel' from '" << filename << "'" << std::endl;
 		}
-		else {
+		else
+		{
 			std::cout << "| ERROR    | " << "During load() of 'myEcoreTestLoadMetaModel'" << std::endl;
 		}
 
@@ -80,7 +83,8 @@ int main () {
 		{
 			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename2 << "'" << std::endl;
 		}
-		else {
+		else
+		{
 			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestLoadMetaModel'" << std::endl;
 		}
 #endif
@@ -103,7 +107,8 @@ int main () {
 		{
 			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename4 << "'" << std::endl;
 		}
-		else {
+		else
+		{
 			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestLoadMetaModel'" << std::endl;
 		}
 	}
