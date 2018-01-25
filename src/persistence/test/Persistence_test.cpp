@@ -20,6 +20,12 @@ int main () {
 		// Set OpenMP number of threads
 		omp_set_num_threads(1);
 
+		// Set filename with path
+		std::string filename = "_tmp/UniModel.ecore";
+		std::string filename2 = "_tmp/UniModel_out.ecore";
+		std::string filename3 = "_tmp/xmi.ecore";
+		std::string filename4 = "_tmp/xmi_out.ecore";
+
 		// Get MetaPackage
 		std::cout << "| INFO     | " << "Get 'myEcoreMetaMetaPackage'" << std::endl;
 		std::shared_ptr<ecore::EPackage> myEcoreMetaMetaPackage = testmodel::TestModel::getMetaMetaPackage();
@@ -42,10 +48,6 @@ int main () {
 
 		// Crete persistence object
 		persistence::Persistence myPersistence;
-
-		// Set filename with path
-		std::string filename = "_tmp/UniModel.ecore";
-		std::string filename2 = "_tmp/UniModel2.ecore";
 
 		// Perform save()
 		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestSaveMetaModel'" << std::endl;
@@ -78,6 +80,27 @@ int main () {
 		if ( myPersistence.save( filename2, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage, options ) )
 		{
 			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename2 << "'" << std::endl;
+		}
+		else {
+			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestLoadMetaModel'" << std::endl;
+		}
+
+		// Perform load() on unknown model
+		std::cout << "| INFO     | " << "Start load() of 'myEcoreTestSaveMetaModel'" << std::endl;
+		myEcoreTestLoadMetaModel = myPersistence.load( filename3, options );
+		if ( myEcoreTestLoadMetaModel != nullptr ) {
+			std::cout << "| INFO     | " << "Successful load() of 'myEcoreTestLoadMetaModel' from '" << filename3 << "'" << std::endl;
+		}
+		else {
+			std::cout << "| ERROR    | " << "During load() of 'myEcoreTestLoadMetaModel'" << std::endl;
+		}
+
+		// Perform save() again
+		std::cout << "| INFO     | " << "Start save() of 'myEcoreTestLoadMetaModel'" << std::endl;
+
+		if ( myPersistence.save( filename4, myEcoreTestLoadMetaModel, myEcoreMetaMetaPackage, options ) )
+		{
+			std::cout << "| INFO     | " << "Successful save() 'myEcoreTestSaveMetaModel' to '" << filename4 << "'" << std::endl;
 		}
 		else {
 			std::cout << "| ERROR    | " << "During save() of 'myEcoreTestLoadMetaModel'" << std::endl;
